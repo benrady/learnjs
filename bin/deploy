@@ -1,0 +1,27 @@
+#!/bin/bash
+abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
+bin_dir=`dirname $abspath`
+root_dir=`dirname $bin_dir`
+
+defaults="--acl-public --exclude=.DS_Store"
+cd $root_dir
+
+function add_bucket() {
+  local env_name=$1
+  echo "Configuring s3 environment"
+  echo
+  echo "What is the name of your s3 bucket?"
+  read bucket
+  echo
+  echo "$bucket" >> $root_dir/.deploy
+  git add $root_dir/.deploy
+  git commit -m "Added s3 bucket config"
+}
+
+if [[ ! -e $root_dir/.deploy ]]; then
+  add_bucket $target
+fi
+bucket=`cat $root_dir/.deploy`
+
+echo "Deploying site to $bucket"
+s3cmd sync --no-preserve $defaults public/* s3://$bucket
