@@ -4,6 +4,11 @@ abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
 bin_dir=`dirname $abspath`
 root_dir=`dirname $bin_dir`
 
+if [[ ! -x `which ruby` ]]; then
+  echo "Can't find Ruby. You need Ruby 2.0 or later to use this server."
+  exit 1
+fi
+
 bundle_path=`which bundle`
 
 if [[ ! -x $bundle_path ]]; then
@@ -11,7 +16,9 @@ if [[ ! -x $bundle_path ]]; then
 fi
 
 if [[ ! -x $bundle_path ]]; then
-  echo "Can't find bundler. Run ./bin/setup for the easy install, or install Ruby 2.0 and bundler 1.8.4."
+  echo "Can't find bundler (version 1.6 or later). You can run this command to install bundler:"
+  echo ""
+  echo "  gem install --user-install bundler"
   exit 1
 fi
 
