@@ -23,16 +23,12 @@ GEM
       em-websocket (~> 0.5)
       guard (~> 2.8)
       multi_json (~> 1.8)
-    guard-rack (2.0.0)
+    guard-rack (2.1.1)
       ffi
       guard (~> 2.3)
-      libnotify
-      rb-inotify
       spoon
     hitimes (1.2.2)
     http_parser.rb (0.6.0)
-    libnotify (0.9.1)
-      ffi (>= 1.0.11)
     listen (2.8.5)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -69,6 +65,6 @@ PLATFORMS
 DEPENDENCIES
   guard
   guard-livereload
-  guard-rack
+  guard-rack (= 2.1.1)
   rack-livereload
   rack-rewrite
