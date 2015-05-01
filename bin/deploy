@@ -1,27 +1,84 @@
-#!/bin/bash
+#!/usr/bin/env bash
 abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
 bin_dir=`dirname $abspath`
 root_dir=`dirname $bin_dir`
 
-defaults="--acl-public --exclude=.DS_Store"
-cd $root_dir
-
 function add_bucket() {
-  local env_name=$1
   echo "Configuring s3 environment"
   echo
   echo "What is the name of your s3 bucket?"
   read bucket
   echo
   echo "$bucket" >> $root_dir/.deploy
-  git add $root_dir/.deploy
-  git commit -m "Added s3 bucket config"
 }
 
+function add_keys() {
+  echo "What is your S3 Access Key? (This will be stored in your home directory)"
+  read s3key
+  echo
+  echo "export s3key=$s3key" >> $HOME/.s3keys
+  echo "What is S3 Secret Key? (This will be stored in your home directory)"
+  read s3secret
+  echo
+  echo "export s3secret=$s3secret" >> $HOME/.s3keys
+}
+
+function mime_type_of() {
+  local filename=$1
+  local basefile=$(basename "$filename")
+  local extension="${basefile##*.}"
+  case "$extension" in
+    js)
+      echo "application/javascript"
+      ;;
+    css)
+      echo "text/css"
+      ;;
+    map)
+      echo "application/octet-stream"
+      ;;
+    *)
+      file --mime-type -b $filename
+  esac
+}
+
+function putS3
+{
+  local file=$1
+  date=$(date +"%a, %d %b %Y %T %z")
+  acl="x-amz-acl:public-read"
+  content_type=$(mime_type_of $file)
+  string_to_sign="PUT\n\n$content_type\n$date\n$acl\n/$bucket/$file"
+  signature=$(echo -en "${string_to_sign}" | openssl sha1 -hmac "${s3secret}" -binary | base64)
+  curl -k -X PUT -T "$file" \
+    -H "Host: ${bucket}.s3.amazonaws.com" \
+    -H "Date: $date" \
+    -H "Content-Type: $content_type" \
+    -H "$acl" \
+    -H "Authorization: AWS ${s3key}:$signature" \
+    "https://${bucket}.s3.amazonaws.com/$file"
+  echo "  $file as $content_type"
+}
+
+if [[ ! -x `which openssl` ]]; then
+  echo "The openssl command is not available. Exiting."
+  exit 1
+fi
+
 if [[ ! -e $root_dir/.deploy ]]; then
-  add_bucket $target
+  add_bucket
 fi
 bucket=`cat $root_dir/.deploy`
 
-echo "Deploying site to $bucket"
-s3cmd sync --no-preserve $defaults public/* s3://$bucket
+if [[ ! -e $HOME/.s3keys ]]; then
+  add_keys $target
+fi
+source $HOME/.s3keys
+
+cd $root_dir/public
+
+echo "Deploying to $bucket..."
+for file in `find * -type f`; do
+  putS3 "$file"
+done
+echo "...Done!"
