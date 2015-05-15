@@ -13,14 +13,15 @@ function add_bucket() {
 }
 
 function add_keys() {
-  echo "What is your S3 Access Key? (This will be stored in your home directory)"
+  echo "What is your S3 Access Key? (Will be stored in your home directory)"
   read s3key
   echo
   echo "export s3key=$s3key" >> $HOME/.s3keys
-  echo "What is S3 Secret Key? (This will be stored in your home directory)"
+  echo "What is your S3 Secret Key? (will be stored in your home directory)"
   read s3secret
   echo
   echo "export s3secret=$s3secret" >> $HOME/.s3keys
+  chmod 600 $HOME/.s3keys
 }
 
 function mime_type_of() {
