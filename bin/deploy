@@ -48,16 +48,21 @@ function putS3
   local file=$1
   date=$(date +"%a, %d %b %Y %T %z")
   acl="x-amz-acl:public-read"
+  if [[ "us-east-1" != "${AWS_REGION}" ]]; then
+    endpoint="${bucket}.s3-${AWS_REGION}.amazonaws.com"
+  else
+    endpoint="${bucket}.s3.amazonaws.com"
+  fi
   content_type=$(mime_type_of $file)
   string_to_sign="PUT\n\n$content_type\n$date\n$acl\n/$bucket/$file"
   signature=$(echo -en "${string_to_sign}" | openssl sha1 -hmac "${s3secret}" -binary | base64)
   curl -k -X PUT -T "$file" \
-    -H "Host: ${bucket}.s3.amazonaws.com" \
+    -H "Host: ${endpoint}" \
     -H "Date: $date" \
     -H "Content-Type: $content_type" \
     -H "$acl" \
     -H "Authorization: AWS ${s3key}:$signature" \
-    "https://${bucket}.s3.amazonaws.com/$file"
+    "https://${endpoint}/$file"
   echo "  $file as $content_type"
 }
 
@@ -71,10 +76,15 @@ if [[ ! -e $root_dir/.deploy ]]; then
 fi
 bucket=`cat $root_dir/.deploy`
 
-if [[ ! -e $HOME/.s3keys ]]; then
-  add_keys $target
+if [[ -z "${AWS_ACCESS_KEY_ID}" ]]; then
+  if [[ ! -e $HOME/.s3keys ]]; then
+    add_keys $target
+  fi
+  source $HOME/.s3keys
+else
+  export s3key=${AWS_ACCESS_KEY_ID}
+  export s3secret=${AWS_SECRET_ACCESS_KEY}
 fi
-source $HOME/.s3keys
 
 cd $root_dir/public
 
