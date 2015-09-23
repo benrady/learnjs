@@ -48,7 +48,7 @@ function putS3
   local file=$1
   date=$(date +"%a, %d %b %Y %T %z")
   acl="x-amz-acl:public-read"
-  if [[ "us-east-1" != "${AWS_REGION}" ]]; then
+  if [[ -n "${AWS_REGION}" ]] && [[ "us-east-1" != "${AWS_REGION}" ]]; then
     endpoint="${bucket}.s3-${AWS_REGION}.amazonaws.com"
   else
     endpoint="${bucket}.s3.amazonaws.com"
