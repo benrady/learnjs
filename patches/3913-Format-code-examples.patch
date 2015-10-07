@@ -1,0 +1,67 @@
+diff --git a/public/tests/format_spec.js b/public/tests/format_spec.js
+new file mode 100644
+index 0000000..84d93bb
+--- /dev/null
++++ b/public/tests/format_spec.js
+@@ -0,0 +1,49 @@
++learnjs.formatCode = function(obj) {
++  // This implementation was too large to fit in the margin :-)
++  // and it's not really relevant to the example.
++  return obj;
++};
++
++function formatProblems() {
++  // START: formatProblems
++  var formattedProblems = [];
++  learnjs.problems.forEach(function(problem) {
++    formattedProblems.push({
++      code: learnjs.formatCode(problem),
++      name: problem.name
++    });
++  });
++  return formattedProblems;
++  // END: formatProblems
++}
++
++function betterFormatProblems() {
++  // START: betterFormatProblems
++  return learnjs.problems.map(learnjs.formatCode);
++  // END: betterFormatProblems
++}
++
++describe('betterFormatProblems', function() {
++  beforeEach(function() {
++    spyOn(learnjs, 'formatCode').and.callFake(function(problem) {
++      return {
++        code: "formatted",
++        name: problem.name
++      };
++    })
++  });
++
++  it('applies a formatter to all the problems', function() {
++    expect(betterFormatProblems()[0].code).toEqual("formatted");
++  });
++});
++
++describe('formatProblems', function() {
++  beforeEach(function() {
++    spyOn(learnjs, 'formatCode').and.returnValue("formatted")
++  });
++
++  it('applies a formatter to all the problems', function() {
++    expect(formatProblems()[0].code).toEqual("formatted");
++  });
++});
+diff --git a/public/tests/index.html b/public/tests/index.html
+index 70885e1..2830f8f 100755
+--- a/public/tests/index.html
++++ b/public/tests/index.html
+@@ -22,6 +22,7 @@
+   <!-- include spec files here... -->
+   <script type="text/javascript" src="SpecHelper.js"></script>
+   <script type="text/javascript" src="app_spec.js"></script>
++  <script type="text/javascript" src="format_spec.js"></script>
+ </head>
+ 
+ <body>
