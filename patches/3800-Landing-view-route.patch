@@ -24,7 +24,7 @@ index 574e96a..9d6edec 100644
 +
  // START: showView
 -learnjs.showView = function(hash) {
-+learnjs.showView = function(hash) { 
++learnjs.showView = function(hash) {
 +  // START: routes
    var routes = {
 -    '#problem': learnjs.problemView
