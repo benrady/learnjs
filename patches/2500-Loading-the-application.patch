@@ -1,0 +1,87 @@
+From e679760e415d2b20e0e9f42f4afa80394afdebec Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 2 Sep 2015 22:20:41 -0500
+Subject: [PATCH 1006/1031] Loading the application
+
+---
+ public/app.js            | 14 ++++++--------
+ public/index.html        |  5 +++++
+ public/tests/app_spec.js |  8 ++++++++
+ 3 files changed, 19 insertions(+), 8 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index d29bfc2..3a83bc0 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -2,28 +2,26 @@
+ 
+ var learnjs = {};
+ 
+-// START: problemView
+ learnjs.problemView = function(problemNumber) {
+   var title = 'Problem #' + problemNumber + ' Coming soon!';
+   return $('<div class="problem-view">').text(title);
+ }
+-// END: problemView
+ 
+ // START: showView
+ learnjs.showView = function(hash) {
+   var routes = {
+-    // START_HIGHLIGHT
+     '#problem': learnjs.problemView
+-    // END_HIGHLIGHT
+   };
+-  // START_HIGHLIGHT
+   var hashParts = hash.split('-');
+   var viewFn = routes[hashParts[0]];
+-  // END_HIGHLIGHT
+   if (viewFn) {
+-    // START_HIGHLIGHT
+     $('.view-container').empty().append(viewFn(hashParts[1]));
+-    // END_HIGHLIGHT
+   }
+ }
+ // END: showView
++
++// START: appOnReady
++learnjs.appOnReady = function() {
++  learnjs.showView(window.location.hash);
++}
++// END: appOnReady
+diff --git a/public/index.html b/public/index.html
+index c80bdbe..23277e1 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -29,5 +29,10 @@
+         </div>
+       </div>
+     </div>
++    <!-- START_HIGHLIGHT -->
++    <script type='text/javascript'>
++      $(window).ready(learnjs.appOnReady);
++    </script>
++    <!-- END_HIGHLIGHT -->
+   </body>
+ </html>
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 4b524b0..b7b02ec 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -19,6 +19,14 @@ describe('LearnJS', function() {
+   });
+   // END: viewParameter
+ 
++  // START: routerOnLoad
++  it('invokes the router when loaded', function() {
++    spyOn(learnjs, 'showView');
++    learnjs.appOnReady();
++    expect(learnjs.showView).toHaveBeenCalledWith(window.location.hash);
++  });
++  // END: routerOnLoad
++
+   // START: problemView
+   describe('problem view', function() {
+     it('has a title that includes the problem number', function() {
+-- 
+2.3.8 (Apple Git-58)
+

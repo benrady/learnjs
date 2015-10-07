@@ -1,0 +1,53 @@
+From 4049af2712960c942abb79918268f821f9e9e616 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 2 Sep 2015 22:09:26 -0500
+Subject: [PATCH 1002/1031] Added router function
+
+---
+ public/app.js            | 10 ++++++++++
+ public/index.html        |  2 +-
+ public/tests/app_spec.js |  2 ++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/public/app.js b/public/app.js
+index e69de29..ea33d5b 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -0,0 +1,10 @@
++// START:namespace
++'use strict';
++
++var learnjs = {};
++// END:namespace
++
++learnjs.showView = function(hash) {
++  var problemView = $('<div class="problem-view">').text('Coming soon!');
++  $('.view-container').empty().append(problemView);
++}
+diff --git a/public/index.html b/public/index.html
+index c23f0af..b1abaa6 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -15,7 +15,7 @@
+   </head>
+   <body>
+     <div class='markup'>
+-      <div class='container'>
++      <div class='view-container container'>
+         <div class='row'>
+           <div class='one-half column'>
+             <h3>Learn JavaScript, one puzzle at a time.</h3>
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 107b78b..991cb3a 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -1,4 +1,6 @@
+ describe('LearnJS', function() {
+   it('can show a problem view', function() {
++    learnjs.showView('#problem-1');
++    expect($('.view-container .problem-view').length).toEqual(1);
+   });
+ });
+-- 
+2.3.8 (Apple Git-58)
+

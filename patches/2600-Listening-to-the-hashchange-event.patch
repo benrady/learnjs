@@ -1,0 +1,74 @@
+From 011337e772a355ce8d177964ea387d7bb51ea11d Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 2 Sep 2015 22:23:34 -0500
+Subject: [PATCH 1007/1031] Listening to the hashchange event
+
+---
+ public/app.js            | 3 +++
+ public/index.html        | 6 +++---
+ public/tests/app_spec.js | 9 +++++++++
+ 3 files changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index 3a83bc0..ac62301 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -22,6 +22,9 @@ learnjs.showView = function(hash) {
+ 
+ // START: appOnReady
+ learnjs.appOnReady = function() {
++  window.onhashchange = function() {
++    learnjs.showView(window.location.hash);
++  };
+   learnjs.showView(window.location.hash);
+ }
+ // END: appOnReady
+diff --git a/public/index.html b/public/index.html
+index 23277e1..6c06244 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -20,7 +20,9 @@
+           <div class='row'>
+             <div class='one-half column'>
+               <h3>Learn JavaScript, one puzzle at a time.</h3>
+-              <a href='' class='button button-primary'>Start Now!</a>
++              <!-- START: callToAction -->
++              <a href='#problem-1' class='button button-primary'>Start Now!</a>
++              <!-- END: callToAction -->
+             </div>
+             <div class='one-half column'>
+               <img src='/images/HeroImage.jpg'/>
+@@ -29,10 +31,8 @@
+         </div>
+       </div>
+     </div>
+-    <!-- START_HIGHLIGHT -->
+     <script type='text/javascript'>
+       $(window).ready(learnjs.appOnReady);
+     </script>
+-    <!-- END_HIGHLIGHT -->
+   </body>
+ </html>
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index b7b02ec..0d17c90 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -27,6 +27,15 @@ describe('LearnJS', function() {
+   });
+   // END: routerOnLoad
+ 
++  // START: hashChangeEvent
++  it('subscribes to the hash change event', function() {
++    learnjs.appOnReady();
++    spyOn(learnjs, 'showView');
++    $(window).trigger('hashchange');
++    expect(learnjs.showView).toHaveBeenCalledWith(window.location.hash);
++  });
++  // END: hashChangeEvent
++
+   // START: problemView
+   describe('problem view', function() {
+     it('has a title that includes the problem number', function() {
+-- 
+2.3.8 (Apple Git-58)
+

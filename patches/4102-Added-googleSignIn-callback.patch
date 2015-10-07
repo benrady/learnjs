@@ -1,0 +1,91 @@
+From 1d6992fa039b9d162ea67f540c308dc7464473b1 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Thu, 20 Aug 2015 21:25:49 -0500
+Subject: [PATCH 1027/1031] Added googleSignIn callback
+
+---
+ public/app.js            | 19 ++++++++++++++++---
+ public/tests/app_spec.js | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+), 3 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index 3db2278..4bf81c2 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -1,6 +1,10 @@
+ "use strict";
+ 
+-var learnjs = {};
++// START: namespace
++var learnjs = {
++  poolId: 'us-east-1:aa0e6d15-02da-4304-a819-f316506257e0'
++};
++// END: namespace
+ 
+ //START: dataModel
+ learnjs.problems = [
+@@ -147,7 +151,16 @@ learnjs.appOnReady = function() {
+ // END: appOnReady
+ 
+ // START: googleSignIn
+-function googleSignIn() {
+-  console.log(arguments);
++function googleSignIn(googleUser) {
++  var id_token = googleUser.getAuthResponse().id_token;
++  AWS.config.update({
++    region: 'us-east-1',
++    credentials: new AWS.CognitoIdentityCredentials({
++      IdentityPoolId: learnjs.poolId,
++      Logins: {
++        'accounts.google.com': id_token
++      }
++    })
++  })
+ }
+ // END: googleSignIn
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 4149993..6e8b8da 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -98,6 +98,38 @@ describe('LearnJS', function() {
+     // END: notLoggedIn
+   });
+   // END: profileView
++  
++  // START: googleSignIn
++  describe('googleSignIn callback', function() {
++    var user, fakeCreds;
++
++    beforeEach(function() {
++      profile = jasmine.createSpyObj('profile', ['getEmail']);
++      fakeCreds = jasmine.createSpyObj('creds', ['refresh']);
++      fakeCreds.refresh.and.callFake(function(c) { c() });
++      fakeCreds.identityId = "COGNITO_ID"
++      spyOn(AWS, 'CognitoIdentityCredentials').and.returnValue(fakeCreds);
++      user = jasmine.createSpyObj('user', ['getAuthResponse', 'getBasicProfile']);
++      user.getAuthResponse.and.returnValue({id_token: 'GOOGLE_ID'});
++      user.getBasicProfile.and.returnValue(profile);
++      profile.getEmail.and.returnValue('foo@bar.com');
++      googleSignIn(user);
++    });
++
++    it('sets the AWS region', function() {
++      expect(AWS.config.region).toEqual('us-east-1');
++    });
++
++    it('sets the identity pool ID and Google ID token', function() {
++      expect(AWS.CognitoIdentityCredentials).toHaveBeenCalledWith({
++        IdentityPoolId: learnjs.poolId,
++        Logins: {
++          'accounts.google.com': 'GOOGLE_ID'
++        }
++      });
++    });
++  });
++  // END: googleSignIn
+ 
+   // START: problemView
+   describe('problem view', function() {
+-- 
+2.3.8 (Apple Git-58)
+

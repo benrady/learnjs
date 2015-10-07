@@ -1,0 +1,65 @@
+From e230db1fd9500f556ed87dcc20d05f1601426cf0 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 8 Sep 2015 21:02:58 -0500
+Subject: [PATCH 1016/1031] Redirecting to the main view on the last problem
+
+---
+ public/app.js            | 12 ++++++++----
+ public/tests/app_spec.js |  8 ++++++++
+ 2 files changed, 16 insertions(+), 4 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index fb7d1ec..574e96a 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -39,9 +39,15 @@ learnjs.flashElement = function(elem, content) {
+ // END: flashElement
+ 
+ // START: buildCorrectFlash
+-learnjs.buildCorrectFlash = function (problemNumber) {
++learnjs.buildCorrectFlash = function (problemNum) {
+   var correctFlash = learnjs.template('correct-flash');
+-  correctFlash.find('a').attr('href', '#problem-' + (problemNumber + 1));
++  var link = correctFlash.find('a');
++  if (problemNum < learnjs.problems.length) {
++    link.attr('href', '#problem-' + (problemNum + 1));
++  } else {
++    link.attr('href', '');
++    link.text("You're Finished!");
++  }
+   return correctFlash;
+ }
+ // END: buildCorrectFlash
+@@ -61,10 +67,8 @@ learnjs.problemView = function(data) {
+   // START: problemViewClickHandler
+   function checkAnswerClick() {
+     if (checkAnswer()) {
+-      // START_HIGHLIGHT
+       var flashContent = learnjs.buildCorrectFlash(problemNumber);
+       learnjs.flashElement(resultFlash, flashContent);
+-      // END_HIGHLIGHT
+     } else {
+       learnjs.flashElement(resultFlash, 'Incorrect!');
+     }
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index d1a3fb4..7d3806e 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -48,6 +48,14 @@ describe('LearnJS', function() {
+   });
+   // END: flashElement
+ 
++  // START: redirectEnd
++  it('can redirect to the main view after the last problem is answered', function() {
++    var flash = learnjs.buildCorrectFlash(2);
++    expect(flash.find('a').attr('href')).toEqual("");
++    expect(flash.find('a').text()).toEqual("You're Finished!");
++  });
++  // END: redirectEnd
++
+   // START: problemView
+   describe('problem view', function() {
+     var view;
+-- 
+2.3.8 (Apple Git-58)
+

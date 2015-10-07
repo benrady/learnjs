@@ -1,0 +1,127 @@
+From 9150f42641942415e998846fc66d813b9e9c0e2d Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 8 Sep 2015 19:51:53 -0500
+Subject: [PATCH 1014/1031] Added problem navigation link
+
+---
+ public/app.js            | 16 ++++++++++------
+ public/index.html        |  6 ++++++
+ public/tests/app_spec.js | 29 +++++++++++++++++++----------
+ 3 files changed, 35 insertions(+), 16 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index 371cee4..694311e 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -15,6 +15,12 @@ learnjs.problems = [
+ ];
+ // END: dataModel
+ 
++//START: template
++learnjs.template = function(name) {
++  return $('.templates .' + name).clone();
++}
++//END: template
++
+ // START: applyObject
+ learnjs.applyObject = function(obj, elem) {
+   for (var key in obj) {
+@@ -35,7 +41,7 @@ learnjs.flashElement = function(elem, content) {
+ // START: problemView
+ learnjs.problemView = function(data) {
+   var problemNumber = parseInt(data, 10);
+-  var view = $('.templates .problem-view').clone();
++  var view = learnjs.template('problem-view');
+   var problemData = learnjs.problems[problemNumber - 1];
+   var resultFlash = view.find('.result');
+ 
+@@ -48,13 +54,11 @@ learnjs.problemView = function(data) {
+   // START: problemViewClickHandler
+   function checkAnswerClick() {
+     if (checkAnswer()) {
+-      // START_HIGHLIGHT
+-      learnjs.flashElement(resultFlash, 'Correct!');
+-      // END_HIGHLIGHT
++      var correctFlash = learnjs.template('correct-flash');
++      correctFlash.find('a').attr('href', '#problem-' + (problemNumber + 1));
++      learnjs.flashElement(resultFlash, correctFlash);
+     } else {
+-      // START_HIGHLIGHT
+       learnjs.flashElement(resultFlash, 'Incorrect!');
+-      // END_HIGHLIGHT
+     }
+     return false;
+   }
+diff --git a/public/index.html b/public/index.html
+index a8f5a22..1c45121 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -48,6 +48,12 @@
+             </div>
+           </form>
+         </div>
++
++        <!-- START: correctFlash -->
++        <div class='correct-flash'>
++          <span>Correct!</span> <a>Next Problem</a>
++        </div>
++        <!-- END: correctFlash -->
+       </div>
+       <!-- END: problemView -->
+     </div>
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index f9dfc99..d1a3fb4 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -69,29 +69,38 @@ describe('LearnJS', function() {
+ 
+     // START: problemViewAnswers
+     describe('answer section', function() {
+-      // START_HIGHLIGHT
+       var resultFlash;
+ 
+       beforeEach(function() {
+         spyOn(learnjs, 'flashElement');
+         resultFlash = view.find('.result');
+       });
+-      // END_HIGHLIGHT
+ 
+-      it('can check a correct answer by hitting a button', function() {
+-        view.find('.answer').val('true');
+-        view.find('.check-btn').click();
+-        // START_HIGHLIGHT
+-        expect(learnjs.flashElement).toHaveBeenCalledWith(resultFlash, 'Correct!');
+-        // END_HIGHLIGHT
++      // START: answerIsCorrect
++      describe('when the answer is correct', function() {
++        beforeEach(function() {
++          view.find('.answer').val('true');
++          view.find('.check-btn').click();
++        });
++
++        it('flashes the result', function() {
++          var flashArgs = learnjs.flashElement.calls.argsFor(0);
++          expect(flashArgs[0]).toEqual(resultFlash);
++          expect(flashArgs[1].find('span').text()).toEqual('Correct!');
++        });
++
++        it('shows a link to the next problem', function() {
++          var link = learnjs.flashElement.calls.argsFor(0)[1].find('a');
++          expect(link.text()).toEqual('Next Problem');
++          expect(link.attr('href')).toEqual('#problem-2');
++        });
+       });
++      // END: answerIsCorrect
+ 
+       it('rejects an incorrect answer', function() {
+         view.find('.answer').val('false');
+         view.find('.check-btn').click();
+-        // START_HIGHLIGHT
+         expect(learnjs.flashElement).toHaveBeenCalledWith(resultFlash, 'Incorrect!');
+-        // END_HIGHLIGHT
+       });
+     });
+     // END: problemViewAnswers
+-- 
+2.3.8 (Apple Git-58)
+

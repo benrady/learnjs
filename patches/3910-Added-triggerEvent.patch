@@ -1,0 +1,50 @@
+From eb59b6a4bf623c636eccc170882f43cbef44375d Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Mon, 14 Sep 2015 14:41:40 -0500
+Subject: [PATCH 1021/1031] Added triggerEvent
+
+---
+ public/app.js            | 6 ++++++
+ public/tests/app_spec.js | 9 +++++++++
+ 2 files changed, 15 insertions(+)
+
+diff --git a/public/app.js b/public/app.js
+index b1ffd8d..f60f938 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -15,6 +15,12 @@ learnjs.problems = [
+ ];
+ // END: dataModel
+ 
++//START: triggerEvent
++learnjs.triggerEvent = function(name, args) {  
++  $('.view-container>*').trigger(name, args);
++}
++//END: triggerEvent
++
+ //START: template
+ learnjs.template = function(name) {
+   return $('.templates .' + name).clone();
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 7d3806e..c6af84f 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -56,6 +56,15 @@ describe('LearnJS', function() {
+   });
+   // END: redirectEnd
+ 
++  it('can trigger events on the view', function() {
++    callback = jasmine.createSpy('callback');
++    var div = $('<div>').bind('fooEvent', callback);
++    $('.view-container').append(div);
++    learnjs.triggerEvent('fooEvent', ['bar']);
++    expect(callback).toHaveBeenCalled();
++    expect(callback.calls.argsFor(0)[1]).toEqual('bar');
++  });
++
+   // START: problemView
+   describe('problem view', function() {
+     var view;
+-- 
+2.3.8 (Apple Git-58)
+

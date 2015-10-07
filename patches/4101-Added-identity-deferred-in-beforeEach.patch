@@ -1,0 +1,27 @@
+From 02d3f09315e5f17252f0c3002984526806b65dd2 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Thu, 17 Sep 2015 15:59:54 -0500
+Subject: [PATCH 1026/1031] Added identity deferred in beforeEach
+
+---
+ public/tests/app_spec.js | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 9ecb3e6..4149993 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -1,4 +1,10 @@
+ describe('LearnJS', function() {
++  //START: beforeLearnJs
++  beforeEach(function() {
++    learnjs.identity = new $.Deferred();
++  });
++  //END: beforeLearnJs
++
+   it('can show a problem view', function() {
+     learnjs.showView('#problem-1');
+     expect($('.view-container .problem-view').length).toEqual(1);
+-- 
+2.3.8 (Apple Git-58)
+

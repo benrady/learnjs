@@ -1,0 +1,98 @@
+From 58065c226af85f1f00f56b08a76b9e0a2e637dbd Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 29 Sep 2015 16:53:02 -0500
+Subject: [PATCH 1029/1031] Added refresh method
+
+---
+ public/app.js            | 19 +++++++++++++++----
+ public/tests/app_spec.js | 27 ++++++++++++++++++++++++++-
+ 2 files changed, 41 insertions(+), 5 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index e1338bf..4afdd58 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -164,7 +164,7 @@ learnjs.awsRefresh = function() {
+       deferred.resolve(AWS.config.credentials.identityId);
+     }
+   });
+-  return deferred;
++  return deferred.promise();
+ }
+ // END: awsRefresh
+ 
+@@ -180,12 +180,23 @@ function googleSignIn(googleUser) {
+       }
+     })
+   })
+-// END: googleSignIn
++  // END: googleSignIn
++  // START: gapi-refresh
++  function refresh() {
++    return gapi.auth2.getAuthInstance().signIn().then(function(userUpdate) {  
++      var creds = AWS.config.credentials;
++      var newToken = userUpdate.getAuthResponse().id_token;
++      creds.params.Logins['accounts.google.com'] = newToken;
++      return learnjs.awsRefresh();
++    });
++  }
++  // END: gapi-refresh
+   // START: googleSignIn-getId
+-  $.when(learnjs.awsRefresh()).then(function(id) {  
++  learnjs.awsRefresh().then(function(id) {  
+     learnjs.identity.resolve({
+       id: id,
+-      email: googleUser.getBasicProfile().getEmail()
++      email: googleUser.getBasicProfile().getEmail(),
++      refresh: refresh
+     });
+   });
+   // END: googleSignIn-getId
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 2672f96..840ce58 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -105,7 +105,8 @@ describe('LearnJS', function() {
+ 
+     beforeEach(function() {
+       profile = jasmine.createSpyObj('profile', ['getEmail']);
+-      spyOn(learnjs, 'awsRefresh').and.returnValue(new $.Deferred().resolve("COGNITO_ID"));
++      var refreshPromise = new $.Deferred().resolve("COGNITO_ID").promise();
++      spyOn(learnjs, 'awsRefresh').and.returnValue(refreshPromise);
+       spyOn(AWS, 'CognitoIdentityCredentials');
+       user = jasmine.createSpyObj('user', 
+           ['getAuthResponse', 'getBasicProfile']);
+@@ -135,6 +136,30 @@ describe('LearnJS', function() {
+         done();
+       });
+     });
++
++    describe('refresh', function() {
++      beforeEach(function() {
++        AWS.config.credentials = {params: {Logins: {}}};
++        var updateSpy = jasmine.createSpyObj('userUpdate', ['getAuthResponse']);
++        updateSpy.getAuthResponse.and.returnValue({id_token: "GOOGLE_ID"});
++        var instanceSpy = jasmine.createSpyObj('instance', ['signIn']);
++        instanceSpy.signIn.and.returnValue(Promise.resolve(updateSpy));
++        var auth2Spy = jasmine.createSpyObj('auth2', ['getAuthInstance']);
++        auth2Spy.getAuthInstance.and.returnValue(instanceSpy);
++        window.gapi = { auth2: auth2Spy };
++      });
++
++      it('returns a promise when token is refreshed', function(done) {
++        learnjs.identity.done(function(identity) {  
++          identity.refresh().then(function() { 
++            expect(AWS.config.credentials.params.Logins).toEqual({
++              'accounts.google.com': "GOOGLE_ID"
++            });
++            done();
++          });
++        });
++      });
++    });
+   });
+   // END: googleSignIn
+ 
+-- 
+2.3.8 (Apple Git-58)
+

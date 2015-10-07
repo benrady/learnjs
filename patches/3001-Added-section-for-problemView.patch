@@ -1,0 +1,30 @@
+From 3e0835863ad919ad69bd956ca224b10ed4a75e54 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Fri, 4 Sep 2015 14:04:39 -0500
+Subject: [PATCH 1009/1031] Added section for problemView
+
+---
+ public/app.js | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/public/app.js b/public/app.js
+index 7cf97b3..e07bdd2 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -2,11 +2,13 @@
+ 
+ var learnjs = {};
+ 
++// START: problemView
+ learnjs.problemView = function(problemNumber) {
+   var view = $('.templates .problem-view').clone();
+   view.find('.title').text('Problem #' + problemNumber);
+   return view;
+ }
++// END: problemView
+ 
+ // START: showView
+ learnjs.showView = function(hash) {
+-- 
+2.3.8 (Apple Git-58)
+

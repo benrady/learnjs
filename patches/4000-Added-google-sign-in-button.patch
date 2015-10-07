@@ -1,0 +1,63 @@
+From bba4f9ab58cc69065e68dec75ce53cc1a5eef336 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Thu, 17 Sep 2015 15:57:39 -0500
+Subject: [PATCH 1024/1031] Added google sign-in button
+
+---
+ public/app.js     |  6 ++++++
+ public/index.html | 15 +++++++++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index a6839e7..1768a5d 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -134,3 +134,9 @@ learnjs.appOnReady = function() {
+   learnjs.showView(window.location.hash);
+ }
+ // END: appOnReady
++
++// START: googleSignIn
++function googleSignIn() {
++  console.log(arguments);
++}
++// END: googleSignIn
+diff --git a/public/index.html b/public/index.html
+index af68cd7..366cc68 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -60,6 +60,13 @@
+     </style>
+      <!-- END: inlineStyle -->
+     </style>
++    <!-- START: googleSignIn -->
++    <meta name="google-signin-client_id" 
++          content="351607165455-uesp1702cesp44vbn539m7rm6gg5ov3h.apps.googleusercontent.com">
++    <!-- END: googleSignIn -->
++    <!-- START: googleAPI -->
++    <script src="https://apis.google.com/js/platform.js" async defer></script>
++    <!-- END: googleAPI -->
+   </head>
+   <body>
+     <div class='markup'>
+@@ -70,11 +77,15 @@
+           <li><a class='text-lg' href="#">LearnJS</a></li>
+           <li><a href="#problem-1">Start</a></li>
+         </ul>
+-        <!-- END: nav-list -->
++        <div class='four columns'>
++          <span class='navbar-padding u-pull-right'>
++            <span class="g-signin2" data-onsuccess="googleSignIn"></span>
++          </span>
++        </div>
+       </div>
++      <!-- END: navbar -->
+       <div class='view-container container'>
+       </div>
+-      <!-- END: navbar -->
+       <div class='templates'>
+         <div class='landing-view'>
+         <!-- Markup Continues... -->
+-- 
+2.3.8 (Apple Git-58)
+

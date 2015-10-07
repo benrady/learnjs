@@ -1,0 +1,45 @@
+From c42cb8dcc420705d24b4299a91140befad4f9771 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Mon, 14 Sep 2015 16:48:12 -0500
+Subject: [PATCH 1022/1031] Trigger an event when removing the view
+
+---
+ public/app.js            | 3 +++
+ public/tests/app_spec.js | 6 ++++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/public/app.js b/public/app.js
+index f60f938..891ee40 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -107,7 +107,10 @@ learnjs.showView = function(hash) {
+   var hashParts = hash.split('-');
+   var viewFn = routes[hashParts[0]];
+   if (viewFn) {
++    // START: triggerRemove
++    learnjs.triggerEvent('removingView', []);
+     $('.view-container').empty().append(viewFn(hashParts[1]));
++    // END: triggerRemove
+   }
+ }
+ // END: showView
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index c6af84f..555d207 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -19,6 +19,12 @@ describe('LearnJS', function() {
+   });
+   // END: viewParameter
+ 
++  it('triggers removingView event when removing the view', function() {
++    spyOn(learnjs, 'triggerEvent');
++    learnjs.showView('#problem-1');
++    expect(learnjs.triggerEvent).toHaveBeenCalledWith('removingView', []);
++  });
++
+   // START: routerOnLoad
+   it('invokes the router when loaded', function() {
+     spyOn(learnjs, 'showView');
+-- 
+2.3.8 (Apple Git-58)
+

@@ -1,0 +1,50 @@
+From 400f73b0766c98f2c76e77edcd5baa4719bbb163 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 2 Sep 2015 22:18:13 -0500
+Subject: [PATCH 1005/1031] Added parameter to problem view
+
+---
+ public/app.js            | 7 +++++--
+ public/tests/app_spec.js | 9 +++++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index f9a5a2b..d29bfc2 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -2,9 +2,12 @@
+ 
+ var learnjs = {};
+ 
+-learnjs.problemView = function() {
+-  return $('<div class="problem-view">').text('Coming soon!');
++// START: problemView
++learnjs.problemView = function(problemNumber) {
++  var title = 'Problem #' + problemNumber + ' Coming soon!';
++  return $('<div class="problem-view">').text(title);
+ }
++// END: problemView
+ 
+ // START: showView
+ learnjs.showView = function(hash) {
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 7e09f2c..4b524b0 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -18,4 +18,13 @@ describe('LearnJS', function() {
+     expect(learnjs.problemView).toHaveBeenCalledWith('42');
+   });
+   // END: viewParameter
++
++  // START: problemView
++  describe('problem view', function() {
++    it('has a title that includes the problem number', function() {
++      var view = learnjs.problemView('1');
++      expect(view.text()).toEqual('Problem #1 Coming soon!');
++    });
++  });
++  // END: problemView
+ });
+-- 
+2.3.8 (Apple Git-58)
+

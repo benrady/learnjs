@@ -1,0 +1,91 @@
+From eb6967c8ebc89efce66f470d6017a39f1227d58a Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Mon, 14 Sep 2015 12:05:30 -0500
+Subject: [PATCH 1019/1031] Added navbar
+
+---
+ public/app.js     |  1 +
+ public/index.html | 44 ++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 43 insertions(+), 2 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index e64c607..b1ffd8d 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -94,6 +94,7 @@ learnjs.showView = function(hash) {
+   // START: routes
+   var routes = {
+     '#problem': learnjs.problemView,
++    '#': learnjs.landingView,
+     '': learnjs.landingView
+   };
+   // END: routes
+diff --git a/public/index.html b/public/index.html
+index c9a9625..db9d76e 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -13,19 +13,59 @@
+     <style type="text/css" media="all">
+       body { margin-top: 30px; }
+       .templates { display: none; }
++      /* START: no-select */
++      .no-select {
++        user-select: none;
++        -webkit-user-select: none;
++        -ms-user-select: none;
++        -moz-user-select: none;
++      }
++      /* END: no-select */
++      /* START: nav-container */
++      .nav-container { 
++        padding-left: 40px;
++        height: 25px;
++        background: #666;
++        width: 100%;
++      }
++      .nav-container a { color: white; }
++      /* END: nav-container */
++      /* START: fixed-top */
++      .fixed-top {
++        position: fixed;
++        top: 0px;
++        z-index: 1024;
++      }
++      /* END: fixed-top */
++      /* START: inline-list */
++      .inline-list li {
++        display: inline;
++        margin: 0 20px 0 0;
++      }
++      /* END: inline-list */
++      /* START: hover-links */
++      .hover-links a { text-decoration: none; }
++      .hover-links a:hover { text-decoration: underline; }
++      /* END: hover-links */
+     </style>
+      <!-- END: inlineStyle -->
+     </style>
+   </head>
+   <body>
+-    <!-- START: viewContainer -->
+     <div class='markup'>
++      <!-- START: navbar -->
++      <div class='nav-container no-select fixed-top'>
++        <ul class='inline-list hover-links'>
++          <li><a href="#">LearnJS</a></li>
++          <li><a href="#problem-1">Start</a></li>
++        </ul>
++      </div>
+       <div class='view-container container'>
+       </div>
++      <!-- END: navbar -->
+       <div class='templates'>
+         <div class='landing-view'>
+         <!-- Markup Continues... -->
+-        <!-- END: viewContainer -->
+           <div class='row'>
+             <div class='one-half column'>
+               <h3>Learn JavaScript, one puzzle at a time.</h3>
+-- 
+2.3.8 (Apple Git-58)
+

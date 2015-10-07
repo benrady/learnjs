@@ -1,0 +1,87 @@
+From e209a05ed255e9cda7aa3aee7dbe996bbed8c83e Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Mon, 14 Sep 2015 08:24:37 -0500
+Subject: [PATCH 1017/1031] Landing view route
+
+---
+ public/app.js     | 13 +++++++++++--
+ public/index.html | 12 ++++++++----
+ 2 files changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index 574e96a..9d6edec 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -83,11 +83,20 @@ learnjs.problemView = function(data) {
+ }
+ // END: problemView
+ 
++// START: landingView
++learnjs.landingView = function() {
++  return learnjs.template('landing-view');
++}
++// END: landingView
++
+ // START: showView
+-learnjs.showView = function(hash) {
++learnjs.showView = function(hash) { 
++  // START: routes
+   var routes = {
+-    '#problem': learnjs.problemView
++    "#problem": learnjs.problemView,
++    '': learnjs.landingView
+   };
++  // END: routes
+   var hashParts = hash.split('-');
+   var viewFn = routes[hashParts[0]];
+   if (viewFn) {
+diff --git a/public/index.html b/public/index.html
+index 1c45121..c9a9625 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -18,9 +18,14 @@
+     </style>
+   </head>
+   <body>
++    <!-- START: viewContainer -->
+     <div class='markup'>
+       <div class='view-container container'>
++      </div>
++      <div class='templates'>
+         <div class='landing-view'>
++        <!-- Markup Continues... -->
++        <!-- END: viewContainer -->
+           <div class='row'>
+             <div class='one-half column'>
+               <h3>Learn JavaScript, one puzzle at a time.</h3>
+@@ -33,9 +38,8 @@
+             </div>
+           </div>
+         </div>
+-      </div>
+-      <!-- START: problemView -->
+-      <div class='templates'>
++
++        <!-- START: problemView -->
+         <div class='problem-view'>
+           <h3 class='title'></h3>
+           <p data-name='description'></p>
+@@ -48,6 +52,7 @@
+             </div>
+           </form>
+         </div>
++        <!-- END: problemView -->
+ 
+         <!-- START: correctFlash -->
+         <div class='correct-flash'>
+@@ -55,7 +60,6 @@
+         </div>
+         <!-- END: correctFlash -->
+       </div>
+-      <!-- END: problemView -->
+     </div>
+     <script type='text/javascript'>
+       $(window).ready(learnjs.appOnReady);
+-- 
+2.3.8 (Apple Git-58)
+

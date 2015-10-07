@@ -1,0 +1,36 @@
+From bdd3a476ee16e7133f11ae907d8c16878b34ea33 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Fri, 4 Sep 2015 10:15:39 -0500
+Subject: [PATCH 1010/1031] Added data model
+
+---
+ public/app.js | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/public/app.js b/public/app.js
+index e07bdd2..0085b57 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -2,6 +2,19 @@
+ 
+ var learnjs = {};
+ 
++//START: dataModel
++learnjs.problems = [
++  {
++    description: "What is truth?",
++    code: "function problem() { return __; }"
++  },
++  {
++    description: "Simple Math",
++    code: "function problem() { return 42 === 6 * __; }"
++  }
++];
++// END: dataModel
++
+ // START: problemView
+ learnjs.problemView = function(problemNumber) {
+   var view = $('.templates .problem-view').clone();
+-- 
+2.3.8 (Apple Git-58)
+

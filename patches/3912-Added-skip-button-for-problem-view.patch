@@ -1,0 +1,98 @@
+From a5bf3cfd6479d338e25bf7a03f155d04d1cc8789 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 15 Sep 2015 07:45:23 -0500
+Subject: [PATCH 1023/1031] Added skip button for problem view
+
+---
+ public/app.js            | 11 +++++++++++
+ public/index.html        |  8 ++++++++
+ public/tests/app_spec.js | 21 +++++++++++++++++++++
+ 3 files changed, 40 insertions(+)
+
+diff --git a/public/app.js b/public/app.js
+index 891ee40..a6839e7 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -82,6 +82,17 @@ learnjs.problemView = function(data) {
+   }
+   // END: problemViewClickHandler
+ 
++  // START: problemViewNavbarButton
++  if (problemNumber < learnjs.problems.length) {
++    var buttonItem = learnjs.template('skip-btn');
++    buttonItem.find('a').attr('href', '#problem-' + (problemNumber + 1));
++    $('.nav-list').append(buttonItem);
++    view.bind('removingView', function() {  
++      buttonItem.remove();
++    });
++  }
++  // END: problemViewNavbarButton
++
+   view.find('.check-btn').click(checkAnswerClick); 
+   view.find('.title').text('Problem #' + problemNumber);
+   learnjs.applyObject(problemData, view);
+diff --git a/public/index.html b/public/index.html
+index 77c3ef1..af68cd7 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -65,10 +65,12 @@
+     <div class='markup'>
+       <!-- START: navbar -->
+       <div class='nav-container no-select fixed-top u-full-width'>
++        <!-- START: nav-list -->
+         <ul class='inline-list hover-links nav-list six columns'>
+           <li><a class='text-lg' href="#">LearnJS</a></li>
+           <li><a href="#problem-1">Start</a></li>
+         </ul>
++        <!-- END: nav-list -->
+       </div>
+       <div class='view-container container'>
+       </div>
+@@ -104,6 +106,12 @@
+         </div>
+         <!-- END: problemView -->
+ 
++        <!-- START: skip-btn -->
++        <li class='skip-btn'>
++          <a>Skip This Problem</a>
++        </li>
++        <!-- END: skip-btn -->
++
+         <!-- START: correctFlash -->
+         <div class='correct-flash'>
+           <span>Correct!</span> <a>Next Problem</a>
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 555d207..9ec7ca6 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -90,6 +90,27 @@ describe('LearnJS', function() {
+       expect(view.find('[data-name="code"]').text()).toEqual('function problem() { return __; }');
+     });
+ 
++    describe('skip button', function() {
++      it('is added to the navbar when the view is added', function() {
++        expect($('.nav-list .skip-btn').length).toEqual(1);
++      });
++
++      it('is removed from the navbar when the view is removed', function() {
++        view.trigger('removingView');
++        expect($('.nav-list .skip-btn').length).toEqual(0);
++      });
++
++      it('contains a link to the next problem', function() {
++        expect($('.nav-list .skip-btn a').attr('href')).toEqual('#problem-2');
++      });
++
++      it('does not added when at the last problem', function() {
++        view.trigger('removingView');
++        view = learnjs.problemView('2');
++        expect($('.nav-list .skip-btn').length).toEqual(0);
++      });
++    });
++
+     // START: problemViewAnswers
+     describe('answer section', function() {
+       var resultFlash;
+-- 
+2.3.8 (Apple Git-58)
+

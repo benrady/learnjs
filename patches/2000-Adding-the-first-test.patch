@@ -1,0 +1,51 @@
+From 082623b27b92032dee0411f8c897018028606d48 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 2 Sep 2015 22:06:02 -0500
+Subject: [PATCH 1001/1031] Adding the first test
+
+---
+ public/index.html        | 18 ++++++++++--------
+ public/tests/app_spec.js |  4 ++++
+ 2 files changed, 14 insertions(+), 8 deletions(-)
+
+diff --git a/public/index.html b/public/index.html
+index 05d422e..c23f0af 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -14,14 +14,16 @@
+     </style>
+   </head>
+   <body>
+-    <div class='container'>
+-      <div class='row'>
+-        <div class='one-half column'>
+-          <h3>Learn JavaScript, one puzzle at a time.</h3>
+-          <a href='' class='button button-primary'>Start Now!</a>
+-        </div>
+-        <div class='one-half column'>
+-          <img src='/images/HeroImage.jpg'/>
++    <div class='markup'>
++      <div class='container'>
++        <div class='row'>
++          <div class='one-half column'>
++            <h3>Learn JavaScript, one puzzle at a time.</h3>
++            <a href='' class='button button-primary'>Start Now!</a>
++          </div>
++          <div class='one-half column'>
++            <img src='/images/HeroImage.jpg'/>
++          </div>
+         </div>
+       </div>
+     </div>
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index e69de29..107b78b 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -0,0 +1,4 @@
++describe('LearnJS', function() {
++  it('can show a problem view', function() {
++  });
++});
+-- 
+2.3.8 (Apple Git-58)
+

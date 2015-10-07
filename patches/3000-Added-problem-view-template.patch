@@ -1,0 +1,74 @@
+From d3c2b0787a93f93de19b41e36f12081e2a310b5a Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Fri, 4 Sep 2015 09:51:14 -0500
+Subject: [PATCH 1008/1031] Added problem view template
+
+---
+ public/app.js            |  5 +++--
+ public/index.html        | 11 +++++++++++
+ public/tests/app_spec.js |  2 +-
+ 3 files changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index ac62301..7cf97b3 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -3,8 +3,9 @@
+ var learnjs = {};
+ 
+ learnjs.problemView = function(problemNumber) {
+-  var title = 'Problem #' + problemNumber + ' Coming soon!';
+-  return $('<div class="problem-view">').text(title);
++  var view = $('.templates .problem-view').clone();
++  view.find('.title').text('Problem #' + problemNumber);
++  return view;
+ }
+ 
+ // START: showView
+diff --git a/public/index.html b/public/index.html
+index 6c06244..356551e 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -9,8 +9,12 @@
+     <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+     <script src='/vendor.js'></script>
+     <script src='/app.js'></script>
++    <!-- START: inlineStyle -->
+     <style type="text/css" media="all">
+       body { margin-top: 30px; }
++      .templates { display: none; }
++    </style>
++     <!-- END: inlineStyle -->
+     </style>
+   </head>
+   <body>
+@@ -30,6 +34,13 @@
+           </div>
+         </div>
+       </div>
++      <!-- START_HIGHLIGHT -->
++      <div class='templates'>
++        <div class='problem-view'>
++          <h3 class='title'></h3>
++        </div>
++      </div>
++      <!-- END_HIGHLIGHT -->
+     </div>
+     <script type='text/javascript'>
+       $(window).ready(learnjs.appOnReady);
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 0d17c90..af89748 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -40,7 +40,7 @@ describe('LearnJS', function() {
+   describe('problem view', function() {
+     it('has a title that includes the problem number', function() {
+       var view = learnjs.problemView('1');
+-      expect(view.text()).toEqual('Problem #1 Coming soon!');
++      expect(view.find('.title').text()).toEqual('Problem #1');
+     });
+   });
+   // END: problemView
+-- 
+2.3.8 (Apple Git-58)
+

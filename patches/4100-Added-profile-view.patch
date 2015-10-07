@@ -1,0 +1,92 @@
+From 436bae9c50818c2fed9ab297ed5a8650df6c98a0 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Thu, 17 Sep 2015 15:59:28 -0500
+Subject: [PATCH 1025/1031] Added profile view
+
+---
+ public/app.js            | 11 +++++++++++
+ public/index.html        |  7 +++++++
+ public/tests/app_spec.js | 22 ++++++++++++++++++++++
+ 3 files changed, 40 insertions(+)
+
+diff --git a/public/app.js b/public/app.js
+index 1768a5d..3db2278 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -106,11 +106,22 @@ learnjs.landingView = function() {
+ }
+ // END: landingView
+ 
++// START: profileView
++learnjs.profileView = function() {  
++  var view = learnjs.template('profile-view');
++  learnjs.identity.done(function(identity) {  
++    view.find('.email').text(identity.email);
++  });
++  return view;
++}
++// END: profileView
++
+ // START: showView
+ learnjs.showView = function(hash) { 
+   // START: routes
+   var routes = {
+     '#problem': learnjs.problemView,
++    '#profile': learnjs.profileView,
+     '#': learnjs.landingView,
+     '': learnjs.landingView
+   };
+diff --git a/public/index.html b/public/index.html
+index 366cc68..48a3498 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -102,6 +102,13 @@
+           </div>
+         </div>
+ 
++        <!-- START: profileView -->
++        <div class='profile-view'>
++          <h3>Your Profile</h3>
++          <div class='email'></div>
++        </div>
++        <!-- END: profileView -->
++
+         <!-- START: problemView -->
+         <div class='problem-view'>
+           <h3 class='title'></h3>
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 9ec7ca6..9ecb3e6 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -70,6 +70,28 @@ describe('LearnJS', function() {
+     expect(callback).toHaveBeenCalled();
+     expect(callback.calls.argsFor(0)[1]).toEqual('bar');
+   });
++  
++  // START: profileView
++  describe('profile view', function() {
++    var view;
++    beforeEach(function() {
++      view = learnjs.profileView();
++    });
++
++    it('shows the users email address when they log in', function() {
++      learnjs.identity.resolve({
++        email: 'foo@bar.com'
++      });
++      expect(view.find('.email').text()).toEqual("foo@bar.com");
++    });
++
++    // START: notLoggedIn
++    it('shows no email when the user is not logged in yet', function() {
++      expect(view.find('.email').text()).toEqual("");
++    });
++    // END: notLoggedIn
++  });
++  // END: profileView
+ 
+   // START: problemView
+   describe('problem view', function() {
+-- 
+2.3.8 (Apple Git-58)
+

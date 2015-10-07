@@ -1,0 +1,83 @@
+From f3b9d085781ac6df571a6ce3fcf7d20ad8138264 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 2 Sep 2015 22:15:20 -0500
+Subject: [PATCH 1003/1031] Adding routes
+
+---
+ public/app.js            | 15 +++++++++++----
+ public/index.html        | 16 +++++++++-------
+ public/tests/app_spec.js |  7 +++++++
+ 3 files changed, 27 insertions(+), 11 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index ea33d5b..79e5e92 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -1,10 +1,17 @@
+-// START:namespace
+ 'use strict';
+ 
+ var learnjs = {};
+-// END:namespace
++
++learnjs.problemView = function() {
++  return $('<div class="problem-view">').text('Coming soon!');
++}
+ 
+ learnjs.showView = function(hash) {
+-  var problemView = $('<div class="problem-view">').text('Coming soon!');
+-  $('.view-container').empty().append(problemView);
++  var routes = {
++    '#problem-1': learnjs.problemView
++  };
++  var viewFn = routes[hash];
++  if (viewFn) {
++    $('.view-container').empty().append(viewFn());
++  }
+ }
+diff --git a/public/index.html b/public/index.html
+index b1abaa6..c80bdbe 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -16,13 +16,15 @@
+   <body>
+     <div class='markup'>
+       <div class='view-container container'>
+-        <div class='row'>
+-          <div class='one-half column'>
+-            <h3>Learn JavaScript, one puzzle at a time.</h3>
+-            <a href='' class='button button-primary'>Start Now!</a>
+-          </div>
+-          <div class='one-half column'>
+-            <img src='/images/HeroImage.jpg'/>
++        <div class='landing-view'>
++          <div class='row'>
++            <div class='one-half column'>
++              <h3>Learn JavaScript, one puzzle at a time.</h3>
++              <a href='' class='button button-primary'>Start Now!</a>
++            </div>
++            <div class='one-half column'>
++              <img src='/images/HeroImage.jpg'/>
++            </div>
+           </div>
+         </div>
+       </div>
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 991cb3a..8ce8c13 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -3,4 +3,11 @@ describe('LearnJS', function() {
+     learnjs.showView('#problem-1');
+     expect($('.view-container .problem-view').length).toEqual(1);
+   });
++
++  // START: nullCase
++  it('shows the landing page view when there is no hash', function() {
++    learnjs.showView('');
++    expect($('.view-container .landing-view').length).toEqual(1);
++  });
++  // END: nullCase
+ });
+-- 
+2.3.8 (Apple Git-58)
+

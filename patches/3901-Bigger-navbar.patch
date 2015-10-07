@@ -1,0 +1,74 @@
+From a27ccf7521d054840a78eeaca777eb9057717d41 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Thu, 17 Sep 2015 15:57:06 -0500
+Subject: [PATCH 1020/1031] Bigger navbar
+
+---
+ public/index.html | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/public/index.html b/public/index.html
+index db9d76e..77c3ef1 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -11,7 +11,7 @@
+     <script src='/app.js'></script>
+     <!-- START: inlineStyle -->
+     <style type="text/css" media="all">
+-      body { margin-top: 30px; }
++      body { margin-top: 60px; }
+       .templates { display: none; }
+       /* START: no-select */
+       .no-select {
+@@ -24,9 +24,7 @@
+       /* START: nav-container */
+       .nav-container { 
+         padding-left: 40px;
+-        height: 25px;
+         background: #666;
+-        width: 100%;
+       }
+       .nav-container a { color: white; }
+       /* END: nav-container */
+@@ -38,6 +36,9 @@
+       }
+       /* END: fixed-top */
+       /* START: inline-list */
++      .inline-list {
++        margin-bottom: 0px; /* Skeleton reset */
++      }
+       .inline-list li {
+         display: inline;
+         margin: 0 20px 0 0;
+@@ -47,6 +48,15 @@
+       .hover-links a { text-decoration: none; }
+       .hover-links a:hover { text-decoration: underline; }
+       /* END: hover-links */
++      /* START: navbar-padding */
++      .navbar-padding {
++        padding-top: 7px;
++        display: inline-block;
++      }
++      /* END: navbar-padding */
++      .text-lg {
++        font-size: 32px;
++      }
+     </style>
+      <!-- END: inlineStyle -->
+     </style>
+@@ -54,9 +64,9 @@
+   <body>
+     <div class='markup'>
+       <!-- START: navbar -->
+-      <div class='nav-container no-select fixed-top'>
+-        <ul class='inline-list hover-links'>
+-          <li><a href="#">LearnJS</a></li>
++      <div class='nav-container no-select fixed-top u-full-width'>
++        <ul class='inline-list hover-links nav-list six columns'>
++          <li><a class='text-lg' href="#">LearnJS</a></li>
+           <li><a href="#problem-1">Start</a></li>
+         </ul>
+       </div>
+-- 
+2.3.8 (Apple Git-58)
+

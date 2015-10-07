@@ -1,0 +1,65 @@
+From 39b6f8b3d323cb57b865d87099c3a8a4a3e8252e Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 2 Sep 2015 22:17:00 -0500
+Subject: [PATCH 1004/1031] Adding view parameters to the router
+
+---
+ public/app.js            | 17 +++++++++++++----
+ public/tests/app_spec.js |  8 ++++++++
+ 2 files changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index 79e5e92..f9a5a2b 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -1,4 +1,4 @@
+-'use strict';
++"use strict";
+ 
+ var learnjs = {};
+ 
+@@ -6,12 +6,21 @@ learnjs.problemView = function() {
+   return $('<div class="problem-view">').text('Coming soon!');
+ }
+ 
++// START: showView
+ learnjs.showView = function(hash) {
+   var routes = {
+-    '#problem-1': learnjs.problemView
++    // START_HIGHLIGHT
++    '#problem': learnjs.problemView
++    // END_HIGHLIGHT
+   };
+-  var viewFn = routes[hash];
++  // START_HIGHLIGHT
++  var hashParts = hash.split('-');
++  var viewFn = routes[hashParts[0]];
++  // END_HIGHLIGHT
+   if (viewFn) {
+-    $('.view-container').empty().append(viewFn());
++    // START_HIGHLIGHT
++    $('.view-container').empty().append(viewFn(hashParts[1]));
++    // END_HIGHLIGHT
+   }
+ }
++// END: showView
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 8ce8c13..7e09f2c 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -10,4 +10,12 @@ describe('LearnJS', function() {
+     expect($('.view-container .landing-view').length).toEqual(1);
+   });
+   // END: nullCase
++
++  // START: viewParameter
++  it('passes the hash view parameter to the view function', function() {
++    spyOn(learnjs, 'problemView');
++    learnjs.showView('#problem-42');
++    expect(learnjs.problemView).toHaveBeenCalledWith('42');
++  });
++  // END: viewParameter
+ });
+-- 
+2.3.8 (Apple Git-58)
+

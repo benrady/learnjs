@@ -1,0 +1,46 @@
+From 8ecd057ff4c7100f7691c77a8cd234c6c2131232 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 8 Sep 2015 21:01:50 -0500
+Subject: [PATCH 1015/1031] Extracting buildCorrectFlash
+
+---
+ public/app.js | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index 694311e..fb7d1ec 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -38,7 +38,14 @@ learnjs.flashElement = function(elem, content) {
+ }
+ // END: flashElement
+ 
+-// START: problemView
++// START: buildCorrectFlash
++learnjs.buildCorrectFlash = function (problemNumber) {
++  var correctFlash = learnjs.template('correct-flash');
++  correctFlash.find('a').attr('href', '#problem-' + (problemNumber + 1));
++  return correctFlash;
++}
++// END: buildCorrectFlash
++
+ learnjs.problemView = function(data) {
+   var problemNumber = parseInt(data, 10);
+   var view = learnjs.template('problem-view');
+@@ -54,9 +61,10 @@ learnjs.problemView = function(data) {
+   // START: problemViewClickHandler
+   function checkAnswerClick() {
+     if (checkAnswer()) {
+-      var correctFlash = learnjs.template('correct-flash');
+-      correctFlash.find('a').attr('href', '#problem-' + (problemNumber + 1));
+-      learnjs.flashElement(resultFlash, correctFlash);
++      // START_HIGHLIGHT
++      var flashContent = learnjs.buildCorrectFlash(problemNumber);
++      learnjs.flashElement(resultFlash, flashContent);
++      // END_HIGHLIGHT
+     } else {
+       learnjs.flashElement(resultFlash, 'Incorrect!');
+     }
+-- 
+2.3.8 (Apple Git-58)
+

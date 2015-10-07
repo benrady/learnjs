@@ -1,0 +1,146 @@
+From 265a45abaab0ed657d1220318dd05951181d75a8 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 8 Sep 2015 19:38:25 -0500
+Subject: [PATCH 1013/1031] Flashing the result element
+
+---
+ public/app.js            | 31 +++++++++++++++++++++++--------
+ public/index.html        |  2 --
+ public/tests/app_spec.js | 29 +++++++++++++++++++++++++++--
+ 3 files changed, 50 insertions(+), 12 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index adbc8d3..371cee4 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -23,29 +23,44 @@ learnjs.applyObject = function(obj, elem) {
+ };
+ // END: applyObject
+ 
++// START: flashElement
++learnjs.flashElement = function(elem, content) {
++  elem.fadeOut('fast', function() {
++    elem.html(content);
++    elem.fadeIn();
++  });
++}
++// END: flashElement
++
+ // START: problemView
+ learnjs.problemView = function(data) {
+   var problemNumber = parseInt(data, 10);
+   var view = $('.templates .problem-view').clone();
+-  var problemData = learnjs.problems[problemNumber - 1]; //<label id="code.problemData"/>
+-  var resultFlash = view.find('.result'); //<label id="code.resultFlash"/>
++  var problemData = learnjs.problems[problemNumber - 1];
++  var resultFlash = view.find('.result');
+ 
+-  function checkAnswer() { //<label id="code.checkAnswer"/>
++  function checkAnswer() {
+     var answer = view.find('.answer').val();
+     var test = problemData.code.replace('__', answer) + '; problem();'
+     return eval(test);
+   }
+ 
+-  function checkAnswerClick() { //<label id="code.checkAnswerClick"/>
++  // START: problemViewClickHandler
++  function checkAnswerClick() {
+     if (checkAnswer()) {
+-      resultFlash.text('Correct!');
++      // START_HIGHLIGHT
++      learnjs.flashElement(resultFlash, 'Correct!');
++      // END_HIGHLIGHT
+     } else {
+-      resultFlash.text('Incorrect!');
++      // START_HIGHLIGHT
++      learnjs.flashElement(resultFlash, 'Incorrect!');
++      // END_HIGHLIGHT
+     }
+-    return false; //<label id="code.returnFalse"/>
++    return false;
+   }
++  // END: problemViewClickHandler
+ 
+-  view.find('.check-btn').click(checkAnswerClick); //<label id="code.clickBind"/>
++  view.find('.check-btn').click(checkAnswerClick); 
+   view.find('.title').text('Problem #' + problemNumber);
+   learnjs.applyObject(problemData, view);
+   return view;
+diff --git a/public/index.html b/public/index.html
+index 71c4193..a8f5a22 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -40,7 +40,6 @@
+           <h3 class='title'></h3>
+           <p data-name='description'></p>
+           <pre><code data-name='code'></code></pre>
+-          <!-- START_HIGHLIGHT -->
+           <form>
+             <textarea class='u-full-width answer'></textarea>
+             <div>
+@@ -48,7 +47,6 @@
+               <p class='result'></p>
+             </div>
+           </form>
+-          <!-- END_HIGHLIGHT -->
+         </div>
+       </div>
+       <!-- END: problemView -->
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index dd22d48..f9dfc99 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -36,6 +36,18 @@ describe('LearnJS', function() {
+   });
+   // END: hashChangeEvent
+ 
++  // START: flashElement
++  it('can flash an element while setting the text', function() {
++    var elem = $('<p>');
++    spyOn(elem, 'fadeOut').and.callThrough();
++    spyOn(elem, 'fadeIn');
++    learnjs.flashElement(elem, "new text");
++    expect(elem.text()).toEqual("new text");
++    expect(elem.fadeOut).toHaveBeenCalled();
++    expect(elem.fadeIn).toHaveBeenCalled();
++  });
++  // END: flashElement
++
+   // START: problemView
+   describe('problem view', function() {
+     var view;
+@@ -57,16 +69,29 @@ describe('LearnJS', function() {
+ 
+     // START: problemViewAnswers
+     describe('answer section', function() {
++      // START_HIGHLIGHT
++      var resultFlash;
++
++      beforeEach(function() {
++        spyOn(learnjs, 'flashElement');
++        resultFlash = view.find('.result');
++      });
++      // END_HIGHLIGHT
++
+       it('can check a correct answer by hitting a button', function() {
+         view.find('.answer').val('true');
+         view.find('.check-btn').click();
+-        expect(view.find('.result').text()).toEqual('Correct!');
++        // START_HIGHLIGHT
++        expect(learnjs.flashElement).toHaveBeenCalledWith(resultFlash, 'Correct!');
++        // END_HIGHLIGHT
+       });
+ 
+       it('rejects an incorrect answer', function() {
+         view.find('.answer').val('false');
+         view.find('.check-btn').click();
+-        expect(view.find('.result').text()).toEqual('Incorrect!');
++        // START_HIGHLIGHT
++        expect(learnjs.flashElement).toHaveBeenCalledWith(resultFlash, 'Incorrect!');
++        // END_HIGHLIGHT
+       });
+     });
+     // END: problemViewAnswers
+-- 
+2.3.8 (Apple Git-58)
+
