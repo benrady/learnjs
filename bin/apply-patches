@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+rm -rf dist
+git clone . dist
+mkdir dist
+cd dist
+git am --whitespace=error ../patches/*
