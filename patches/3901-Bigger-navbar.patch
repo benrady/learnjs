@@ -22,7 +22,7 @@ index db9d76e..77c3ef1 100644
        .no-select {
 @@ -24,9 +24,7 @@
        /* START: nav-container */
-       .nav-container { 
+       .nav-container {
          padding-left: 40px;
 -        height: 25px;
          background: #666;
