@@ -12,4 +12,8 @@ It will reload automatically as you change files
 
 ## Applying patches
 
-You can apply the patches in the ./patches directory to re-create the steps in the tutorial. Use `git apply` or `git am` to apply the patches in order.
+To apply the patches in the ./patches directory run this command:
+
+```
+git am --whitespace=error patches/*
+```

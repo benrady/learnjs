@@ -1,7 +1,43 @@
 #!/usr/bin/env bash
 
-rm -rf dist
-git clone . dist
-mkdir dist
-cd dist
-git am --whitespace=error ../patches/*
+abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
+bin_dir=`dirname $abspath`
+root_dir=`dirname $bin_dir`
+
+# Quick check of patches using:
+# $ cat patches/* | git apply --check --verbose --reject --whitespace=error
+#rm -rf dist
+#git clone . dist
+#mkdir dist
+#cd dist
+# Build the ind
+
+cd $root_dir
+
+if [[ ! -e dist ]]; then
+  echo "Cannot find dist directory"
+  exit 1
+fi
+
+if ! cat patches/* | git apply --check --whitespace=error; then
+  echo "Failed"
+  exit 1
+fi
+
+echo "All patches apply successfuly"
+
+for patch in `ls patches/*.patch | sort`; do
+  number=`basename $patch | cut -f 1 -d -`
+  mkdir -p dist/$number
+  cp -r public policy bin dist/$number/
+  for patch_file in `ls patches/* | sort`; do
+    if [[ $patch_file < $patch ]]; then
+      patch -p1 -d dist/$number < $patch_file
+    fi
+  done
+  patch -p1 -d dist/$number < $patch
+  pushd dist/$number
+  svn stat | grep '?' | awk '{ print $2 }' | xargs svn add --force
+  svn stat | grep '!' | awk '{ print $2 }' | xargs svn rm
+  popd
+done
