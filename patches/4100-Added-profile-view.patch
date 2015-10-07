@@ -18,9 +18,9 @@ index 1768a5d..3db2278 100644
  // END: landingView
  
 +// START: profileView
-+learnjs.profileView = function() {  
++learnjs.profileView = function() {
 +  var view = learnjs.template('profile-view');
-+  learnjs.identity.done(function(identity) {  
++  learnjs.identity.done(function(identity) {
 +    view.find('.email').text(identity.email);
 +  });
 +  return view;
@@ -28,7 +28,7 @@ index 1768a5d..3db2278 100644
 +// END: profileView
 +
  // START: showView
- learnjs.showView = function(hash) { 
+ learnjs.showView = function(hash) {
    // START: routes
    var routes = {
      '#problem': learnjs.problemView,
@@ -62,7 +62,7 @@ index 9ec7ca6..9ecb3e6 100644
      expect(callback).toHaveBeenCalled();
      expect(callback.calls.argsFor(0)[1]).toEqual('bar');
    });
-+  
++
 +  // START: profileView
 +  describe('profile view', function() {
 +    var view;

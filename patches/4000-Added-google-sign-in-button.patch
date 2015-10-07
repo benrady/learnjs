@@ -31,7 +31,7 @@ index af68cd7..366cc68 100644
       <!-- END: inlineStyle -->
      </style>
 +    <!-- START: googleSignIn -->
-+    <meta name="google-signin-client_id" 
++    <meta name="google-signin-client_id"
 +          content="351607165455-uesp1702cesp44vbn539m7rm6gg5ov3h.apps.googleusercontent.com">
 +    <!-- END: googleSignIn -->
 +    <!-- START: googleAPI -->

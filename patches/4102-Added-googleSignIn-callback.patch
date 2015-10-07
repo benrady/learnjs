@@ -51,7 +51,7 @@ index 4149993..6e8b8da 100644
      // END: notLoggedIn
    });
    // END: profileView
-+  
++
 +  // START: googleSignIn
 +  describe('googleSignIn callback', function() {
 +    var user, fakeCreds;

@@ -22,13 +22,13 @@ index 891ee40..a6839e7 100644
 +    var buttonItem = learnjs.template('skip-btn');
 +    buttonItem.find('a').attr('href', '#problem-' + (problemNumber + 1));
 +    $('.nav-list').append(buttonItem);
-+    view.bind('removingView', function() {  
++    view.bind('removingView', function() {
 +      buttonItem.remove();
 +    });
 +  }
 +  // END: problemViewNavbarButton
 +
-   view.find('.check-btn').click(checkAnswerClick); 
+   view.find('.check-btn').click(checkAnswerClick);
    view.find('.title').text('Problem #' + problemNumber);
    learnjs.applyObject(problemData, view);
 diff --git a/public/index.html b/public/index.html

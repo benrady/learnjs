@@ -29,7 +29,7 @@ index e1338bf..4afdd58 100644
 +  // END: googleSignIn
 +  // START: gapi-refresh
 +  function refresh() {
-+    return gapi.auth2.getAuthInstance().signIn().then(function(userUpdate) {  
++    return gapi.auth2.getAuthInstance().signIn().then(function(userUpdate) {
 +      var creds = AWS.config.credentials;
 +      var newToken = userUpdate.getAuthResponse().id_token;
 +      creds.params.Logins['accounts.google.com'] = newToken;
@@ -38,8 +38,8 @@ index e1338bf..4afdd58 100644
 +  }
 +  // END: gapi-refresh
    // START: googleSignIn-getId
--  $.when(learnjs.awsRefresh()).then(function(id) {  
-+  learnjs.awsRefresh().then(function(id) {  
+-  $.when(learnjs.awsRefresh()).then(function(id) {
++  learnjs.awsRefresh().then(function(id) {
      learnjs.identity.resolve({
        id: id,
 -      email: googleUser.getBasicProfile().getEmail()
@@ -60,7 +60,7 @@ index 2672f96..840ce58 100644
 +      var refreshPromise = new $.Deferred().resolve("COGNITO_ID").promise();
 +      spyOn(learnjs, 'awsRefresh').and.returnValue(refreshPromise);
        spyOn(AWS, 'CognitoIdentityCredentials');
-       user = jasmine.createSpyObj('user', 
+       user = jasmine.createSpyObj('user',
            ['getAuthResponse', 'getBasicProfile']);
 @@ -135,6 +136,30 @@ describe('LearnJS', function() {
          done();
@@ -80,8 +80,8 @@ index 2672f96..840ce58 100644
 +      });
 +
 +      it('returns a promise when token is refreshed', function(done) {
-+        learnjs.identity.done(function(identity) {  
-+          identity.refresh().then(function() { 
++        learnjs.identity.done(function(identity) {
++          identity.refresh().then(function() {
 +            expect(AWS.config.credentials.params.Logins).toEqual({
 +              'accounts.google.com': "GOOGLE_ID"
 +            });

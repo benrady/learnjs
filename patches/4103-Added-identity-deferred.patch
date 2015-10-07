@@ -28,9 +28,9 @@ index 4bf81c2..e1338bf 100644
  // END: appOnReady
  
 +// START: awsRefresh
-+learnjs.awsRefresh = function() {  
++learnjs.awsRefresh = function() {
 +  var deferred = new $.Deferred();
-+  AWS.config.credentials.refresh(function(err) {  
++  AWS.config.credentials.refresh(function(err) {
 +    if (err) {
 +      deferred.reject(err);
 +    } else {
@@ -50,7 +50,7 @@ index 4bf81c2..e1338bf 100644
    })
 +// END: googleSignIn
 +  // START: googleSignIn-getId
-+  $.when(learnjs.awsRefresh()).then(function(id) {  
++  $.when(learnjs.awsRefresh()).then(function(id) {
 +    learnjs.identity.resolve({
 +      id: id,
 +      email: googleUser.getBasicProfile().getEmail()
@@ -65,7 +65,7 @@ index 6e8b8da..2672f96 100644
 --- a/public/tests/app_spec.js
 +++ b/public/tests/app_spec.js
 @@ -101,15 +101,14 @@ describe('LearnJS', function() {
-   
+ 
    // START: googleSignIn
    describe('googleSignIn callback', function() {
 -    var user, fakeCreds;
@@ -80,7 +80,7 @@ index 6e8b8da..2672f96 100644
 -      user = jasmine.createSpyObj('user', ['getAuthResponse', 'getBasicProfile']);
 +      spyOn(learnjs, 'awsRefresh').and.returnValue(new $.Deferred().resolve("COGNITO_ID"));
 +      spyOn(AWS, 'CognitoIdentityCredentials');
-+      user = jasmine.createSpyObj('user', 
++      user = jasmine.createSpyObj('user',
 +          ['getAuthResponse', 'getBasicProfile']);
        user.getAuthResponse.and.returnValue({id_token: 'GOOGLE_ID'});
        user.getBasicProfile.and.returnValue(profile);
@@ -91,7 +91,7 @@ index 6e8b8da..2672f96 100644
      });
 +
 +    it('fetches the AWS credentials and resolved the deferred', function(done) {
-+      learnjs.identity.done(function(identity) {  
++      learnjs.identity.done(function(identity) {
 +        expect(identity.email).toEqual('foo@bar.com');
 +        expect(identity.id).toEqual('COGNITO_ID');
 +        done();
