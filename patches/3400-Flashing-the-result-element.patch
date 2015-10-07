@@ -62,7 +62,7 @@ index adbc8d3..371cee4 100644
 +  // END: problemViewClickHandler
  
 -  view.find('.check-btn').click(checkAnswerClick); //<label id="code.clickBind"/>
-+  view.find('.check-btn').click(checkAnswerClick); 
++  view.find('.check-btn').click(checkAnswerClick);
    view.find('.title').text('Problem #' + problemNumber);
    learnjs.applyObject(problemData, view);
    return view;
