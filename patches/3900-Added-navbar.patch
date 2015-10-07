@@ -37,7 +37,7 @@ index c9a9625..db9d76e 100644
 +      }
 +      /* END: no-select */
 +      /* START: nav-container */
-+      .nav-container { 
++      .nav-container {
 +        padding-left: 40px;
 +        height: 25px;
 +        background: #666;
