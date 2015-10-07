@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
+bin_dir=`dirname $abspath`
+root_dir=`dirname $bin_dir`
+
+cd $root_dir
+
+if ! cat patches/* | git apply --check --whitespace=error; then
+  exit 1
+fi
+
+echo "All patches apply successfuly"
+
+patch=$1
+
+if [[ ! -e $patch ]]; then
+  echo "$patch does not exist"
+  exit 1
+fi
+
+for patch_file in `ls patches/* | sort`; do
+  if [[ $patch_file < $patch ]]; then
+    git am $patch_file
+  fi
+done
+git am $patch
