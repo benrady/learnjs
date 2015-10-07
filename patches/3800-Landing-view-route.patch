@@ -28,7 +28,7 @@ index 574e96a..9d6edec 100644
 +  // START: routes
    var routes = {
 -    '#problem': learnjs.problemView
-+    "#problem": learnjs.problemView,
++    '#problem': learnjs.problemView,
 +    '': learnjs.landingView
    };
 +  // END: routes
