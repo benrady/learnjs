@@ -1,0 +1,108 @@
+From 9a726898716ab1c53f82c9b6b638f464b22ac810 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 23 Sep 2015 13:21:20 -0500
+Subject: [PATCH 1/8] Added profile link
+
+---
+ public/app.js            |  9 +++++++++
+ public/index.html        | 12 ++++++++++--
+ public/tests/app_spec.js | 13 +++++++++++++
+ 3 files changed, 32 insertions(+), 2 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index ae872c5..ef1ba76 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -43,6 +43,14 @@ learnjs.applyObject = function(obj, elem) {
+ };
+ // END: applyObject
+ 
++// START: addProfileLink
++learnjs.addProfileLink = function(profile) {
++  var link = learnjs.template('profile-link');
++  link.find('a').text(profile.email);
++  $('.signin-bar').prepend(link);
++}
++// END: addProfileLink
++
+ // START: flashElement
+ learnjs.flashElement = function(elem, content) {
+   elem.fadeOut('fast', function() {
+@@ -151,6 +159,7 @@ learnjs.appOnReady = function() {
+     learnjs.showView(window.location.hash);
+   };
+   learnjs.showView(window.location.hash);
++  learnjs.identity.done(learnjs.addProfileLink);
+ }
+ // END: appOnReady
+ 
+diff --git a/public/index.html b/public/index.html
+index 48a3498..9662b61 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -53,6 +53,10 @@
+         padding-top: 7px;
+         display: inline-block;
+       }
++      .navbar-padding-lg {
++        padding-top: 12px;
++        display: inline-block;
++      }
+       /* END: navbar-padding */
+       .text-lg {
+         font-size: 32px;
+@@ -72,21 +76,25 @@
+     <div class='markup'>
+       <!-- START: navbar -->
+       <div class='nav-container no-select fixed-top u-full-width'>
+-        <!-- START: nav-list -->
+         <ul class='inline-list hover-links nav-list six columns'>
+           <li><a class='text-lg' href="#">LearnJS</a></li>
+           <li><a href="#problem-1">Start</a></li>
+         </ul>
+-        <div class='four columns'>
++        <!-- START: nav-right -->
++        <div class='four columns signin-bar'>
+           <span class='navbar-padding u-pull-right'>
+             <span class="g-signin2" data-onsuccess="googleSignIn"></span>
+           </span>
+         </div>
++        <!-- END: nav-right -->
+       </div>
+       <!-- END: navbar -->
+       <div class='view-container container'>
+       </div>
+       <div class='templates'>
++        <div class='profile-link navbar-padding-lg'>
++          <a href="#profile"></a>
++        </div>
+         <div class='landing-view'>
+         <!-- Markup Continues... -->
+           <div class='row'>
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index cb1479c..bde5b53 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -77,6 +77,19 @@ describe('LearnJS', function() {
+     expect(callback.calls.argsFor(0)[1]).toEqual('bar');
+   });
+ 
++  it('adds the profile link when the user logs in', function() {
++    var profile = {email: 'foo@bar.com'};
++    spyOn(learnjs, 'addProfileLink');
++    learnjs.appOnReady();
++    learnjs.identity.resolve(profile);
++    expect(learnjs.addProfileLink).toHaveBeenCalledWith(profile);
++  });
++
++  it('can append a profile view link to navbar', function() {
++    learnjs.addProfileLink({email: 'foo@bar.com'});
++    expect($('.signin-bar a').attr('href')).toEqual('#profile');
++  });
++
+   // START: profileView
+   describe('profile view', function() {
+     var view;
+-- 
+2.3.8 (Apple Git-58)
+

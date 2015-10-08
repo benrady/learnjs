@@ -10,25 +10,31 @@ $bin_dir/check_patches || exit 1
 
 patch=$1
 
-if [[ ! -d working ]]; then
-  mkdir working
-  pushd working
-  git init
-  git pull .. master
-  popd
-else
-  pushd working
-  git reset --hard master
-fi
-
 if [[ ! -e $patch ]]; then
   echo "$patch does not exist"
   exit 1
 fi
 
+if [[ ! -d working ]]; then
+  mkdir working
+  pushd working
+  git init
+  git pull .. master
+  git rev-parse HEAD > .git/.baseline
+  popd
+else
+  pushd working
+  git reset --hard `cat .git/.baseline`
+  popd
+fi
+
+cd working || exit 1
+
 for patch_file in `ls $root_dir/patches/* | sort`; do
-  if [[ $patch_file < $patch ]]; then
-    git am $patch_file
+  if [[ `basename $patch_file` < `basename $patch` ]]; then
+    git am $patch_file || exit 1
   fi
 done
-git am $patch
+git am $root_dir/patches/`basename $patch`
+
+echo "Patches applied successfully"
