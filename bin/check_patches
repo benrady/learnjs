@@ -10,5 +10,5 @@ if ! cat patches/* | git apply --check --verbose --whitespace=error; then
   exit 1
 fi
 
-echo "All patches apply successfuly"
+echo "All patches can be applied successfuly"
 

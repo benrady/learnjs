@@ -1,0 +1,39 @@
+From e22a1bd45be4c378f426d5aa9b0a8402cc36b283 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Fri, 21 Aug 2015 13:23:11 -0500
+Subject: [PATCH 3/8] Added table policy
+
+---
+ public/table_policy.json | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+ create mode 100644 public/table_policy.json
+
+diff --git a/public/table_policy.json b/public/table_policy.json
+new file mode 100644
+index 0000000..01f9361
+--- /dev/null
++++ b/public/table_policy.json
+@@ -0,0 +1,20 @@
++{
++  "Version": "2012-10-17",
++  "Statement": [{
++      "Effect": "Allow",
++      "Action": [
++        "dynamodb:BatchGetItem",
++        "dynamodb:BatchWriteItem",
++        "dynamodb:DeleteItem",
++        "dynamodb:GetItem",
++        "dynamodb:PutItem",
++        "dynamodb:Query",
++        "dynamodb:UpdateItem"
++      ],
++      "Resource": ["arn:aws:dynamodb:us-east-1:730171000947:table/learnjs"],
++      "Condition": {
++        "ForAllValues:StringEquals": {
++          "dynamodb:LeadingKeys": ["${cognito-identity.amazonaws.com:sub}"]}
++    }
++  }]
++}
+-- 
+2.3.8 (Apple Git-58)
+

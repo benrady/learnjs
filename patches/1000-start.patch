@@ -1,0 +1,25 @@
+From 3667669b98f626e6c90808d5ff26f1a43efbf30b Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 7 Oct 2015 20:35:28 -0500
+Subject: [PATCH] Starting banner
+
+---
+ public/index.html | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/public/index.html b/public/index.html
+index 036a914..262ea3f 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -18,7 +18,7 @@
+       <h1>It works!</h1>
+       <div>
+         <span>You're ready to start!</span>
+-        <span>Skeleton 2, jQuery 2, and AWS Libraries are included.</span>
++        <span>Skeleton 2, jQuery 2, and AWS libraries are included.</span>
+       </div>
+     </div>
+   </body>
+-- 
+2.3.8 (Apple Git-58)
+

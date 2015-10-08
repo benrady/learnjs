@@ -1,6 +1,17 @@
+From 3315504cc62195039af079a2c7cefa20cb5d25c4 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 7 Oct 2015 20:40:55 -0500
+Subject: [PATCH] Added format spec
+
+---
+ public/tests/format_spec.js | 49 +++++++++++++++++++++++++++++++++++++++++++++
+ public/tests/index.html     |  1 +
+ 2 files changed, 50 insertions(+)
+ create mode 100644 public/tests/format_spec.js
+
 diff --git a/public/tests/format_spec.js b/public/tests/format_spec.js
 new file mode 100644
-index 0000000..84d93bb
+index 0000000..67c21a0
 --- /dev/null
 +++ b/public/tests/format_spec.js
 @@ -0,0 +1,49 @@
@@ -65,3 +76,6 @@ index 70885e1..2830f8f 100755
  </head>
  
  <body>
+-- 
+2.3.8 (Apple Git-58)
+

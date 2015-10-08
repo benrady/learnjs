@@ -1,0 +1,80 @@
+From 7f930d335ca8232aff9bf3b476582fa439af47f9 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Fri, 21 Aug 2015 11:02:28 -0500
+Subject: [PATCH 2/8] saving a correct answer
+
+---
+ public/app.js            | 10 ++++++++--
+ public/tests/app_spec.js |  8 +++++++-
+ 2 files changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index ef1ba76..21c7437 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -29,6 +29,11 @@ learnjs.triggerEvent = function(name, args) {
+ }
+ //END: triggerEvent
+ 
++// START: saveAnswer
++learnjs.saveAnswer = function() {
++};
++// END: saveAnswer
++
+ //START: template
+ learnjs.template = function(name) {
+   return $('.templates .' + name).clone();
+@@ -79,10 +84,10 @@ learnjs.problemView = function(data) {
+   var view = learnjs.template('problem-view');
+   var problemData = learnjs.problems[problemNumber - 1];
+   var resultFlash = view.find('.result');
++  var answer = view.find('.answer');
+ 
+   function checkAnswer() {
+-    var answer = view.find('.answer').val();
+-    var test = problemData.code.replace('__', answer) + '; problem();'
++    var test = problemData.code.replace('__', answer.val()) + '; problem();'
+     return eval(test);
+   }
+ 
+@@ -91,6 +96,7 @@ learnjs.problemView = function(data) {
+     if (checkAnswer()) {
+       var flashContent = learnjs.buildCorrectFlash(problemNumber);
+       learnjs.flashElement(resultFlash, flashContent);
++      learnjs.saveAnswer(problemNumber, answer.val());
+     } else {
+       learnjs.flashElement(resultFlash, 'Incorrect!');
+     }
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index bde5b53..a53f7da 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -251,10 +251,17 @@ describe('LearnJS', function() {
+       // START: answerIsCorrect
+       describe('when the answer is correct', function() {
+         beforeEach(function() {
++          spyOn(learnjs, 'saveAnswer');
+           view.find('.answer').val('true');
+           view.find('.check-btn').click();
+         });
+ 
++        it('saves the result', function() {
++          expect(learnjs.saveAnswer).toHaveBeenCalledWith(1, "true");
++        });
++        // ...older tests follow
++        // END: answerIsCorrect
++
+         it('flashes the result', function() {
+           var flashArgs = learnjs.flashElement.calls.argsFor(0);
+           expect(flashArgs[0]).toEqual(resultFlash);
+@@ -267,7 +274,6 @@ describe('LearnJS', function() {
+           expect(link.attr('href')).toEqual('#problem-2');
+         });
+       });
+-      // END: answerIsCorrect
+ 
+       it('rejects an incorrect answer', function() {
+         view.find('.answer').val('false');
+-- 
+2.3.8 (Apple Git-58)
+
