@@ -6,8 +6,6 @@ root_dir=`dirname $bin_dir`
 
 cd $root_dir
 
-$bin_dir/check_patches || exit 1
-
 patch=$1
 
 if [[ ! -e $patch ]]; then

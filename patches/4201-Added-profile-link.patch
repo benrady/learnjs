@@ -100,9 +100,9 @@ index cb1479c..bde5b53 100644
 +    expect($('.signin-bar a').attr('href')).toEqual('#profile');
 +  });
 +
-   // START: profileView
-   describe('profile view', function() {
-     var view;
+   describe('awsRefresh', function() {
+     var callbackArg, fakeCreds;
+
 -- 
 2.3.8 (Apple Git-58)
 

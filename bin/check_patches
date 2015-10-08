@@ -6,7 +6,7 @@ root_dir=`dirname $bin_dir`
 
 cd $root_dir
 
-if ! cat patches/* | git apply --check --verbose --whitespace=error; then
+if ! cat $(ls patches/* | sort) | git apply --check --verbose --whitespace=error; then
   exit 1
 fi
 

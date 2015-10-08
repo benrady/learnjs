@@ -1,15 +1,15 @@
-From 0f64ec3b531dd4948c9027850dd6a4afd56f842a Mon Sep 17 00:00:00 2001
+From 571c0d686bcc7cbfb0d77afcffa309229c1ed045 Mon Sep 17 00:00:00 2001
 From: Ben Rady <benrady@gmail.com>
 Date: Thu, 20 Aug 2015 21:48:07 -0500
-Subject: [PATCH 1028/1031] Added identity deferred
+Subject: [PATCH] Added identity deferred
 
 ---
  public/app.js            | 28 ++++++++++++++++++++++++++++
- public/tests/app_spec.js | 19 +++++++++++++------
- 2 files changed, 41 insertions(+), 6 deletions(-)
+ public/tests/app_spec.js | 44 ++++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 66 insertions(+), 6 deletions(-)
 
 diff --git a/public/app.js b/public/app.js
-index 4bf81c2..e1338bf 100644
+index ff49215..eba60b0 100644
 --- a/public/app.js
 +++ b/public/app.js
 @@ -6,6 +6,10 @@ var learnjs = {
@@ -61,10 +61,42 @@ index 4bf81c2..e1338bf 100644
  }
  // END: googleSignIn
 diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
-index 6e8b8da..2672f96 100644
+index 579bd36..8469d6c 100644
 --- a/public/tests/app_spec.js
 +++ b/public/tests/app_spec.js
-@@ -101,15 +101,14 @@ describe('LearnJS', function() {
+@@ -77,6 +77,31 @@ describe('LearnJS', function() {
+     expect(callback.calls.argsFor(0)[1]).toEqual('bar');
+   });
+
++  describe('awsRefresh', function() {
++    var callbackArg, fakeCreds;
++
++    beforeEach(function() {
++      fakeCreds = jasmine.createSpyObj('creds', ['refresh']);
++      fakeCreds.identityId = 'COGNITO_ID';
++      AWS.config.credentials = fakeCreds;
++      fakeCreds.refresh.and.callFake(function(cb) { cb(callbackArg); });
++    });
++
++    it('returns a promise that resolves on success', function(done) {
++      learnjs.awsRefresh().then(function(id) {
++        expect(fakeCreds.identityId).toEqual('COGNITO_ID');
++      }).then(done, fail);
++    });
++
++    it('rejects the promise on a failure', function(done) {
++      callbackArg = 'error';
++      learnjs.awsRefresh().fail(function(err) {
++        expect(err).toEqual("error");
++        done();
++      });
++    });
++  });
++
+   // START: profileView
+   describe('profile view', function() {
+     var view;
+@@ -101,15 +126,14 @@ describe('LearnJS', function() {
  
    // START: googleSignIn
    describe('googleSignIn callback', function() {
@@ -85,7 +117,7 @@ index 6e8b8da..2672f96 100644
        user.getAuthResponse.and.returnValue({id_token: 'GOOGLE_ID'});
        user.getBasicProfile.and.returnValue(profile);
        profile.getEmail.and.returnValue('foo@bar.com');
-@@ -128,6 +127,14 @@ describe('LearnJS', function() {
+@@ -128,6 +152,14 @@ describe('LearnJS', function() {
          }
        });
      });
