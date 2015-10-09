@@ -29,7 +29,7 @@ index eba60b0..613fb5a 100644
 +  // END: googleSignIn
 +  // START: gapi-refresh
 +  function refresh() {
-+    return gapi.auth2.getAuthInstance().signIn({prompt: 'none'}).then(function(userUpdate) {
++    return gapi.auth2.getAuthInstance().signIn({prompt: 'login'}).then(function(userUpdate) {
 +      var creds = AWS.config.credentials;
 +      var newToken = userUpdate.getAuthResponse().id_token;
 +      creds.params.Logins['accounts.google.com'] = newToken;
@@ -91,10 +91,10 @@ index 8469d6c..affb750 100644
 +        });
 +      });
 +
-+      it('does not re-prompt for login when refreshing the token in', function(done) {
++      it('does not re-prompt for consent when refreshing the token in', function(done) {
 +        learnjs.identity.done(function(identity) {
 +          identity.refresh().then(function() {
-+            expect(instanceSpy.signIn).toHaveBeenCalledWith({prompt: 'none'});
++            expect(instanceSpy.signIn).toHaveBeenCalledWith({prompt: 'login'});
 +            done();
 +          });
 +        });
