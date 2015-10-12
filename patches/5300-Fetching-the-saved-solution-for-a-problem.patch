@@ -1,0 +1,121 @@
+From f67fd84ce557678acc3d8743b382f4554395aaef Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Mon, 12 Oct 2015 07:36:33 -0500
+Subject: [PATCH] Fetching the saved solution for a problem
+
+---
+ public/app.js            | 13 +++++++++++++
+ public/tests/app_spec.js | 47 +++++++++++++++++++++++++++++++++++++----------
+ 2 files changed, 50 insertions(+), 10 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index c483354..b391c04 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -53,6 +53,11 @@ learnjs.sendDbRequest = function(req, retry) {
+ }
+ // END: sendDbRequest
+ 
++// START: fetchAnswer
++learnjs.fetchAnswer = function(problemId) {
++};
++// END: fetchAnswer
++
+ // START: saveAnswer
+ learnjs.saveAnswer = function(problemId, answer) {
+   return learnjs.identity.then(function(identity) {
+@@ -153,6 +158,14 @@ learnjs.problemView = function(data) {
+   }
+   // END: problemViewNavbarButton
+ 
++  // START: problemViewFetchAnswer
++  learnjs.fetchAnswer(problemNumber).then(function(item) {
++    if (item) {
++      answer.val(item.answer);
++    }
++  });
++  // END: problemViewFetchAnswer
++
+   view.find('.check-btn').click(checkAnswerClick);
+   view.find('.title').text('Problem #' + problemNumber);
+   learnjs.applyObject(problemData, view);
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 5a303cf..db93903 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -4,10 +4,23 @@ describe('LearnJS', function() {
+     learnjs.identity = new $.Deferred();
+   });
+   //END: beforeLearnJs
++
++  describe('changing views', function() {
++    beforeEach(function() {
++      fetchAnswerDef = new $.Deferred();
++      spyOn(learnjs, 'fetchAnswer').and.returnValue(fetchAnswerDef);
++    });
++
++    it('can show a problem view', function() {
++      learnjs.showView('#problem-1');
++      expect($('.view-container .problem-view').length).toEqual(1);
++    });
+ 
+-  it('can show a problem view', function() {
+-    learnjs.showView('#problem-1');
+-    expect($('.view-container .problem-view').length).toEqual(1);
++    it('triggers removingView event when removing the view', function() {
++      spyOn(learnjs, 'triggerEvent');
++      learnjs.showView('#problem-1');
++      expect(learnjs.triggerEvent).toHaveBeenCalledWith('removingView', []);
++    });
+   });
+ 
+   // START: nullCase
+@@ -25,12 +38,6 @@ describe('LearnJS', function() {
+   });
+   // END: viewParameter
+ 
+-  it('triggers removingView event when removing the view', function() {
+-    spyOn(learnjs, 'triggerEvent');
+-    learnjs.showView('#problem-1');
+-    expect(learnjs.triggerEvent).toHaveBeenCalledWith('removingView', []);
+-  });
+-
+   // START: routerOnLoad
+   it('invokes the router when loaded', function() {
+     spyOn(learnjs, 'showView');
+@@ -279,11 +286,31 @@ describe('LearnJS', function() {
+ 
+   // START: problemView
+   describe('problem view', function() {
+-    var view;
++    var view, fetchAnswerDef;
+     beforeEach(function() {
++      fetchAnswerDef = new $.Deferred();
++      spyOn(learnjs, 'fetchAnswer').and.returnValue(fetchAnswerDef);
+       view = learnjs.problemView('1');
+     });
+ 
++    it('loads the previous answer, if there is one', function(done) {
++      fetchAnswerDef.resolve({answer: 'true'}).then(function() {
++        expect(view.find('.answer').val()).toEqual('true');
++        done();
++      });
++    });
++
++    it('keeps the answer blank until the promise is resolved', function() {
++      expect(view.find('.answer').val()).toEqual('');
++    });
++
++    it('does nothing if the question has not been answered yet', function(done) {
++      fetchAnswerDef.resolve().then(function() {
++        expect(view.find('.answer').val()).toEqual('');
++        done();
++      });
++    });
++
+     it('has a title that includes the problem number', function() {
+       expect(view.find('.title').text()).toEqual('Problem #1');
+     });
+-- 
+2.3.8 (Apple Git-58)
+
