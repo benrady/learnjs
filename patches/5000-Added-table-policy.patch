@@ -4,15 +4,15 @@ Date: Fri, 21 Aug 2015 13:23:11 -0500
 Subject: [PATCH 3/8] Added table policy
 
 ---
- public/table_policy.json | 20 ++++++++++++++++++++
+ policy/table_policy.json | 20 ++++++++++++++++++++
  1 file changed, 20 insertions(+)
- create mode 100644 public/table_policy.json
+ create mode 100644 policy/table_policy.json
 
-diff --git a/public/table_policy.json b/public/table_policy.json
+diff --git a/policy/table_policy.json b/policy/table_policy.json
 new file mode 100644
 index 0000000..01f9361
 --- /dev/null
-+++ b/public/table_policy.json
++++ b/policy/table_policy.json
 @@ -0,0 +1,20 @@
 +{
 +  "Version": "2012-10-17",
