@@ -21,7 +21,7 @@ index eba60b0..613fb5a 100644
  }
  // END: awsRefresh
  
-@@ -180,12 +180,23 @@ function googleSignIn(googleUser) {
+@@ -180,12 +180,25 @@ function googleSignIn(googleUser) {
        }
      })
    })
@@ -29,7 +29,9 @@ index eba60b0..613fb5a 100644
 +  // END: googleSignIn
 +  // START: gapi-refresh
 +  function refresh() {
-+    return gapi.auth2.getAuthInstance().signIn({prompt: 'login'}).then(function(userUpdate) {
++    return gapi.auth2.getAuthInstance().signIn({
++        prompt: 'login'
++      }).then(function(userUpdate) {
 +      var creds = AWS.config.credentials;
 +      var newToken = userUpdate.getAuthResponse().id_token;
 +      creds.params.Logins['accounts.google.com'] = newToken;
