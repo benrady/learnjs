@@ -1,0 +1,110 @@
+From bf7fb173b49e815b2ec73e34226d524fff1bd6eb Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Fri, 30 Oct 2015 11:43:39 -0500
+Subject: [PATCH] Added table policy condition example and countAnswers
+
+---
+ policy/table_policy_condition.json | 13 +++++++++++++
+ public/app.js                      | 17 +++++++++++++++++
+ public/tests/app_spec.js           | 31 ++++++++++++++++++++++++++++++-
+ 3 files changed, 60 insertions(+), 1 deletion(-)
+ create mode 100644 policy/table_policy_condition.json
+
+diff --git a/policy/table_policy_condition.json b/policy/table_policy_condition.json
+new file mode 100644
+index 0000000..70240da
+--- /dev/null
++++ b/policy/table_policy_condition.json
+@@ -0,0 +1,13 @@
++{
++  "Version": "2012-10-17",
++  "Statement": [{
++      "Effect": "Allow",
++      "Action": ["dynamodb:Scan"],
++      "Resource": ["arn:aws:dynamodb:us-east-1:730171000947:table/learnjs"],
++      "Condition": {
++        "ForAllValues:StringEquals": {
++          "dynamodb:Select": ["COUNT"]
++        }
++      }
++  }]
++}
+diff --git a/public/app.js b/public/app.js
+index 897de95..2436505 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -71,6 +71,23 @@ learnjs.fetchAnswer = function(problemId) {
+ };
+ // END: fetchAnswer
+ 
++// START: countAnswers
++learnjs.countAnswers = function(problemId) {
++  return learnjs.identity.then(function(identity) {
++    var db = new AWS.DynamoDB.DocumentClient();
++    var params = {
++      TableName: 'learnjs',
++      Select: 'COUNT',
++      FilterExpression: 'problemId = :problemId',
++      ExpressionAttributeValues: {':problemId': problemId}
++    };
++    return learnjs.sendDbRequest(db.scan(params), function() {
++      return learnjs.countAnswers(problemId);
++    })
++  });
++}
++// END: countAnswers
++
+ // START: saveAnswer
+ learnjs.saveAnswer = function(problemId, answer) {
+   return learnjs.identity.then(function(identity) {
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 1af741d..976a9ab 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -100,13 +100,42 @@ describe('LearnJS', function() {
+   describe('with DynamoDB', function() {
+     var dbspy, req, identityObj;
+     beforeEach(function() {
+-      dbspy = jasmine.createSpyObj('db', ['get', 'put']);
++      dbspy = jasmine.createSpyObj('db', ['get', 'put', 'scan']);
+       spyOn(AWS.DynamoDB,'DocumentClient').and.returnValue(dbspy);
+       spyOn(learnjs, 'sendDbRequest');
+       identityObj = {id: 'COGNITO_ID'};
+       learnjs.identity.resolve(identityObj);
+     });
+ 
++    describe('countAnswers', function() {
++      beforeEach(function() {
++        dbspy.scan.and.returnValue('request');
++      });
++
++      it('reads the item from the database', function(done) {
++        learnjs.sendDbRequest.and.returnValue(new $.Deferred().resolve('item'));
++        learnjs.countAnswers(1).then(function(item) {
++          expect(item).toEqual('item');
++          expect(learnjs.sendDbRequest).toHaveBeenCalledWith('request', jasmine.any(Function));
++          expect(dbspy.scan).toHaveBeenCalledWith({
++            TableName: 'learnjs',
++            Select: 'COUNT',
++            FilterExpression: 'problemId = :problemId',
++            ExpressionAttributeValues: {':problemId': 1}
++          });
++          done();
++        });
++      });
++
++      it('resubmits the request on retry', function() {
++        learnjs.countAnswers(1);
++        spyOn(learnjs, 'countAnswers').and.returnValue('promise');
++        expect(learnjs.sendDbRequest.calls.first().args[1]()).toEqual('promise');
++        expect(learnjs.countAnswers).toHaveBeenCalledWith(1);
++      });
++    });
++
++
+     describe('fetchAnswer', function() {
+       beforeEach(function() {
+         dbspy.get.and.returnValue('request');
+-- 
+2.4.9 (Apple Git-60)
+

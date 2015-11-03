@@ -1,15 +1,15 @@
-From e8fad7229ab6303ea022ae4232c1e52ed2ee9f49 Mon Sep 17 00:00:00 2001
+From b2d3a0cc339d479f1a145fb968e68c31ddec052d Mon Sep 17 00:00:00 2001
 From: Ben Rady <benrady@gmail.com>
 Date: Fri, 9 Oct 2015 15:53:49 -0500
 Subject: [PATCH] Implementation for saveAnswer
 
 ---
- public/app.js            | 40 ++++++++++++++++++++++++++++-
- public/tests/app_spec.js | 66 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 105 insertions(+), 1 deletion(-)
+ public/app.js            | 40 +++++++++++++++++++++++++++-
+ public/tests/app_spec.js | 69 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 108 insertions(+), 1 deletion(-)
 
 diff --git a/public/app.js b/public/app.js
-index b23d97d..6ff7b86 100644
+index e2b0b2e..62577fc 100644
 --- a/public/app.js
 +++ b/public/app.js
 @@ -29,8 +29,46 @@ learnjs.triggerEvent = function(name, args) {
@@ -33,7 +33,7 @@ index b23d97d..6ff7b86 100644
 +    }
 +  });
 +  req.on('success', function(resp) {
-+    promise.resolve(resp);
++    promise.resolve(resp.data);
 +  });
 +  req.send();
 +  return promise;
@@ -61,10 +61,10 @@ index b23d97d..6ff7b86 100644
  // END: saveAnswer
  
 diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
-index 6b95a24..4bd89b3 100644
+index 6b95a24..a110fd2 100644
 --- a/public/tests/app_spec.js
 +++ b/public/tests/app_spec.js
-@@ -90,6 +90,72 @@ describe('LearnJS', function() {
+@@ -90,6 +90,75 @@ describe('LearnJS', function() {
      expect($('.signin-bar a').attr('href')).toEqual('#profile');
    });
  
@@ -113,9 +113,12 @@ index 6b95a24..4bd89b3 100644
 +    });
 +
 +    it('resolves the returned promise on success', function(done) {
-+      requestHandlers.success();
++      requestHandlers.success({data: 'data'});
 +      expect(request.send).toHaveBeenCalled();
-+      promise.then(done, fail);
++      promise.then(function(data) {
++        expect(data).toEqual('data');
++        done();
++      }, fail);
 +    });
 +
 +    it('rejects the returned promise on error', function(done) {
