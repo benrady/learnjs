@@ -20,20 +20,20 @@ index e2b0b2e..62577fc 100644
 +learnjs.sendDbRequest = function(req, retry) {
 +  var promise = new $.Deferred();
 +  req.on('error', function(error) {
-+    if (error.code === "CredentialsError") {
++    if (error.code === "CredentialsError") { //<label id="code.sendDbRequest.error"/>
 +      learnjs.identity.then(function(identity) {
 +        return identity.refresh().then(function() {
-+          return retry();
++          return retry(); //<label id="code.sendDbRequest.retry"/>
 +        }, function() {
 +          promise.reject(resp);
 +        });
 +      });
 +    } else {
-+      promise.reject(error);
++      promise.reject(error); //<label id="code.sendDbRequest.reject"/>
 +    }
 +  });
 +  req.on('success', function(resp) {
-+    promise.resolve(resp.data);
++    promise.resolve(resp.data); //<label id="code.sendDbRequest.success"/>
 +  });
 +  req.send();
 +  return promise;
