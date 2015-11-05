@@ -24,10 +24,11 @@ diff --git a/public/index.html b/public/index.html
 index c9a9625..db9d76e 100644
 --- a/public/index.html
 +++ b/public/index.html
-@@ -13,19 +13,59 @@
+@@ -13,20 +13,60 @@
      <style type="text/css" media="all">
        body { margin-top: 30px; }
        .templates { display: none; }
+       .fixed-width-text { font-family: "Consolas","Courier New",monospace }
 +      /* START: no-select */
 +      .no-select {
 +        user-select: none;

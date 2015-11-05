@@ -1,16 +1,16 @@
-From 265a45abaab0ed657d1220318dd05951181d75a8 Mon Sep 17 00:00:00 2001
+From 83e4c15dc2f0fd6ab06a748a40d2d4e8fe98339f Mon Sep 17 00:00:00 2001
 From: Ben Rady <benrady@gmail.com>
 Date: Tue, 8 Sep 2015 19:38:25 -0500
-Subject: [PATCH 1013/1031] Flashing the result element
+Subject: [PATCH] Flashing the result element
 
 ---
  public/app.js            | 31 +++++++++++++++++++++++--------
- public/index.html        |  2 --
+ public/index.html        |  5 ++---
  public/tests/app_spec.js | 29 +++++++++++++++++++++++++++--
- 3 files changed, 50 insertions(+), 12 deletions(-)
+ 3 files changed, 52 insertions(+), 13 deletions(-)
 
 diff --git a/public/app.js b/public/app.js
-index adbc8d3..371cee4 100644
+index adbc8d3..61a32ad 100644
 --- a/public/app.js
 +++ b/public/app.js
 @@ -23,29 +23,44 @@ learnjs.applyObject = function(obj, elem) {
@@ -67,18 +67,27 @@ index adbc8d3..371cee4 100644
    learnjs.applyObject(problemData, view);
    return view;
 diff --git a/public/index.html b/public/index.html
-index 71c4193..a8f5a22 100644
+index 71c4193..d104605 100644
 --- a/public/index.html
 +++ b/public/index.html
-@@ -40,7 +40,6 @@
+@@ -13,6 +13,7 @@
+     <style type="text/css" media="all">
+       body { margin-top: 30px; }
+       .templates { display: none; }
++      .fixed-width-text { font-family: "Consolas","Courier New",monospace }
+     </style>
+      <!-- END: inlineStyle -->
+     </style>
+@@ -40,15 +41,13 @@
            <h3 class='title'></h3>
            <p data-name='description'></p>
            <pre><code data-name='code'></code></pre>
 -          <!-- START_HIGHLIGHT -->
            <form>
-             <textarea class='u-full-width answer'></textarea>
+-            <textarea class='u-full-width answer'></textarea>
++            <textarea class='u-full-width answer fixed-width-text'></textarea>
              <div>
-@@ -48,7 +47,6 @@
+               <button class='button-primary check-btn'>Check Answer</button>
                <p class='result'></p>
              </div>
            </form>
@@ -142,5 +151,5 @@ index dd22d48..f9dfc99 100644
      });
      // END: problemViewAnswers
 -- 
-2.3.8 (Apple Git-58)
+2.4.9 (Apple Git-60)
 

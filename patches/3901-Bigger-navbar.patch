@@ -11,16 +11,17 @@ diff --git a/public/index.html b/public/index.html
 index db9d76e..77c3ef1 100644
 --- a/public/index.html
 +++ b/public/index.html
-@@ -11,7 +11,7 @@
+@@ -11,8 +11,8 @@
      <script src='/app.js'></script>
      <!-- START: inlineStyle -->
      <style type="text/css" media="all">
 -      body { margin-top: 30px; }
 +      body { margin-top: 60px; }
        .templates { display: none; }
+       .fixed-width-text { font-family: "Consolas","Courier New",monospace }
        /* START: no-select */
        .no-select {
-@@ -24,9 +24,7 @@
+@@ -25,9 +25,7 @@
        /* START: nav-container */
        .nav-container {
          padding-left: 40px;
@@ -30,7 +31,7 @@ index db9d76e..77c3ef1 100644
        }
        .nav-container a { color: white; }
        /* END: nav-container */
-@@ -38,6 +36,9 @@
+@@ -39,6 +37,9 @@
        }
        /* END: fixed-top */
        /* START: inline-list */
@@ -40,7 +41,7 @@ index db9d76e..77c3ef1 100644
        .inline-list li {
          display: inline;
          margin: 0 20px 0 0;
-@@ -47,6 +48,15 @@
+@@ -48,6 +49,15 @@
        .hover-links a { text-decoration: none; }
        .hover-links a:hover { text-decoration: underline; }
        /* END: hover-links */
@@ -56,7 +57,7 @@ index db9d76e..77c3ef1 100644
      </style>
       <!-- END: inlineStyle -->
      </style>
-@@ -54,9 +64,9 @@
+@@ -55,9 +65,9 @@
    <body>
      <div class='markup'>
        <!-- START: navbar -->
