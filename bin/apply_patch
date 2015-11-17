@@ -8,16 +8,18 @@ cd $root_dir
 
 patch=$1
 
+master_commit=`git rev-parse master`
+
 if [[ ! -d working ]]; then
   mkdir working
   pushd working
   git init
   git pull .. master
-  git rev-parse HEAD > .git/.baseline
   popd
 else
   pushd working
-  git reset --hard `cat .git/.baseline`
+  git pull .. master
+  git reset --hard $master_commit
   popd
 fi
 
