@@ -26,13 +26,13 @@ fi
 cd working || exit 1
 
 for patch_file in `ls $root_dir/patches/* | sort`; do
-  if [[ -e "$patch" ]]; then
+  if [[ -e "../${patch}" ]]; then
     if [[ `basename $patch_file` < `basename $patch` ]]; then
       git am $patch_file || exit 1
     fi
   fi
 done
-if [[ -e "$patch" ]]; then
+if [[ -e "../${patch}" ]]; then
   git am $root_dir/patches/`basename $patch`
 fi
 
