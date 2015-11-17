@@ -9,7 +9,6 @@
   "author": "Ben Rady",
   "license": "All Rights Reserved",
   "dependencies": {
-    "aws-sdk": "2.2.4"
   },
   "devDependencies": {
     "jasmine": "2.3.1"

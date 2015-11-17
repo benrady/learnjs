@@ -3,13 +3,14 @@ describe('lambda function', function() {
   var context;
 
   beforeEach(function() {
-    context = jasmine.createSpyObj('context', ['done', 'fail']);
+    context = jasmine.createSpyObj('context', ['succeed']);
   });
 
   describe('fetchPopularAnswers', function() {
     it('returns a result', function() {
       index.fetchPopularAnswers({}, context);
-      expect(context.done).toHaveBeenCalled();
+      expected = ["Hello from the cloud! You sent {}"];
+      expect(context.succeed).toHaveBeenCalledWith(expected);
     });
   });
 });
