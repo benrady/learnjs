@@ -34,6 +34,7 @@ for patch in `ls ../patches/*.patch | sort`; do
   git am $patch || exit 1
   mkdir -p $root_dir/dist/$number
   cp -r p* bin services $root_dir/dist/$number/
+  rm -rf $root_dir/dist/$number/services/node_modules
 done
 
 pushd $root_dir/dist
