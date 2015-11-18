@@ -6,9 +6,9 @@ describe('lambda function', function() {
     context = jasmine.createSpyObj('context', ['succeed']);
   });
 
-  describe('fetchPopularAnswers', function() {
+  describe('echo', function() {
     it('returns a result', function() {
-      index.fetchPopularAnswers({}, context);
+      index.echo({}, context);
       expected = ["Hello from the cloud! You sent {}"];
       expect(context.succeed).toHaveBeenCalledWith(expected);
     });
