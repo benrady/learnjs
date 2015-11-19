@@ -5,4 +5,4 @@ if [[ ! -x `which entr` ]]; then
   exit 1
 fi
 
-find lib spec -name *.js | entr -c make test
+find lib spec -name *.js | entr make test
