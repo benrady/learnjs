@@ -35,6 +35,7 @@ for patch in `ls ../patches/*.patch | sort`; do
   mkdir -p $root_dir/dist/$number
   cp -r p* bin services $root_dir/dist/$number/
   rm -rf $root_dir/dist/$number/services/node_modules
+  rm -rf $root_dir/dist/$number/services/archive.zip
 done
 
 pushd $root_dir/dist
