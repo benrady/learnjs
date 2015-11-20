@@ -24,7 +24,7 @@ index fcf7007..0bd4e8e 100644
  var lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
  var params = {
 -  FunctionName: config.functionName, 
-+  FunctionName: functionName, 
++  FunctionName: functionName,
    ZipFile: fs.readFileSync('archive.zip')
  };
  lambda.updateFunctionCode(params, function(err, data) { 
@@ -32,7 +32,7 @@ diff --git a/services/lib/index.js b/services/lib/index.js
 index 597b7be..cc3013c 100644
 --- a/services/lib/index.js
 +++ b/services/lib/index.js
-@@ -1,3 +1,35 @@
+@@ -1,3 +1,34 @@
 +var http = require('http');
 +var AWS = require('aws-sdk');
 +
@@ -45,7 +45,7 @@ index 597b7be..cc3013c 100644
 +exports.dynamodb = new AWS.DynamoDB.DocumentClient();
 +
 +function reduceItems(memo, items) {
-+  items.forEach(function(item) {  
++  items.forEach(function(item) {
 +    memo[item.answer] = (memo[item.answer] || 0) + 1;
 +  });
 +  return memo;
@@ -55,10 +55,10 @@ index 597b7be..cc3013c 100644
 +  exports.dynamodb.scan({
 +    Key: {problemNumber: json.problemNumber},
 +    TableName: config.dynamoTableName
-+  }, function(err, data) {  
-+    if (err) { 
++  }, function(err, data) {
++    if (err) {
 +      context.fail(err);
-+    } else { 
++    } else {
 +      context.succeed(reduceItems({}, data.Items));
 +    }
 +  });
@@ -67,7 +67,6 @@ index 597b7be..cc3013c 100644
  exports.echo = function(json, context) {  
    context.succeed(["Hello from the cloud! You sent " + JSON.stringify(json)]);
  };
-+
 diff --git a/services/spec/index_spec.js b/services/spec/index_spec.js
 index d763979..1f5b3ba 100644
 --- a/services/spec/index_spec.js

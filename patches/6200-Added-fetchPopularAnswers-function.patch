@@ -55,7 +55,7 @@ index ca13aff..b2e66a7 100644
 +      FunctionName: 'learnjs_popularAnswers',
 +      Payload: JSON.stringify({problemNumber: problemId})
 +    };
-+    return learnjs.sendAwsRequest(lambda.invoke(params), function() {  
++    return learnjs.sendAwsRequest(lambda.invoke(params), function() {
 +      return learnjs.popularAnswers(problemId);
 +    });
 +  });
