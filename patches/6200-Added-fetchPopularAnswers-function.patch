@@ -1,0 +1,220 @@
+From 303db1f9c759cf1489dd63155f1bdb4378ca7d5a Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Fri, 20 Nov 2015 13:04:25 -0600
+Subject: [PATCH 2/2] Added fetchPopularAnswers function
+
+---
+ public/app.js            | 35 +++++++++++++++++++++++----------
+ public/tests/app_spec.js | 50 +++++++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 64 insertions(+), 21 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index ca13aff..b2e66a7 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -29,29 +29,44 @@ learnjs.triggerEvent = function(name, args) {
+ }
+ //END: triggerEvent
+ 
+-// START: sendDbRequest
+-learnjs.sendDbRequest = function(req, retry) {
++// START: sendAwsRequest
++learnjs.sendAwsRequest = function(req, retry) {
+   var promise = new $.Deferred();
+   req.on('error', function(error) {
+-    if (error.code === "CredentialsError") { //<label id="code.sendDbRequest.error"/>
++    if (error.code === "CredentialsError") { //<label id="code.sendAwsRequest.error"/>
+       learnjs.identity.then(function(identity) {
+         return identity.refresh().then(function() {
+-          return retry(); //<label id="code.sendDbRequest.retry"/>
++          return retry(); //<label id="code.sendAwsRequest.retry"/>
+         }, function() {
+           promise.reject(resp);
+         });
+       });
+     } else {
+-      promise.reject(error); //<label id="code.sendDbRequest.reject"/>
++      promise.reject(error); //<label id="code.sendAwsRequest.reject"/>
+     }
+   });
+   req.on('success', function(resp) {
+-    promise.resolve(resp.data); //<label id="code.sendDbRequest.success"/>
++    promise.resolve(resp.data); //<label id="code.sendAwsRequest.success"/>
+   });
+   req.send();
+   return promise;
+ }
+-// END: sendDbRequest
++// END: sendAwsRequest
++
++// START: popularAnswers
++learnjs.popularAnswers = function(problemId) {
++  return learnjs.identity.then(function() {
++    var lambda = new AWS.Lambda();
++    var params = {
++      FunctionName: 'learnjs_popularAnswers',
++      Payload: JSON.stringify({problemNumber: problemId})
++    };
++    return learnjs.sendAwsRequest(lambda.invoke(params), function() {  
++      return learnjs.popularAnswers(problemId);
++    });
++  });
++}
++// END: popularAnswers
+ 
+ // START: fetchAnswer
+ learnjs.fetchAnswer = function(problemId) {
+@@ -64,7 +79,7 @@ learnjs.fetchAnswer = function(problemId) {
+         problemId: problemId
+       }
+     };
+-    return learnjs.sendDbRequest(db.get(item), function() {
++    return learnjs.sendAwsRequest(db.get(item), function() {
+       return learnjs.fetchAnswer(problemId);
+     })
+   });
+@@ -81,7 +96,7 @@ learnjs.countAnswers = function(problemId) {
+       FilterExpression: 'problemId = :problemId',
+       ExpressionAttributeValues: {':problemId': problemId}
+     };
+-    return learnjs.sendDbRequest(db.scan(params), function() {
++    return learnjs.sendAwsRequest(db.scan(params), function() {
+       return learnjs.countAnswers(problemId);
+     })
+   });
+@@ -100,7 +115,7 @@ learnjs.saveAnswer = function(problemId, answer) {
+         answer: answer
+       }
+     };
+-    return learnjs.sendDbRequest(db.put(item), function() {
++    return learnjs.sendAwsRequest(db.put(item), function() {
+       return learnjs.saveAnswer(problemId, answer);
+     })
+   });
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 976a9ab..49a9ee6 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -102,7 +102,7 @@ describe('LearnJS', function() {
+     beforeEach(function() {
+       dbspy = jasmine.createSpyObj('db', ['get', 'put', 'scan']);
+       spyOn(AWS.DynamoDB,'DocumentClient').and.returnValue(dbspy);
+-      spyOn(learnjs, 'sendDbRequest');
++      spyOn(learnjs, 'sendAwsRequest');
+       identityObj = {id: 'COGNITO_ID'};
+       learnjs.identity.resolve(identityObj);
+     });
+@@ -113,10 +113,10 @@ describe('LearnJS', function() {
+       });
+ 
+       it('reads the item from the database', function(done) {
+-        learnjs.sendDbRequest.and.returnValue(new $.Deferred().resolve('item'));
++        learnjs.sendAwsRequest.and.returnValue(new $.Deferred().resolve('item'));
+         learnjs.countAnswers(1).then(function(item) {
+           expect(item).toEqual('item');
+-          expect(learnjs.sendDbRequest).toHaveBeenCalledWith('request', jasmine.any(Function));
++          expect(learnjs.sendAwsRequest).toHaveBeenCalledWith('request', jasmine.any(Function));
+           expect(dbspy.scan).toHaveBeenCalledWith({
+             TableName: 'learnjs',
+             Select: 'COUNT',
+@@ -130,7 +130,7 @@ describe('LearnJS', function() {
+       it('resubmits the request on retry', function() {
+         learnjs.countAnswers(1);
+         spyOn(learnjs, 'countAnswers').and.returnValue('promise');
+-        expect(learnjs.sendDbRequest.calls.first().args[1]()).toEqual('promise');
++        expect(learnjs.sendAwsRequest.calls.first().args[1]()).toEqual('promise');
+         expect(learnjs.countAnswers).toHaveBeenCalledWith(1);
+       });
+     });
+@@ -142,10 +142,10 @@ describe('LearnJS', function() {
+       });
+ 
+       it('reads the item from the database', function(done) {
+-        learnjs.sendDbRequest.and.returnValue(new $.Deferred().resolve('item'));
++        learnjs.sendAwsRequest.and.returnValue(new $.Deferred().resolve('item'));
+         learnjs.fetchAnswer(1).then(function(item) {
+           expect(item).toEqual('item');
+-          expect(learnjs.sendDbRequest).toHaveBeenCalledWith('request', jasmine.any(Function));
++          expect(learnjs.sendAwsRequest).toHaveBeenCalledWith('request', jasmine.any(Function));
+           expect(dbspy.get).toHaveBeenCalledWith({
+             TableName: 'learnjs',
+             Key: {
+@@ -160,11 +160,39 @@ describe('LearnJS', function() {
+       it('resubmits the request on retry', function() {
+         learnjs.fetchAnswer(1, {answer: 'false'});
+         spyOn(learnjs, 'fetchAnswer').and.returnValue('promise');
+-        expect(learnjs.sendDbRequest.calls.first().args[1]()).toEqual('promise');
++        expect(learnjs.sendAwsRequest.calls.first().args[1]()).toEqual('promise');
+         expect(learnjs.fetchAnswer).toHaveBeenCalledWith(1);
+       });
+     });
+ 
++    describe('popularAnswers', function() {
++      var lambdaSpy;
++      beforeEach(function() {
++        lambdaSpy = jasmine.createSpyObj('lambda', ['invoke']);
++        spyOn(AWS,'Lambda').and.returnValue(lambdaSpy);
++        lambdaSpy.invoke.and.returnValue('request');
++      });
++
++      it('reads the item from the database', function(done) {
++        learnjs.sendAwsRequest.and.returnValue(new $.Deferred().resolve('item'));
++        learnjs.popularAnswers(1).then(function(item) {
++          expect(item).toEqual('item');
++          expect(learnjs.sendAwsRequest).toHaveBeenCalledWith('request', jasmine.any(Function));
++          expect(lambdaSpy.invoke).toHaveBeenCalledWith({
++            FunctionName: 'learnjs_popularAnswers',
++            Payload: JSON.stringify({ problemNumber: 1 })
++          });
++          done();
++        });
++      });
++
++      it('resubmits the request on retry', function() {
++        learnjs.popularAnswers(1);
++        spyOn(learnjs, 'popularAnswers').and.returnValue('promise');
++        expect(learnjs.sendAwsRequest.calls.first().args[1]()).toEqual('promise');
++        expect(learnjs.popularAnswers).toHaveBeenCalledWith(1);
++      });
++    });
+ 
+     describe('saveAnswer', function() {
+       beforeEach(function() {
+@@ -173,7 +201,7 @@ describe('LearnJS', function() {
+ 
+       it('writes the item to the database', function() {
+         learnjs.saveAnswer(1, {});
+-        expect(learnjs.sendDbRequest).toHaveBeenCalledWith('request', jasmine.any(Function));
++        expect(learnjs.sendAwsRequest).toHaveBeenCalledWith('request', jasmine.any(Function));
+         expect(dbspy.put).toHaveBeenCalledWith({
+           TableName: 'learnjs',
+           Item: {
+@@ -187,14 +215,14 @@ describe('LearnJS', function() {
+       it('resubmits the request on retry', function() {
+         learnjs.saveAnswer(1, {answer: 'false'});
+         spyOn(learnjs, 'saveAnswer').and.returnValue('promise');
+-        expect(learnjs.sendDbRequest.calls.first().args[1]()).toEqual('promise');
++        expect(learnjs.sendAwsRequest.calls.first().args[1]()).toEqual('promise');
+         expect(learnjs.saveAnswer).toHaveBeenCalledWith(1, {answer: 'false'});
+       });
+     });
+ 
+   });
+ 
+-  describe('sendDbRequest', function() {
++  describe('sendAwsRequest', function() {
+     var request, requestHandlers, promise, retrySpy;
+     beforeEach(function() {
+       requestHandlers = {};
+@@ -203,7 +231,7 @@ describe('LearnJS', function() {
+         requestHandlers[eventName] = callback;
+       });
+       retrySpy = jasmine.createSpy('retry');
+-      promise = learnjs.sendDbRequest(request, retrySpy);
++      promise = learnjs.sendAwsRequest(request, retrySpy);
+     });
+ 
+     it('resolves the returned promise on success', function(done) {
+-- 
+1.9.1
+
