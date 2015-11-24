@@ -1,0 +1,84 @@
+From 6756f242b126c3958a116fdaeeea5f1096cc0405 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Mon, 23 Nov 2015 20:12:14 -0600
+Subject: [PATCH] Added filter to popular answers
+
+---
+ services/lib/index.js       | 18 +++++++++++++++++-
+ services/spec/index_spec.js | 24 ++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+), 1 deletion(-)
+
+diff --git a/services/lib/index.js b/services/lib/index.js
+index 25c05cd..1a489b2 100644
+--- a/services/lib/index.js
++++ b/services/lib/index.js
+@@ -16,6 +16,22 @@ function reduceItems(memo, items) {
+   return memo;
+ }
+ 
++function byCount(e1, e2) {
++  return e2[0] - e1[0];
++}
++
++function filterItems(items) {
++  var values = [];
++  for (i in items) {
++    values.push([items[i], i]);
++  }
++  var topFive = {};
++  values.sort(byCount).slice(0,5).forEach(function(e) {
++    topFive[e[1]] = e[0];
++  })
++  return topFive;
++}
++
+ exports.fetchPopularAnswers = function(json, context) {
+   exports.dynamodb.scan({
+     Key: {problemNumber: json.problemNumber},
+@@ -24,7 +40,7 @@ exports.fetchPopularAnswers = function(json, context) {
+     if (err) {
+       context.fail(err);
+     } else {
+-      context.succeed(reduceItems({}, data.Items));
++      context.succeed(filterItems(reduceItems({}, data.Items)));
+     }
+   });
+ };
+diff --git a/services/spec/index_spec.js b/services/spec/index_spec.js
+index 1f5b3ba..c5072e7 100644
+--- a/services/spec/index_spec.js
++++ b/services/spec/index_spec.js
+@@ -36,6 +36,30 @@ describe('lambda function', function() {
+       expect(context.succeed).toHaveBeenCalledWith({"true": 3, "!false": 2});
+     });
+ 
++    it('limits the results to the top five', function() {
++      index.fetchPopularAnswers({problemNumber: 1}, context);
++      index.dynamodb.scan.calls.first().args[1](undefined, {Items: [
++        {answer: "1 === 1"},
++        {answer: "1 === 1"},
++        {answer: "2 === 2"},
++        {answer: "2 === 2"},
++        {answer: "2 === 2"},
++        {answer: "3 === 3"},
++        {answer: "3 === 3"},
++        {answer: "4 === 4"},
++        {answer: "4 === 4"},
++        {answer: "5 === 5"},
++        {answer: "5 === 5"},
++        {answer: "!false"},
++      ]});
++      expect(context.succeed).toHaveBeenCalledWith({
++        "1 === 1": 2,
++        "2 === 2": 3,
++        "3 === 3": 2,
++        "4 === 4": 2,
++        "5 === 5": 2});
++    });
++
+     it('fails the request if dynamo returns an error', function() {
+       index.fetchPopularAnswers({problemNumber: 1}, context);
+       index.dynamodb.scan.calls.first().args[1]('error');
+-- 
+2.4.9 (Apple Git-60)
+
