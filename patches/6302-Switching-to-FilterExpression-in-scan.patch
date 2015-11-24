@@ -1,0 +1,43 @@
+From 4471846c3011bd51dd88ea6e243c9da2334929c6 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 24 Nov 2015 08:27:06 -0600
+Subject: [PATCH] Switching to FilterExpression in scan
+
+---
+ services/lib/index.js       | 5 ++++-
+ services/spec/index_spec.js | 3 ++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/services/lib/index.js b/services/lib/index.js
+index 1a489b2..53ae8c2 100644
+--- a/services/lib/index.js
++++ b/services/lib/index.js
+@@ -34,7 +34,10 @@ function filterItems(items) {
+ 
+ exports.fetchPopularAnswers = function(json, context) {
+   exports.dynamodb.scan({
+-    Key: {problemNumber: json.problemNumber},
++    FilterExpression: "problemId = :problemId",
++    ExpressionAttributeValues: {
++      ":problemId": json.problemNumber
++    },
+     TableName: config.dynamoTableName
+   }, function(err, data) {
+     if (err) {
+diff --git a/services/spec/index_spec.js b/services/spec/index_spec.js
+index f6b56f1..c9d99d0 100644
+--- a/services/spec/index_spec.js
++++ b/services/spec/index_spec.js
+@@ -23,7 +23,8 @@ describe('lambda function', function() {
+     it('requests problems with the given problem number', function() {
+       index.fetchPopularAnswers({problemNumber: 42}, context);
+       expect(index.dynamodb.scan).toHaveBeenCalledWith({
+-        Key: {problemNumber: 42},
++        FilterExpression: "problemId = :problemId",
++        ExpressionAttributeValues: { ":problemId": 42 },
+         TableName: 'learnjs'
+       }, jasmine.any(Function));
+     });
+-- 
+2.4.9 (Apple Git-60)
+

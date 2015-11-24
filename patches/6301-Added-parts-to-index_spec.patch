@@ -1,0 +1,54 @@
+From 1779f789b43b2f16da04a3128da02701de66b145 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Mon, 23 Nov 2015 20:33:14 -0600
+Subject: [PATCH] Added parts to index_spec
+
+---
+ services/spec/index_spec.js | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/services/spec/index_spec.js b/services/spec/index_spec.js
+index c5072e7..f6b56f1 100644
+--- a/services/spec/index_spec.js
++++ b/services/spec/index_spec.js
+@@ -1,3 +1,4 @@
++//START:groupsAnswers
+ describe('lambda function', function() {
+   var index = require('index');
+   var context;
+@@ -7,6 +8,8 @@ describe('lambda function', function() {
+     index.dynamodb = jasmine.createSpyObj('dynamo', ['scan']);
+   });
+ 
++  //END:groupsAnswers
++
+   describe('echo', function() {
+     it('returns a result', function() {
+       index.echo({}, context);
+@@ -15,6 +18,7 @@ describe('lambda function', function() {
+     });
+   });
+ 
++  //START:groupsAnswers
+   describe('fetchPopularAnswers', function() {
+     it('requests problems with the given problem number', function() {
+       index.fetchPopularAnswers({problemNumber: 42}, context);
+@@ -35,6 +39,7 @@ describe('lambda function', function() {
+       ]});
+       expect(context.succeed).toHaveBeenCalledWith({"true": 3, "!false": 2});
+     });
++    //END:groupsAnswers
+ 
+     it('limits the results to the top five', function() {
+       index.fetchPopularAnswers({problemNumber: 1}, context);
+@@ -65,5 +70,7 @@ describe('lambda function', function() {
+       index.dynamodb.scan.calls.first().args[1]('error');
+       expect(context.fail).toHaveBeenCalledWith('error')
+     });
++  //START:groupsAnswers
+   });
+ });
++//END:groupsAnswers
+-- 
+2.4.9 (Apple Git-60)
+
