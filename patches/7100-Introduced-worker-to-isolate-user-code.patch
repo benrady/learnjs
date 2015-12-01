@@ -1,0 +1,96 @@
+From 7f0f7bb153f2d6fe39c79d49c6a15f54fae0579c Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 1 Dec 2015 12:36:09 -0600
+Subject: [PATCH] Introduced worker to isolate user code
+
+---
+ public/app.js            | 20 ++++++++++++++++----
+ public/tests/app_spec.js |  9 +++++++++
+ public/worker.js         |  7 +++++++
+ 3 files changed, 32 insertions(+), 4 deletions(-)
+ create mode 100644 public/worker.js
+
+diff --git a/public/app.js b/public/app.js
+index c46037e..8582994 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -174,20 +174,32 @@ learnjs.problemView = function(data) {
+   var resultFlash = view.find('.result');
+   var answer = view.find('.answer');
+ 
++  // START: checkAnswer
+   function checkAnswer() {
++    var def = $.Deferred();
+     var test = problemData.code.replace('__', answer.val()) + '; problem();'
+-    return eval(test);
++    var worker = new Worker('worker.js');
++    worker.onmessage = function(e) {
++      if (e.data) {
++        def.resolve(e.data);
++      } else {
++        def.reject();
++      }
++    }
++    worker.postMessage(test);
++    return def;
+   }
++  // END: checkAnswer
+ 
+   // START: problemViewClickHandler
+   function checkAnswerClick() {
+-    if (checkAnswer()) {
++    checkAnswer().done(function() {
+       var flashContent = learnjs.buildCorrectFlash(problemNumber);
+       learnjs.flashElement(resultFlash, flashContent);
+       learnjs.saveAnswer(problemNumber, answer.val());
+-    } else {
++    }).fail(function() {
+       learnjs.flashElement(resultFlash, 'Incorrect!');
+-    }
++    });
+     return false;
+   }
+   // END: problemViewClickHandler
+diff --git a/public/tests/app_spec.js b/public/tests/app_spec.js
+index 49a9ee6..49b94f5 100644
+--- a/public/tests/app_spec.js
++++ b/public/tests/app_spec.js
+@@ -1,6 +1,11 @@
+ describe('LearnJS', function() {
++  var fakeWorker;
+   //START: beforeLearnJs
+   beforeEach(function() {
++    fakeWorker = {
++      postMessage: function(msg) { fakeWorker.onmessage({data: eval(msg)}) }
++    };
++    spyOn(window, 'Worker').and.returnValue(fakeWorker);
+     learnjs.identity = new $.Deferred();
+   });
+   //END: beforeLearnJs
+@@ -457,6 +462,10 @@ describe('LearnJS', function() {
+           view.find('.check-btn').click();
+         });
+ 
++        it('uses a worker to check the answer safely', function() {
++          expect(window.Worker).toHaveBeenCalledWith('worker.js');
++        });
++
+         it('saves the result', function() {
+           expect(learnjs.saveAnswer).toHaveBeenCalledWith(1, "true");
+         });
+diff --git a/public/worker.js b/public/worker.js
+new file mode 100644
+index 0000000..c223a72
+--- /dev/null
++++ b/public/worker.js
+@@ -0,0 +1,7 @@
++onmessage = function(e) {
++  try {
++    postMessage(eval(e.data));
++  } catch(e) {
++    postMessage(false);
++  }
++}
+-- 
+2.4.9 (Apple Git-60)
+
