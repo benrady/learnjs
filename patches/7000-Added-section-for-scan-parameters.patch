@@ -1,0 +1,31 @@
+From dddd7f6201d81f9e3e3f24a534b9394107b74b09 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Mon, 30 Nov 2015 16:49:04 -0600
+Subject: [PATCH] Added section for scan parameters
+
+---
+ services/lib/index.js | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/services/lib/index.js b/services/lib/index.js
+index 53ae8c2..d5f3ad4 100644
+--- a/services/lib/index.js
++++ b/services/lib/index.js
+@@ -33,12 +33,14 @@ function filterItems(items) {
+ }
+ 
+ exports.fetchPopularAnswers = function(json, context) {
++  //START: scanParams
+   exports.dynamodb.scan({
+     FilterExpression: "problemId = :problemId",
+     ExpressionAttributeValues: {
+       ":problemId": json.problemNumber
+     },
+     TableName: config.dynamoTableName
++  //END: scanParams
+   }, function(err, data) {
+     if (err) {
+       context.fail(err);
+-- 
+2.4.9 (Apple Git-60)
+
