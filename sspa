@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
+root_dir=`dirname $abspath`
+
+function check_python() {
+  if ! which python > /dev/null; then
+    echo "Can't find Python. You need Python 2.7 or later to use this."
+    exit 1
+  fi
+}
+
+function check_aws() {
+  if ! which aws > /dev/null; then
+    echo "Can't find AWS CLI. Install 'awscli' using pip."
+    exit 1
+  fi
+}
+
+function dev_server() {
+  #START: dev_server
+  cd public
+  exec python -m SimpleHTTPServer 9292
+  popd
+  #end: dev_server
+}
+
+function help() {
+  echo "#################################################"
+  echo "# Serverless Single Page Apps - The Bash Helper #"
+  echo "#################################################"
+  echo 
+  echo "Usage: sspa <action>"
+  echo 
+  echo "Where <action> is one of:"
+  echo "    server   - Run a local development server"
+  echo 
+  #echo "    create   - Create a new web service configuration"
+  #echo "    update   - Upload the web service configuration to AWS"
+  #echo "    deploy   - Deploy code associated with a web service (if any)"
+  #echo 
+  #echo "Deploy the web app to S3:" 
+  #echo " $ sspa deploy public"
+  #echo 
+  #echo "Deploy all Lambda functions:" 
+  #echo " $ sspa deploy public"
+  #echo 
+  #echo "Create a new IAM role" 
+  #echo " $ sspa create roles/dynamodb_admin"
+  #echo 
+  #echo "Upload an IAM role to AWS" 
+  #echo " $ sspa update roles/dynamodb_admin"
+}
+
+action=${1:-"help"}
+
+cd $root_dir
+
+check_python
+
+case "$action" in
+  server)
+    dev_server
+    ;;
+
+  *)
+    help
+    ;;
+esac
