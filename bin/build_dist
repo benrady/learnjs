@@ -23,6 +23,7 @@ if [[ ! -d working ]]; then
   popd
 else
   pushd working
+  git fetch ..
   git reset --hard $master_commit
   popd
 fi
