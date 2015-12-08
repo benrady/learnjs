@@ -25,22 +25,46 @@ function dev_server() {
   #end: dev_server
 }
 
+function create_s3_bucket() {
+  #START: create_s3_bucket
+  local bucket_name=$1
+  local bucket_uri="s3://${bucket_name}"
+  aws s3 mb $bucket_uri || exit 1
+  aws s3 website \
+    --index-document index.html \
+    --error-document error.html \
+    $bucket_uri
+  local region=$(aws configure get region)
+  echo "Website endpoint is: http://${1}.s3-website-${region}.amazonaws.com"
+  #END: create_s3_bucket
+}
+
+function deploy_s3_bucket() {
+  #START: deploy_s3_bucket
+  local bucket_uri="s3://$1"
+  aws s3 sync public/ $bucket_uri --acl public-read
+  #END: deploy_s3_bucket
+}
+
 function help() {
   echo "#################################################"
   echo "# Serverless Single Page Apps - The Bash Helper #"
   echo "#################################################"
   echo 
-  echo "Usage: sspa <action>"
+  echo "Usage: sspa <action> [argument]"
   echo 
   echo "Where <action> is one of:"
-  echo "    server   - Run a local development server"
+  echo "    server                      - Run a local development server"
+  echo "    create_bucket <bucket name> - Create a web-accessible bucket in S3"
+  echo "    deploy_bucket <bucket name> - Deploy the application to the S3 bucket"
   echo 
   #echo "    create   - Create a new web service configuration"
   #echo "    update   - Upload the web service configuration to AWS"
   #echo "    deploy   - Deploy code associated with a web service (if any)"
-  #echo 
-  #echo "Deploy the web app to S3:" 
-  #echo " $ sspa deploy public"
+  echo "Examples:"
+  echo 
+  echo "Deploy the web app to an S3 bucket:" 
+  echo " $ sspa deploy_public learnjs.benrady.com"
   #echo 
   #echo "Deploy all Lambda functions:" 
   #echo " $ sspa deploy public"
@@ -61,6 +85,24 @@ check_python
 case "$action" in
   server)
     dev_server
+    ;;
+
+  create_bucket)
+    if [[ $# -eq 2 ]]; then
+      create_s3_bucket ${2}
+    else
+      echo "Please specify a bucket name"
+      exit 1
+    fi
+    ;;
+
+  deploy_bucket)
+    if [[ $# -eq 2 ]]; then
+      deploy_s3_bucket ${2}
+    else
+      echo "Please specify a bucket name"
+      exit 1
+    fi
     ;;
 
   *)
