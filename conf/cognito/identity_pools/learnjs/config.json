@@ -1,0 +1,6 @@
+{
+    "AllowUnauthenticatedIdentities": false,
+    "SupportedLoginProviders": {
+        "KeyName": "accounts.google.com"
+    }
+}

@@ -18,32 +18,90 @@ function check_aws() {
 }
 
 function dev_server() {
-  #START: dev_server
   cd public
   exec python -m SimpleHTTPServer 9292
   popd
-  #end: dev_server
 }
 
 function create_s3_bucket() {
-  #START: create_s3_bucket
   local bucket_name=$1
   local bucket_uri="s3://${bucket_name}"
-  aws s3 mb $bucket_uri || exit 1
+  aws s3 mb $bucket_uri
   aws s3 website \
     --index-document index.html \
     --error-document error.html \
     $bucket_uri
   local region=$(aws configure get region)
   echo "Website endpoint is: http://${1}.s3-website-${region}.amazonaws.com"
-  #END: create_s3_bucket
 }
 
 function deploy_s3_bucket() {
-  #START: deploy_s3_bucket
   local bucket_uri="s3://$1"
   aws s3 sync public/ $bucket_uri --acl public-read
-  #END: deploy_s3_bucket
+}
+
+function generate_assume_role_policy() {
+  local identity_pool_arn=$1
+cat <<DOC
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "cognito-identity.amazonaws.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "cognito-identity.amazonaws.com:aud": "${identity_pool_arn}"
+        },
+        "ForAnyValue:StringLike": {
+          "cognito-identity.amazonaws.com:amr": "authenticated"
+        }
+      }
+    }
+  ]
+}
+DOC
+}
+
+function create_cognito_auth_role() {
+  local identity_pool_dir=$1
+  local pool_id=$(support/jsed.py ${identity_pool_dir}/pool_info.json 'IdentityPoolId')
+  local pool_name=$(support/jsed.py ${identity_pool_dir}/pool_info.json 'IdentityPoolName')
+  generate_assume_role_policy ${pool_id} > ${identity_pool_dir}/assume_role_policy.json
+  if [[ ! -s ${identity_pool_dir}/role_info.json ]]; then
+    aws iam create-role \
+      --role-name "${pool_name}_cognito_authenticated" \
+      --assume-role-policy-document "file://${identity_pool_dir}/assume_role_policy.json" \
+      > ${identity_pool_dir}/role_info.json
+  fi
+}
+
+
+function create_identity_pool() {
+  local identity_pool_dir=$1
+  if [[ ! -e ${identity_pool_dir}/config.json ]]; then
+    echo "Can't find pool config file ${identity_pool_dir}/config.json"
+    exit 1
+  fi
+
+  local identity_pool_name=$(basename $identity_pool_dir)
+  if [[ ! -s ${identity_pool_dir}/pool_info.json ]]; then
+    aws cognito-identity create-identity-pool \
+      --identity-pool-name $identity_pool_name
+      --cli-input-json "file://${identity_pool_dir}/config.json" \
+      > ${identity_pool_dir}/pool_info.json
+  fi
+  create_cognito_auth_role ${identity_pool_dir}
+
+  local pool_id=$(support/jsed.py ${identity_pool_dir}/pool_info.json 'IdentityPoolId')
+  local role_arn=$(support/jsed.py ${identity_pool_dir}/role_info.json 'Role.Arn')
+  aws cognito-identity set-identity-pool-roles \
+    --identity-pool-id ${pool_id} \
+    --roles authenticated=${role_arn}
 }
 
 function help() {
@@ -56,15 +114,16 @@ function help() {
   echo "Where <action> is one of:"
   echo "    server                      - Run a local development server"
   echo "    create_bucket <bucket name> - Create a web-accessible bucket in S3"
-  echo "    deploy_bucket <bucket name> - Deploy the application to the S3 bucket"
+  echo "    deploy_bucket <bucket name> - Deploy the application to an S3 bucket"
+  echo "    create_pool <config dir>    - Create a new Cognito identity pool"
   echo 
-  #echo "    create   - Create a new web service configuration"
-  #echo "    update   - Upload the web service configuration to AWS"
-  #echo "    deploy   - Deploy code associated with a web service (if any)"
   echo "Examples:"
   echo 
   echo "Deploy the web app to an S3 bucket:" 
   echo " $ sspa deploy_public learnjs.benrady.com"
+  echo 
+  echo "Create the 'learnjs' identity pool" 
+  echo " $ sspa create_pool conf/cognito/identity_pools/learnjs"
   #echo 
   #echo "Deploy all Lambda functions:" 
   #echo " $ sspa deploy public"
@@ -101,6 +160,15 @@ case "$action" in
       deploy_s3_bucket ${2}
     else
       echo "Please specify a bucket name"
+      exit 1
+    fi
+    ;;
+
+  create_pool)
+    if [[ $# -eq 2 ]]; then
+      create_identity_pool ${2}
+    else
+      echo "Please specify an identity pool configuration directory" 
       exit 1
     fi
     ;;
