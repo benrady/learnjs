@@ -73,8 +73,10 @@ function create_cognito_auth_role() {
   local pool_name=$(support/jsed.py ${identity_pool_dir}/pool_info.json 'IdentityPoolName')
   generate_assume_role_policy ${pool_id} > ${identity_pool_dir}/assume_role_policy.json
   if [[ ! -s ${identity_pool_dir}/role_info.json ]]; then
+    local role_name="${pool_name}_cognito_authenticated"
+    echo "Creaing role: $role_name"
     aws iam create-role \
-      --role-name "${pool_name}_cognito_authenticated" \
+      --role-name "$role_name" \
       --assume-role-policy-document "file://${identity_pool_dir}/assume_role_policy.json" \
       > ${identity_pool_dir}/role_info.json
   fi
@@ -90,8 +92,9 @@ function create_identity_pool() {
 
   local identity_pool_name=$(basename $identity_pool_dir)
   if [[ ! -s ${identity_pool_dir}/pool_info.json ]]; then
+    echo "Creating identity pool: $identity_pool_name"
     aws cognito-identity create-identity-pool \
-      --identity-pool-name $identity_pool_name
+      --identity-pool-name $identity_pool_name \
       --cli-input-json "file://${identity_pool_dir}/config.json" \
       > ${identity_pool_dir}/pool_info.json
   fi
@@ -99,6 +102,7 @@ function create_identity_pool() {
 
   local pool_id=$(support/jsed.py ${identity_pool_dir}/pool_info.json 'IdentityPoolId')
   local role_arn=$(support/jsed.py ${identity_pool_dir}/role_info.json 'Role.Arn')
+  echo "Updating identity pool roles"
   aws cognito-identity set-identity-pool-roles \
     --identity-pool-id ${pool_id} \
     --roles authenticated=${role_arn}
