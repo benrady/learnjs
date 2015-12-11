@@ -51,7 +51,7 @@ index 0000000..ba69327
 +  "AllowUnauthenticatedIdentities": false,
 +  "SupportedLoginProviders": {
 +    "accounts.google.com":
-+      "351607165455-uesp1702cesp44vbn539m7rm6gg5ov3h.apps.googleusercontent.com"
++      "ABC123ADDYOURID.apps.googleusercontent.com"
 +  },
 +  "IdentityPoolName": "learnjs"
 +}
