@@ -32,7 +32,7 @@ index fbf3576..adbc8d3 100644
 +    } else {
 +      resultFlash.text('Incorrect!');
 +    }
-+    return false; //<label id="code.returnFalse"/>
++    return false;
 +  }
 +
 +  view.find('.check-btn').click(checkAnswerClick); //<label id="code.clickBind"/>

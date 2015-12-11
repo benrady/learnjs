@@ -55,7 +55,8 @@ index adbc8d3..61a32ad 100644
 +      learnjs.flashElement(resultFlash, 'Incorrect!');
 +      // END_HIGHLIGHT
      }
-     return false; //<label id="code.returnFalse"/>
+-    return false;
++    return false; //<label id="code.returnFalse"/>
    }
 +  // END: problemViewClickHandler
  
