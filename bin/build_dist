@@ -34,7 +34,7 @@ for patch in `ls ../patches/*.patch | sort`; do
   number=`basename $patch | cut -f 1 -d -`
   git am $patch || exit 1
   mkdir -p $root_dir/dist/$number
-  cp -r sspa p* bin services $root_dir/dist/$number/
+  cp -r sspa conf p* bin services $root_dir/dist/$number/
   rm -rf $root_dir/dist/$number/services/node_modules
   rm -rf $root_dir/dist/$number/services/archive.zip
 done
