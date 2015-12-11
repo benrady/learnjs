@@ -1,0 +1,34 @@
+From 997607e26b2ab04cad6ec70d89c12b3c14564890 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Fri, 11 Dec 2015 11:26:11 -0600
+Subject: [PATCH] Removing labels
+
+---
+ public/app.js | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/public/app.js b/public/app.js
+index d8a571b..61a32ad 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -39,7 +39,7 @@ learnjs.problemView = function(data) {
+   var problemData = learnjs.problems[problemNumber - 1];
+   var resultFlash = view.find('.result');
+ 
+-  function checkAnswer() { //<label id="code.checkAnswer"/>
++  function checkAnswer() {
+     var answer = view.find('.answer').val();
+     var test = problemData.code.replace('__', answer) + '; problem();'
+     return eval(test);
+@@ -56,7 +56,7 @@ learnjs.problemView = function(data) {
+       learnjs.flashElement(resultFlash, 'Incorrect!');
+       // END_HIGHLIGHT
+     }
+-    return false; //<label id="code.returnFalse"/>
++    return false;
+   }
+   // END: problemViewClickHandler
+ 
+-- 
+2.4.9 (Apple Git-60)
+

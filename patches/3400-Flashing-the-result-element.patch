@@ -35,8 +35,7 @@ index adbc8d3..61a32ad 100644
 +  var problemData = learnjs.problems[problemNumber - 1];
 +  var resultFlash = view.find('.result');
  
--  function checkAnswer() { //<label id="code.checkAnswer"/>
-+  function checkAnswer() {
+   function checkAnswer() { //<label id="code.checkAnswer"/>
      var answer = view.find('.answer').val();
      var test = problemData.code.replace('__', answer) + '; problem();'
      return eval(test);
@@ -56,8 +55,7 @@ index adbc8d3..61a32ad 100644
 +      learnjs.flashElement(resultFlash, 'Incorrect!');
 +      // END_HIGHLIGHT
      }
--    return false; //<label id="code.returnFalse"/>
-+    return false;
+     return false; //<label id="code.returnFalse"/>
    }
 +  // END: problemViewClickHandler
  
