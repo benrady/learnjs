@@ -17,7 +17,7 @@ new file mode 100644
 index 0000000..1bc6ab2
 --- /dev/null
 +++ b/conf/cognito/identity_pools/learnjs/assume_role_policy.json
-@@ -0,0 +1,21 @@
+@@ -0,0 +1,22 @@
 +{
 +  "Version": "2012-10-17",
 +  "Statement": [
@@ -30,7 +30,8 @@ index 0000000..1bc6ab2
 +      "Action": "sts:AssumeRoleWithWebIdentity",
 +      "Condition": {
 +        "StringEquals": {
-+          "cognito-identity.amazonaws.com:aud": "us-east-1:71958f90-67bf-4571-aa17-6e4c1dfcb67d"
++          "cognito-identity.amazonaws.com:aud":
++            "us-east-1:71958f90-67bf-4571-aa17-6e4c1dfcb67d"
 +        },
 +        "ForAnyValue:StringLike": {
 +          "cognito-identity.amazonaws.com:amr": "authenticated"
@@ -44,50 +45,52 @@ new file mode 100644
 index 0000000..ba69327
 --- /dev/null
 +++ b/conf/cognito/identity_pools/learnjs/pool_info.json
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,9 @@
 +{
-+    "IdentityPoolId": "us-east-1:71958f90-67bf-4571-aa17-6e4c1dfcb67d",
-+    "AllowUnauthenticatedIdentities": false,
-+    "SupportedLoginProviders": {
-+        "accounts.google.com": "351607165455-uesp1702cesp44vbn539m7rm6gg5ov3h.apps.googleusercontent.com"
-+    },
-+    "IdentityPoolName": "learnjs"
++  "IdentityPoolId": "us-east-1:71958f90-67bf-4571-aa17-6e4c1dfcb67d",
++  "AllowUnauthenticatedIdentities": false,
++  "SupportedLoginProviders": {
++    "accounts.google.com":
++      "351607165455-uesp1702cesp44vbn539m7rm6gg5ov3h.apps.googleusercontent.com"
++  },
++  "IdentityPoolName": "learnjs"
 +}
 diff --git a/conf/cognito/identity_pools/learnjs/role_info.json b/conf/cognito/identity_pools/learnjs/role_info.json
 new file mode 100644
 index 0000000..b271d6e
 --- /dev/null
 +++ b/conf/cognito/identity_pools/learnjs/role_info.json
-@@ -0,0 +1,30 @@
+@@ -0,0 +1,31 @@
 +{
-+    "Role": {
-+        "AssumeRolePolicyDocument": {
-+            "Version": "2012-10-17",
-+            "Statement": [
-+                {
-+                    "Action": "sts:AssumeRoleWithWebIdentity",
-+                    "Principal": {
-+                        "Federated": "cognito-identity.amazonaws.com"
-+                    },
-+                    "Effect": "Allow",
-+                    "Condition": {
-+                        "StringEquals": {
-+                            "cognito-identity.amazonaws.com:aud": "us-east-1:71958f90-67bf-4571-aa17-6e4c1dfcb67d"
-+                        },
-+                        "ForAnyValue:StringLike": {
-+                            "cognito-identity.amazonaws.com:amr": "authenticated"
-+                        }
-+                    },
-+                    "Sid": ""
-+                }
-+            ]
-+        },
-+        "RoleId": "AROAJ5QOAOJOWUAORXS3S",
-+        "CreateDate": "2015-12-11T02:23:13.981Z",
-+        "RoleName": "learnjs_cognito_authenticated",
-+        "Path": "/",
-+        "Arn": "arn:aws:iam::730171000947:role/learnjs_cognito_authenticated"
-+    }
++  "Role": {
++    "AssumeRolePolicyDocument": {
++      "Version": "2012-10-17",
++      "Statement": [
++        {
++          "Action": "sts:AssumeRoleWithWebIdentity",
++          "Principal": {
++            "Federated": "cognito-identity.amazonaws.com"
++          },
++          "Effect": "Allow",
++          "Condition": {
++            "StringEquals": {
++              "cognito-identity.amazonaws.com:aud":
++                "us-east-1:71958f90-67bf-4571-aa17-6e4c1dfcb67d"
++            },
++            "ForAnyValue:StringLike": {
++              "cognito-identity.amazonaws.com:amr": "authenticated"
++            }
++          },
++          "Sid": ""
++        }
++      ]
++    },
++    "RoleId": "AROAJ5QOAOJOWUAORXS3S",
++    "CreateDate": "2015-12-11T02:23:13.981Z",
++    "RoleName": "learnjs_cognito_authenticated",
++    "Path": "/",
++    "Arn": "arn:aws:iam::730171000947:role/learnjs_cognito_authenticated"
++  }
 +}
 -- 
 2.4.9 (Apple Git-60)
