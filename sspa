@@ -17,6 +17,13 @@ function check_aws() {
   fi
 }
 
+function check_node_deps() {
+  if ! which npm > /dev/null; then
+    echo "This action requires Node.js and NPM."
+    exit 1
+  fi
+}
+
 function dev_server() {
   cd public
   exec python -m SimpleHTTPServer 9292
@@ -154,10 +161,7 @@ function create_table() {
 }
 
 function build_bundle() {
-  if ! which npm; then
-    echo "This action requires Node.js and NPM."
-    exit 1
-  fi
+  check_node_deps
   pushd services
   rm archive.zip
   npm install || exit 1
@@ -175,6 +179,17 @@ function deploy_bundle {
   popd
 }
 
+function test_services() {
+  check_node_deps
+  cd services
+  if [[ ! -x node_modules/.bin/jasmine ]]; then
+    npm install || exit 1
+  fi
+  export PATH=node_modules/.bin:${PATH}
+  NODE_PATH=./lib jasmine
+  cd ..
+}
+
 function help() {
   echo "#################################################"
   echo "# Serverless Single Page Apps - The Bash Helper #"
@@ -188,6 +203,7 @@ function help() {
   echo "    deploy_bucket <bucket name>            - Deploy the application to S3 bucket"
   echo "    create_pool <config dir>               - Create a new Cognito identity pool"
   echo "    create_table <config dir> <pool_name>  - Create a new DynamoDB table"
+  echo "    test                                   - Run Lambda service automated tests"
   echo "    build_bundle                           - Build the Lambda service bundle"
   echo "    deploy_bundle                          - Deploy the Lambda service bundle"
   echo 
@@ -201,9 +217,6 @@ function help() {
   echo 
   echo "Create a 'learnjs' table accessible by users in the 'learnjs' identity pool" 
   echo " $ sspa create_pool conf/cognito/identity_pools/learnjs learnjs"
-  #echo 
-  #echo "Deploy all Lambda functions:" 
-  #echo " $ sspa deploy public"
 }
 
 action=${1:-"help"}
@@ -215,6 +228,10 @@ check_python
 case "$action" in
   server)
     dev_server
+    ;;
+
+  test)
+    test_services
     ;;
 
   build_bundle)
