@@ -67,6 +67,32 @@ cat <<DOC
 DOC
 }
 
+function generate_table_policy() {
+  local table_arn=$1
+cat <<DOC
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:UpdateItem"
+      ],
+      "Resource": ["${table_arn}}"],
+      "Condition": {
+        "ForAllValues:StringEquals": {
+          "dynamodb:LeadingKeys": ["\${cognito-identity.amazonaws.com:sub}"]}
+    }
+  }]
+}
+DOC
+}
+
 function create_cognito_auth_role() {
   local identity_pool_dir=$1
   local pool_id=$(support/jsed.py ${identity_pool_dir}/pool_info.json 'IdentityPoolId')
@@ -84,7 +110,7 @@ function create_cognito_auth_role() {
 
 
 function create_identity_pool() {
-  local identity_pool_dir=$1
+  local identity_pool_dir=${1%/}
   if [[ ! -e ${identity_pool_dir}/config.json ]]; then
     echo "Can't find pool config file ${identity_pool_dir}/config.json"
     exit 1
@@ -108,6 +134,25 @@ function create_identity_pool() {
     --roles authenticated=${role_arn}
 }
 
+function create_table() {
+  local table_dir=${1%/}
+  local table_name=$(basename $table_dir)
+  local role_name="${2}_cognito_authenticated"
+  if [[ ! -s ${table_dir}/table_info.json ]]; then
+    aws dynamodb create-table \
+      --table-name $table_name \
+      --cli-input-json "file://${table_dir}/config.json" \
+      > ${table_dir}/table_info.json
+  fi
+
+  local table_arn=$(support/jsed.py ${table_dir}/table_info.json 'TableDescription.TableArn')
+  generate_table_policy ${table_arn} > ${table_dir}/role_policy.json
+  aws iam put-role-policy \
+    --policy-document file://${table_dir}/role_policy.json \
+    --role-name ${role_name} \
+    --policy-name ${table_name}_table_access
+}
+
 function help() {
   echo "#################################################"
   echo "# Serverless Single Page Apps - The Bash Helper #"
@@ -116,10 +161,11 @@ function help() {
   echo "Usage: sspa <action> [argument]"
   echo 
   echo "Where <action> is one of:"
-  echo "    server                      - Run a local development server"
-  echo "    create_bucket <bucket name> - Create a web-accessible bucket in S3"
-  echo "    deploy_bucket <bucket name> - Deploy the application to an S3 bucket"
-  echo "    create_pool <config dir>    - Create a new Cognito identity pool"
+  echo "    server                                 - Run a local development server"
+  echo "    create_bucket <bucket name>            - Create a web-accessible bucket in S3"
+  echo "    deploy_bucket <bucket name>            - Deploy the application to an S3 bucket"
+  echo "    create_pool <config dir>               - Create a new Cognito identity pool"
+  echo "    create_table <config dir> <pool_name>  - Create a new DynamoDB table"
   echo 
   echo "Examples:"
   echo 
@@ -128,15 +174,12 @@ function help() {
   echo 
   echo "Create the 'learnjs' identity pool" 
   echo " $ sspa create_pool conf/cognito/identity_pools/learnjs"
+  echo 
+  echo "Create a 'learnjs' table accessible by users in the 'learnjs' identity pool" 
+  echo " $ sspa create_pool conf/cognito/identity_pools/learnjs learnjs"
   #echo 
   #echo "Deploy all Lambda functions:" 
   #echo " $ sspa deploy public"
-  #echo 
-  #echo "Create a new IAM role" 
-  #echo " $ sspa create roles/dynamodb_admin"
-  #echo 
-  #echo "Upload an IAM role to AWS" 
-  #echo " $ sspa update roles/dynamodb_admin"
 }
 
 action=${1:-"help"}
@@ -163,7 +206,7 @@ case "$action" in
     if [[ $# -eq 2 ]]; then
       deploy_s3_bucket ${2}
     else
-      echo "Please specify a bucket name"
+      echo "Please specify an S3 bucket name"
       exit 1
     fi
     ;;
@@ -172,7 +215,16 @@ case "$action" in
     if [[ $# -eq 2 ]]; then
       create_identity_pool ${2}
     else
-      echo "Please specify an identity pool configuration directory" 
+      echo "Please specify a Cognito identity pool configuration directory" 
+      exit 1
+    fi
+    ;;
+
+  create_table)
+    if [[ $# -eq 3 ]]; then
+      create_table ${2} ${3}
+    else
+      echo "Please specify a DynamoDB table configuration directory and identity pool name" 
       exit 1
     fi
     ;;
