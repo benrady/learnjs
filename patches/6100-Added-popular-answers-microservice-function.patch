@@ -4,30 +4,10 @@ Date: Fri, 20 Nov 2015 11:36:14 -0600
 Subject: [PATCH 1/2] Added popular answers microservice function
 
 ---
- services/lib/deploy.js      |  5 +++--
  services/lib/index.js       | 32 ++++++++++++++++++++++++++++++++
  services/spec/index_spec.js | 31 ++++++++++++++++++++++++++++++-
  3 files changed, 65 insertions(+), 3 deletions(-)
 
-diff --git a/services/lib/deploy.js b/services/lib/deploy.js
-index fcf7007..0bd4e8e 100644
---- a/services/lib/deploy.js
-+++ b/services/lib/deploy.js
-@@ -1,11 +1,12 @@
- var AWS = require('aws-sdk');
- var fs = require('fs');
--var config = require('../conf/' + process.argv[2] + '.js');
- 
- AWS.config.region = 'us-east-1'
-+var functionName = 'arn:aws:lambda:us-east-1:730171000947:function:learnjs_popularAnswers'
-+
- var lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
- var params = {
--  FunctionName: config.functionName, 
-+  FunctionName: functionName,
-   ZipFile: fs.readFileSync('archive.zip')
- };
- lambda.updateFunctionCode(params, function(err, data) { 
 diff --git a/services/lib/index.js b/services/lib/index.js
 index 597b7be..cc3013c 100644
 --- a/services/lib/index.js
