@@ -153,6 +153,28 @@ function create_table() {
     --policy-name ${table_name}_table_access
 }
 
+function build_bundle() {
+  if ! which npm; then
+    echo "This action requires Node.js and NPM."
+    exit 1
+  fi
+  pushd services
+  rm archive.zip
+  npm install || exit 1
+  mkdir -p dist
+  cp -r node_modules dist/
+  cp -r lib/* dist/
+  zip -r archive.zip dist/*
+  rm -rf dist
+  popd
+}
+
+function deploy_bundle {
+  pushd services
+  node ./lib/deploy.js prod
+  popd
+}
+
 function help() {
   echo "#################################################"
   echo "# Serverless Single Page Apps - The Bash Helper #"
@@ -163,9 +185,11 @@ function help() {
   echo "Where <action> is one of:"
   echo "    server                                 - Run a local development server"
   echo "    create_bucket <bucket name>            - Create a web-accessible bucket in S3"
-  echo "    deploy_bucket <bucket name>            - Deploy the application to an S3 bucket"
+  echo "    deploy_bucket <bucket name>            - Deploy the application to S3 bucket"
   echo "    create_pool <config dir>               - Create a new Cognito identity pool"
   echo "    create_table <config dir> <pool_name>  - Create a new DynamoDB table"
+  echo "    build_bundle                           - Build the Lambda service bundle"
+  echo "    deploy_bundle                          - Deploy the Lambda service bundle"
   echo 
   echo "Examples:"
   echo 
@@ -191,6 +215,15 @@ check_python
 case "$action" in
   server)
     dev_server
+    ;;
+
+  build_bundle)
+    build_bundle
+    ;;
+
+  deploy_bundle)
+    build_bundle
+    deploy_bundle
     ;;
 
   create_bucket)
