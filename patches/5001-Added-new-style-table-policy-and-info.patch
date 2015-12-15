@@ -1,0 +1,110 @@
+From 7bf10dab278e37f2ba6823d4143b17a8516f88a6 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Mon, 14 Dec 2015 20:51:32 -0600
+Subject: [PATCH] Added new style table policy and info
+
+---
+ conf/dynamodb/tables/learnjs/role_policy.json | 20 +++++++++++++++
+ conf/dynamodb/tables/learnjs/table_info.json  | 35 +++++++++++++++++++++++++++
+ policy/table_policy.json                      | 20 ---------------
+ 3 files changed, 55 insertions(+), 20 deletions(-)
+ create mode 100644 conf/dynamodb/tables/learnjs/role_policy.json
+ create mode 100644 conf/dynamodb/tables/learnjs/table_info.json
+ delete mode 100644 policy/table_policy.json
+
+diff --git a/conf/dynamodb/tables/learnjs/role_policy.json b/conf/dynamodb/tables/learnjs/role_policy.json
+new file mode 100644
+index 0000000..8daa394
+--- /dev/null
++++ b/conf/dynamodb/tables/learnjs/role_policy.json
+@@ -0,0 +1,20 @@
++{
++  "Version": "2012-10-17",
++  "Statement": [{
++      "Effect": "Allow",
++      "Action": [
++        "dynamodb:BatchGetItem",
++        "dynamodb:BatchWriteItem",
++        "dynamodb:DeleteItem",
++        "dynamodb:GetItem",
++        "dynamodb:PutItem",
++        "dynamodb:Query",
++        "dynamodb:UpdateItem"
++      ],
++      "Resource": ["arn:aws:dynamodb:us-east-1:730171000947:table/learnjs}"],
++      "Condition": {
++        "ForAllValues:StringEquals": {
++          "dynamodb:LeadingKeys": ["${cognito-identity.amazonaws.com:sub}"]}
++    }
++  }]
++}
+diff --git a/conf/dynamodb/tables/learnjs/table_info.json b/conf/dynamodb/tables/learnjs/table_info.json
+new file mode 100644
+index 0000000..3bb1666
+--- /dev/null
++++ b/conf/dynamodb/tables/learnjs/table_info.json
+@@ -0,0 +1,35 @@
++{
++    "TableDescription": {
++        "TableArn": "arn:aws:dynamodb:us-east-1:730171000947:table/learnjs",
++        "AttributeDefinitions": [
++            {
++                "AttributeName": "problemId",
++                "AttributeType": "N"
++            },
++            {
++                "AttributeName": "userId",
++                "AttributeType": "S"
++            }
++        ],
++        "ProvisionedThroughput": {
++            "NumberOfDecreasesToday": 0,
++            "WriteCapacityUnits": 5,
++            "ReadCapacityUnits": 5
++        },
++        "TableSizeBytes": 0,
++        "TableName": "learnjs",
++        "TableStatus": "CREATING",
++        "KeySchema": [
++            {
++                "KeyType": "HASH",
++                "AttributeName": "userId"
++            },
++            {
++                "KeyType": "RANGE",
++                "AttributeName": "problemId"
++            }
++        ],
++        "ItemCount": 0,
++        "CreationDateTime": 1449874483.103
++    }
++}
+diff --git a/policy/table_policy.json b/policy/table_policy.json
+deleted file mode 100644
+index 01f9361..0000000
+--- a/policy/table_policy.json
++++ /dev/null
+@@ -1,20 +0,0 @@
+-{
+-  "Version": "2012-10-17",
+-  "Statement": [{
+-      "Effect": "Allow",
+-      "Action": [
+-        "dynamodb:BatchGetItem",
+-        "dynamodb:BatchWriteItem",
+-        "dynamodb:DeleteItem",
+-        "dynamodb:GetItem",
+-        "dynamodb:PutItem",
+-        "dynamodb:Query",
+-        "dynamodb:UpdateItem"
+-      ],
+-      "Resource": ["arn:aws:dynamodb:us-east-1:730171000947:table/learnjs"],
+-      "Condition": {
+-        "ForAllValues:StringEquals": {
+-          "dynamodb:LeadingKeys": ["${cognito-identity.amazonaws.com:sub}"]}
+-    }
+-  }]
+-}
+-- 
+2.5.4 (Apple Git-61)
+
