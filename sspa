@@ -90,7 +90,7 @@ cat <<DOC
         "dynamodb:Query",
         "dynamodb:UpdateItem"
       ],
-      "Resource": ["${table_arn}}"],
+      "Resource": ["${table_arn}"],
       "Condition": {
         "ForAllValues:StringEquals": {
           "dynamodb:LeadingKeys": ["\${cognito-identity.amazonaws.com:sub}"]}
