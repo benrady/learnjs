@@ -2,6 +2,7 @@
 
 abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
 root_dir=`dirname $abspath`
+profile=admin
 
 function check_python() {
   if ! which python > /dev/null; then
@@ -13,6 +14,10 @@ function check_python() {
 function check_aws() {
   if ! which aws > /dev/null; then
     echo "Can't find AWS CLI. Install 'awscli' using pip."
+    exit 1
+  fi
+  if ! aws configure list --profile admin > /dev/null; then
+    echo "Run \`aws configure --profile admin\` to create it"
     exit 1
   fi
 }
@@ -33,18 +38,18 @@ function dev_server() {
 function create_s3_bucket() {
   local bucket_name=$1
   local bucket_uri="s3://${bucket_name}"
-  aws s3 mb $bucket_uri
-  aws s3 website \
+  aws --profile admin s3 mb $bucket_uri
+  aws --profile admin s3 website \
     --index-document index.html \
     --error-document error.html \
     $bucket_uri
-  local region=$(aws configure get region)
+  local region=$(aws --profile admin configure get region)
   echo "Website endpoint is: http://${1}.s3-website-${region}.amazonaws.com"
 }
 
 function deploy_s3_bucket() {
   local bucket_uri="s3://$1"
-  aws s3 sync public/ $bucket_uri --acl public-read
+  aws --profile admin s3 sync public/ $bucket_uri --acl public-read
 }
 
 function generate_assume_role_policy() {
@@ -108,7 +113,7 @@ function create_cognito_auth_role() {
   if [[ ! -s ${identity_pool_dir}/role_info.json ]]; then
     local role_name="${pool_name}_cognito_authenticated"
     echo "Creaing role: $role_name"
-    aws iam create-role \
+    aws --profile admin iam create-role \
       --role-name "$role_name" \
       --assume-role-policy-document "file://${identity_pool_dir}/assume_role_policy.json" \
       > ${identity_pool_dir}/role_info.json
@@ -126,7 +131,7 @@ function create_identity_pool() {
   local identity_pool_name=$(basename $identity_pool_dir)
   if [[ ! -s ${identity_pool_dir}/pool_info.json ]]; then
     echo "Creating identity pool: $identity_pool_name"
-    aws cognito-identity create-identity-pool \
+    aws --profile admin cognito-identity create-identity-pool \
       --identity-pool-name $identity_pool_name \
       --cli-input-json "file://${identity_pool_dir}/config.json" \
       > ${identity_pool_dir}/pool_info.json
@@ -136,7 +141,7 @@ function create_identity_pool() {
   local pool_id=$(support/jsed.py ${identity_pool_dir}/pool_info.json 'IdentityPoolId')
   local role_arn=$(support/jsed.py ${identity_pool_dir}/role_info.json 'Role.Arn')
   echo "Updating identity pool roles"
-  aws cognito-identity set-identity-pool-roles \
+  aws --profile admin cognito-identity set-identity-pool-roles \
     --identity-pool-id ${pool_id} \
     --roles authenticated=${role_arn}
 }
@@ -146,7 +151,7 @@ function create_table() {
   local table_name=$(basename $table_dir)
   local role_name="${2}_cognito_authenticated"
   if [[ ! -s ${table_dir}/table_info.json ]]; then
-    aws dynamodb create-table \
+    aws --profile admin dynamodb create-table \
       --table-name $table_name \
       --cli-input-json "file://${table_dir}/config.json" \
       > ${table_dir}/table_info.json
@@ -154,7 +159,7 @@ function create_table() {
 
   local table_arn=$(support/jsed.py ${table_dir}/table_info.json 'TableDescription.TableArn')
   generate_table_policy ${table_arn} > ${table_dir}/role_policy.json
-  aws iam put-role-policy \
+  aws --profile admin iam put-role-policy \
     --policy-document file://${table_dir}/role_policy.json \
     --role-name ${role_name} \
     --policy-name ${table_name}_table_access
@@ -195,7 +200,7 @@ function help() {
   echo "# Serverless Single Page Apps - The Bash Helper #"
   echo "#################################################"
   echo 
-  echo "Usage: sspa <action> [argument]"
+  echo "Usage: sspa <action> [arguments...]"
   echo 
   echo "Where <action> is one of:"
   echo "    server                                 - Run a local development server"
@@ -206,6 +211,7 @@ function help() {
   echo "    test                                   - Run Lambda service automated tests"
   echo "    build_bundle                           - Build the Lambda service bundle"
   echo "    deploy_bundle                          - Deploy the Lambda service bundle"
+  echo "    create_service <config_file>           - Create a new Lambda service"
   echo 
   echo "Examples:"
   echo 
@@ -224,6 +230,7 @@ action=${1:-"help"}
 cd $root_dir
 
 check_python
+check_aws
 
 case "$action" in
   server)
@@ -275,6 +282,15 @@ case "$action" in
       create_table ${2} ${3}
     else
       echo "Please specify a DynamoDB table configuration directory and identity pool name" 
+      exit 1
+    fi
+    ;;
+
+  create_service)
+    if [[ $# -eq 2 ]]; then
+      create_lambda_service ${2}
+    else
+      echo "Please specify a Lambda config file" 
       exit 1
     fi
     ;;
