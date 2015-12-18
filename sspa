@@ -199,9 +199,11 @@ function build_bundle() {
 }
 
 function deploy_bundle {
-  pushd services
-  node ./lib/deploy.js prod
-  popd
+  for fn in `ls conf/lambda/functions`; do
+    aws lambda update-function-code \
+      --function-name $fn \
+      --zip-file "fileb://services/archive.zip" > conf/lambda/functions/$fn/info.json
+  done
 }
 
 function test_services() {
@@ -332,7 +334,7 @@ case "$action" in
       build_bundle
       create_lambda_service ${2}
     else
-      echo "Please specify a Lambda config file" 
+      echo "Please specify a Lambda config directory" 
       exit 1
     fi
     ;;
