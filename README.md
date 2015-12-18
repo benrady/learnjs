@@ -9,7 +9,18 @@ Go to http://localhost:9292/tests for the tests
 
 It will reload automatically as you change files
 
+## Change Log
+
+### Beta 2 Changes
+
+  * Now using 'admin' profile instead of default profile
+  * Added create_service action to sspa
+  * Changed Lambda functions to pull code from single bundle stored in S3.
+  * deploy_bucket can now take a config path
+
 ## MIT License
+
+Note: The license below applies only to the contents of this git repository, not the Pragmatic Bookshelf title "Serverless Single Page Apps", or any other related content.
 
 Copyright (c) 2015 Ben Rady <benrady@gmail.com>
 
@@ -19,4 +30,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-HeroImage.jpg is licensed from popularwoodworking.com under the Creative Commons Attribution License (CC BY 3.0 US).
+## Creative Commons Attributions
+
+  * HeroImage.jpg is licensed from popularwoodworking.com under the Creative Commons Attribution License (CC BY 3.0 US).

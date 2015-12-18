@@ -2,6 +2,8 @@
 
 abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
 root_dir=`dirname $abspath`
+app_name=learnjs
+code_bucket=${app_name}/_code_bundles
 profile=admin
 
 function check_python() {
@@ -32,23 +34,37 @@ function check_node_deps() {
 function dev_server() {
   cd public
   exec python -m SimpleHTTPServer 9292
-  popd
 }
 
 function create_s3_bucket() {
   local bucket_name=$1
   local bucket_uri="s3://${bucket_name}"
-  aws --profile admin s3 mb $bucket_uri
+  local bucket_path=conf/s3/${bucket_name}
+  # The s3 command doesn't output JSON :-/
+  if [[ ! -e ${bucket_path}/endpoint.txt ]]; then
+    aws --profile admin s3 mb $bucket_uri && mkdir -p ${bucket_path}
+    local region=$(aws --profile admin configure get region)
+    local endpoint="http://${1}.s3-website-${region}.amazonaws.com"
+    echo "$endpoint" > ${bucket_path}/endpoint.txt
+    echo "Website endpoint is: $endpoint"
+  fi
+}
+
+function webify_bucket() {
+  local bucket_name=$1
+  local bucket_uri="s3://${bucket_name}"
   aws --profile admin s3 website \
     --index-document index.html \
     --error-document error.html \
     $bucket_uri
-  local region=$(aws --profile admin configure get region)
-  echo "Website endpoint is: http://${1}.s3-website-${region}.amazonaws.com"
 }
 
 function deploy_s3_bucket() {
-  local bucket_uri="s3://$1"
+  local bucket_name=$1
+  if [[ -d ${1} ]]; then
+    bucket_name=$(basename $bucket_name)
+  fi
+  local bucket_uri="s3://${1}"
   aws --profile admin s3 sync public/ $bucket_uri --acl public-read
 }
 
@@ -113,6 +129,7 @@ function create_cognito_auth_role() {
   if [[ ! -s ${identity_pool_dir}/role_info.json ]]; then
     local role_name="${pool_name}_cognito_authenticated"
     echo "Creaing role: $role_name"
+    # Might be able to use the create_iam_role function for this
     aws --profile admin iam create-role \
       --role-name "$role_name" \
       --assume-role-policy-document "file://${identity_pool_dir}/assume_role_policy.json" \
@@ -195,6 +212,35 @@ function test_services() {
   cd ..
 }
 
+function create_iam_role() {
+  local role_name="${app_name}_lambda_exec"
+  local role_dir=conf/iam/roles/${role_name}
+  local policy_document=$2
+  mkdir -p $role_dir
+  if [[ ! -e ${role_dir}/info.json ]]; then
+    aws --profile admin iam create-role \
+      --role-name "$role_name" \
+      --assume-role-policy-document "${policy_document}" \
+      > ${role_dir}/info.json
+  fi
+}
+
+function create_lambda_service() {
+  local service_dir=${1%/}
+  local function_name=$(basename $service_dir)
+  create_iam_role lambda_exec "file://conf/iam/policies/lambda_trust.json"
+  local role_arn=$(support/jsed.py conf/iam/roles/learnjs_lambda_exec/info.json 'Role.Arn')
+  if [[ ! -e ${service_dir}/info.json ]]; then
+    aws lambda create-function \
+      --function-name ${function_name} \
+      --role ${role_arn} \
+      --zip-file "fileb://services/archive.zip" \
+      --handler "index.${function_name}" \
+      --cli-input-json "file://${service_dir}/config.json" \
+      > ${service_dir}/info.json
+  fi
+}
+
 function help() {
   echo "#################################################"
   echo "# Serverless Single Page Apps - The Bash Helper #"
@@ -203,26 +249,17 @@ function help() {
   echo "Usage: sspa <action> [arguments...]"
   echo 
   echo "Where <action> is one of:"
-  echo "    server                                 - Run a local development server"
-  echo "    create_bucket <bucket name>            - Create a web-accessible bucket in S3"
-  echo "    deploy_bucket <bucket name>            - Deploy the application to S3 bucket"
-  echo "    create_pool <config dir>               - Create a new Cognito identity pool"
-  echo "    create_table <config dir> <pool_name>  - Create a new DynamoDB table"
-  echo "    test                                   - Run Lambda service automated tests"
-  echo "    build_bundle                           - Build the Lambda service bundle"
-  echo "    deploy_bundle                          - Deploy the Lambda service bundle"
-  echo "    create_service <config_file>           - Create a new Lambda service"
+  echo "    server"
+  echo "    create_bucket <bucket name>"
+  echo "    deploy_bucket <bucket dir>"
+  echo "    create_pool <config dir>"
+  echo "    create_table <config dir> <pool name>"
+  echo "    test"
+  echo "    build_bundle"
+  echo "    deploy_bundle"
+  echo "    create_service <config file>"
+  #echo "    create_gateway <config_file> <service> - Attach an API Gateway to a service"
   echo 
-  echo "Examples:"
-  echo 
-  echo "Deploy the web app to an S3 bucket:" 
-  echo " $ sspa deploy_public learnjs.benrady.com"
-  echo 
-  echo "Create the 'learnjs' identity pool" 
-  echo " $ sspa create_pool conf/cognito/identity_pools/learnjs"
-  echo 
-  echo "Create a 'learnjs' table accessible by users in the 'learnjs' identity pool" 
-  echo " $ sspa create_pool conf/cognito/identity_pools/learnjs learnjs"
 }
 
 action=${1:-"help"}
@@ -253,6 +290,7 @@ case "$action" in
   create_bucket)
     if [[ $# -eq 2 ]]; then
       create_s3_bucket ${2}
+      webify_bucket ${2}
     else
       echo "Please specify a bucket name"
       exit 1
@@ -288,6 +326,7 @@ case "$action" in
 
   create_service)
     if [[ $# -eq 2 ]]; then
+      build_bundle
       create_lambda_service ${2}
     else
       echo "Please specify a Lambda config file" 
