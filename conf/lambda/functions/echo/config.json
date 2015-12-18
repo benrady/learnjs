@@ -1,6 +1,5 @@
 {
     "Runtime": "nodejs", 
-    "Description": "A simple echo function", 
     "Timeout": 5, 
     "MemorySize": 128, 
     "Publish": true
