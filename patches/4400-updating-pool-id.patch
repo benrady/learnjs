@@ -1,0 +1,25 @@
+From ba33a9ef473f8cbd16432bbe84f1ade4c7990d6d Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 16 Dec 2015 11:29:52 -0600
+Subject: [PATCH] updating pool id
+
+---
+ public/app.js | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/public/app.js b/public/app.js
+index 31bdf41..03d9b5b 100644
+--- a/public/app.js
++++ b/public/app.js
+@@ -2,7 +2,7 @@
+ 
+ // START: namespace
+ var learnjs = {
+-  poolId: 'us-east-1:aa0e6d15-02da-4304-a819-f316506257e0'
++  poolId: 'us-east-1:71958f90-67bf-4571-aa17-6e4c1dfcb67d'
+ };
+ // END: namespace
+ 
+-- 
+2.5.4 (Apple Git-61)
+
