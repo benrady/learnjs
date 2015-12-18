@@ -190,7 +190,10 @@ function build_bundle() {
   mkdir -p dist
   cp -r node_modules dist/
   cp -r lib/* dist/
-  zip -r archive.zip dist/*
+  cd dist
+  zip -r archive.zip *
+  mv archive.zip ..
+  cd ..
   rm -rf dist
   popd
 }
