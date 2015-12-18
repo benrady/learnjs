@@ -1,0 +1,41 @@
+From 582bc8a0b6810498ccc1658026846583cb9564ca Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Fri, 18 Dec 2015 15:16:08 -0600
+Subject: [PATCH] Generated lambda exec role
+
+---
+ conf/iam/roles/learnjs_lambda_exec/info.json | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 conf/iam/roles/learnjs_lambda_exec/info.json
+
+diff --git a/conf/iam/roles/learnjs_lambda_exec/info.json b/conf/iam/roles/learnjs_lambda_exec/info.json
+new file mode 100644
+index 0000000..9708a3c
+--- /dev/null
++++ b/conf/iam/roles/learnjs_lambda_exec/info.json
+@@ -0,0 +1,22 @@
++{
++    "Role": {
++        "AssumeRolePolicyDocument": {
++            "Version": "2012-10-17",
++            "Statement": [
++                {
++                    "Action": "sts:AssumeRole",
++                    "Principal": {
++                        "Service": "lambda.amazonaws.com"
++                    },
++                    "Effect": "Allow",
++                    "Sid": ""
++                }
++            ]
++        },
++        "RoleId": "AROAJ67KFEW5PCLEK3X2S",
++        "CreateDate": "2015-12-17T18:27:47.499Z",
++        "RoleName": "learnjs_lambda_exec",
++        "Path": "/",
++        "Arn": "arn:aws:iam::730171000947:role/learnjs_lambda_exec"
++    }
++}
+-- 
+2.5.4 (Apple Git-61)
+
