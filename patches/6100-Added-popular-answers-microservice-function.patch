@@ -31,7 +31,7 @@ index 597b7be..cc3013c 100644
 +  return memo;
 +}
 +
-+exports.fetchPopularAnswers = function(json, context) {
++exports.popularAnswers = function(json, context) {
 +  exports.dynamodb.scan({
 +    Key: {problemNumber: json.problemNumber},
 +    TableName: config.dynamoTableName
@@ -66,9 +66,9 @@ index d763979..1f5b3ba 100644
      });
    });
 +
-+  describe('fetchPopularAnswers', function() {
++  describe('popularAnswers', function() {
 +    it('requests problems with the given problem number', function() {
-+      index.fetchPopularAnswers({problemNumber: 42}, context);
++      index.popularAnswers({problemNumber: 42}, context);
 +      expect(index.dynamodb.scan).toHaveBeenCalledWith({
 +        Key: {problemNumber: 42},
 +        TableName: 'learnjs'
@@ -76,7 +76,7 @@ index d763979..1f5b3ba 100644
 +    });
 +
 +    it('groups answers by minified code', function() {
-+      index.fetchPopularAnswers({problemNumber: 1}, context);
++      index.popularAnswers({problemNumber: 1}, context);
 +      index.dynamodb.scan.calls.first().args[1](undefined, {Items: [
 +        {answer: "true"},
 +        {answer: "true"},
@@ -88,7 +88,7 @@ index d763979..1f5b3ba 100644
 +    });
 +
 +    it('fails the request if dynamo returns an error', function() {
-+      index.fetchPopularAnswers({problemNumber: 1}, context);
++      index.popularAnswers({problemNumber: 1}, context);
 +      index.dynamodb.scan.calls.first().args[1]('error');
 +      expect(context.fail).toHaveBeenCalledWith('error')
 +    });
