@@ -30,9 +30,9 @@ index c5072e7..f6b56f1 100644
    });
  
 +  //START:groupsAnswers
-   describe('fetchPopularAnswers', function() {
+   describe('popularAnswers', function() {
      it('requests problems with the given problem number', function() {
-       index.fetchPopularAnswers({problemNumber: 42}, context);
+       index.popularAnswers({problemNumber: 42}, context);
 @@ -35,6 +39,7 @@ describe('lambda function', function() {
        ]});
        expect(context.succeed).toHaveBeenCalledWith({"true": 3, "!false": 2});
@@ -40,7 +40,7 @@ index c5072e7..f6b56f1 100644
 +    //END:groupsAnswers
  
      it('limits the results to the top five', function() {
-       index.fetchPopularAnswers({problemNumber: 1}, context);
+       index.popularAnswers({problemNumber: 1}, context);
 @@ -65,5 +70,7 @@ describe('lambda function', function() {
        index.dynamodb.scan.calls.first().args[1]('error');
        expect(context.fail).toHaveBeenCalledWith('error')

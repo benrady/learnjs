@@ -14,7 +14,7 @@ index 53ae8c2..d5f3ad4 100644
 @@ -33,12 +33,14 @@ function filterItems(items) {
  }
  
- exports.fetchPopularAnswers = function(json, context) {
+ exports.popularAnswers = function(json, context) {
 +  //START: scanParams
    exports.dynamodb.scan({
      FilterExpression: "problemId = :problemId",

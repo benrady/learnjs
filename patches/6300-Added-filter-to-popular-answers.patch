@@ -32,10 +32,10 @@ index 25c05cd..1a489b2 100644
 +  return topFive;
 +}
 +
- exports.fetchPopularAnswers = function(json, context) {
+ exports.popularAnswers = function(json, context) {
    exports.dynamodb.scan({
      Key: {problemNumber: json.problemNumber},
-@@ -24,7 +40,7 @@ exports.fetchPopularAnswers = function(json, context) {
+@@ -24,7 +40,7 @@ exports.popularAnswers = function(json, context) {
      if (err) {
        context.fail(err);
      } else {
@@ -53,7 +53,7 @@ index 1f5b3ba..c5072e7 100644
      });
  
 +    it('limits the results to the top five', function() {
-+      index.fetchPopularAnswers({problemNumber: 1}, context);
++      index.popularAnswers({problemNumber: 1}, context);
 +      index.dynamodb.scan.calls.first().args[1](undefined, {Items: [
 +        {answer: "1 === 1"},
 +        {answer: "1 === 1"},
@@ -77,7 +77,7 @@ index 1f5b3ba..c5072e7 100644
 +    });
 +
      it('fails the request if dynamo returns an error', function() {
-       index.fetchPopularAnswers({problemNumber: 1}, context);
+       index.popularAnswers({problemNumber: 1}, context);
        index.dynamodb.scan.calls.first().args[1]('error');
 -- 
 2.4.9 (Apple Git-60)

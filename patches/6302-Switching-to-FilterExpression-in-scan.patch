@@ -14,7 +14,7 @@ index 1a489b2..53ae8c2 100644
 +++ b/services/lib/index.js
 @@ -34,7 +34,10 @@ function filterItems(items) {
  
- exports.fetchPopularAnswers = function(json, context) {
+ exports.popularAnswers = function(json, context) {
    exports.dynamodb.scan({
 -    Key: {problemNumber: json.problemNumber},
 +    FilterExpression: "problemId = :problemId",
@@ -30,7 +30,7 @@ index f6b56f1..c9d99d0 100644
 +++ b/services/spec/index_spec.js
 @@ -23,7 +23,8 @@ describe('lambda function', function() {
      it('requests problems with the given problem number', function() {
-       index.fetchPopularAnswers({problemNumber: 42}, context);
+       index.popularAnswers({problemNumber: 42}, context);
        expect(index.dynamodb.scan).toHaveBeenCalledWith({
 -        Key: {problemNumber: 42},
 +        FilterExpression: "problemId = :problemId",
