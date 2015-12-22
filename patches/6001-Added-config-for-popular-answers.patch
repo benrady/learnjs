@@ -1,0 +1,25 @@
+From 26a37ab34e5aab832fa3472d8f5d081851f27c7b Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 22 Dec 2015 07:36:47 -0600
+Subject: [PATCH] Added config for popular answers
+
+---
+ conf/lambda/functions/popularAnswers/config.json | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 conf/lambda/functions/popularAnswers/config.json
+
+diff --git a/conf/lambda/functions/popularAnswers/config.json b/conf/lambda/functions/popularAnswers/config.json
+new file mode 100644
+index 0000000..84cc6fe
+--- /dev/null
++++ b/conf/lambda/functions/popularAnswers/config.json
+@@ -0,0 +1,6 @@
++{
++    "Runtime": "nodejs",
++    "Timeout": 5,
++    "MemorySize": 512,
++    "Publish": true
++}
+-- 
+2.5.4 (Apple Git-61)
+
