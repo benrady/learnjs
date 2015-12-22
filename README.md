@@ -1,14 +1,4 @@
 
-## Running the Development Server
-
-`$ ./sspa server`
-
-Go to http://localhost:9292 for the app
-
-Go to http://localhost:9292/tests for the tests
-
-It will reload automatically as you change files
-
 ## Change Log
 
 ### Beta 2 Changes
