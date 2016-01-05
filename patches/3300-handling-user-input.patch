@@ -22,7 +22,7 @@ index fbf3576..adbc8d3 100644
 +
 +  function checkAnswer() { //<label id="code.checkAnswer"/>
 +    var answer = view.find('.answer').val();
-+    var test = problemData.code.replace('__', answer) + '; problem();'
++    var test = problemData.code.replace('__', answer) + '; problem();';
 +    return eval(test);
 +  }
 +

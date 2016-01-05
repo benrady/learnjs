@@ -21,7 +21,7 @@ index c46037e..8582994 100644
 +  // START: checkAnswer
    function checkAnswer() {
 +    var def = $.Deferred();
-     var test = problemData.code.replace('__', answer.val()) + '; problem();'
+     var test = problemData.code.replace('__', answer.val()) + '; problem();';
 -    return eval(test);
 +    var worker = new Worker('worker.js');
 +    worker.onmessage = function(e) {

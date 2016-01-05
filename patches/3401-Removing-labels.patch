@@ -18,7 +18,7 @@ index d8a571b..61a32ad 100644
 -  function checkAnswer() { //<label id="code.checkAnswer"/>
 +  function checkAnswer() {
      var answer = view.find('.answer').val();
-     var test = problemData.code.replace('__', answer) + '; problem();'
+     var test = problemData.code.replace('__', answer) + '; problem();';
      return eval(test);
 @@ -56,7 +56,7 @@ learnjs.problemView = function(data) {
        learnjs.flashElement(resultFlash, 'Incorrect!');

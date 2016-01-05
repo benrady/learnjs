@@ -37,7 +37,7 @@ index adbc8d3..61a32ad 100644
  
    function checkAnswer() { //<label id="code.checkAnswer"/>
      var answer = view.find('.answer').val();
-     var test = problemData.code.replace('__', answer) + '; problem();'
+     var test = problemData.code.replace('__', answer) + '; problem();';
      return eval(test);
    }
  

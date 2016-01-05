@@ -32,8 +32,8 @@ index ef1ba76..21c7437 100644
  
    function checkAnswer() {
 -    var answer = view.find('.answer').val();
--    var test = problemData.code.replace('__', answer) + '; problem();'
-+    var test = problemData.code.replace('__', answer.val()) + '; problem();'
+-    var test = problemData.code.replace('__', answer) + '; problem();';
++    var test = problemData.code.replace('__', answer.val()) + '; problem();';
      return eval(test);
    }
  
