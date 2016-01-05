@@ -7,8 +7,6 @@ Go to http://localhost:9292 for the app
 
 Go to http://localhost:9292/tests for the tests
 
-It will reload automatically as you change files
-
 ## MIT License
 
 Copyright (c) 2015 Ben Rady <benrady@gmail.com>
