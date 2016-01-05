@@ -1,0 +1,26 @@
+From 94175a5a0cea9d6e9230eeae2af8da625a0d0c56 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Wed, 23 Dec 2015 12:26:37 -0600
+Subject: [PATCH] Adding meta-viewport to index.html
+
+---
+ public/index.html | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/public/index.html b/public/index.html
+index 42e2ed8..a3ab79b 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -3,6 +3,9 @@
+   <head>
+     <meta charset='utf-8'>
+     <title>Learn JS!</title>
++    <!-- START: meta-viewport -->
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <!-- END: meta-viewport -->
+     <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'>
+     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
+-- 
+2.5.4 (Apple Git-61)
+
