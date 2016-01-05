@@ -256,7 +256,7 @@ function help() {
   echo "Where <action> is one of:"
   echo "    server"
   echo "    create_bucket <bucket name>"
-  echo "    deploy_bucket <bucket dir>"
+  echo "    deploy_bucket <bucket name>"
   echo "    create_pool <config dir>"
   echo "    create_table <config dir> <pool name>"
   echo "    test"
