@@ -1,13 +1,7 @@
 
-## Running the Development Server
-
-`$ ./sspa server`
-
-Go to http://localhost:9292 for the app
-
-Go to http://localhost:9292/tests for the tests
-
 ## MIT License
+
+Note: The license below applies only to the contents of this git repository, not the Pragmatic Bookshelf title "Serverless Single Page Apps", or any other related content.
 
 Copyright (c) 2015 Ben Rady <benrady@gmail.com>
 
