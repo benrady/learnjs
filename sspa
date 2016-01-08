@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
-root_dir=`dirname $abspath`
+root_dir=`dirname "$abspath"`
 
 function check_python() {
   if ! which python > /dev/null; then
@@ -221,7 +221,7 @@ function help() {
 
 action=${1:-"help"}
 
-cd $root_dir
+cd "$root_dir"
 
 check_python
 
