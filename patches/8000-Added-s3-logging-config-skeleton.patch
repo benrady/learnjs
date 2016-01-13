@@ -1,0 +1,41 @@
+From 6a3062094bd1a479b30c3c0aa96701aa3c2d214b Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 12 Jan 2016 21:13:05 -0600
+Subject: [PATCH] Added s3 logging config skeleton
+
+---
+ conf/s3/learnjs.benrady.com/logging.json | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 conf/s3/learnjs.benrady.com/logging.json
+
+diff --git a/conf/s3/learnjs.benrady.com/logging.json b/conf/s3/learnjs.benrady.com/logging.json
+new file mode 100644
+index 0000000..44ee48d
+--- /dev/null
++++ b/conf/s3/learnjs.benrady.com/logging.json
+@@ -0,0 +1,22 @@
++{
++    "Bucket": "",
++    "BucketLoggingStatus": {
++        "LoggingEnabled": {
++            "TargetBucket": "",
++            "TargetGrants": [
++                {
++                    "Grantee": {
++                        "DisplayName": "",
++                        "EmailAddress": "",
++                        "ID": "",
++                        "Type": "",
++                        "URI": ""
++                    },
++                    "Permission": ""
++                }
++            ],
++            "TargetPrefix": ""
++        }
++    },
++    "ContentMD5": ""
++}
+-- 
+2.5.4 (Apple Git-61)
+

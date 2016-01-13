@@ -1,0 +1,20 @@
+From c385c586ec2e2a1255d16d4f053f1df6700c8cc5 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 12 Jan 2016 20:33:12 -0600
+Subject: [PATCH] Config for s3 bucket
+
+---
+ conf/s3/learnjs.benrady.com/endpoint.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 conf/s3/learnjs.benrady.com/endpoint.txt
+
+diff --git a/conf/s3/learnjs.benrady.com/endpoint.txt b/conf/s3/learnjs.benrady.com/endpoint.txt
+new file mode 100644
+index 0000000..541887e
+--- /dev/null
++++ b/conf/s3/learnjs.benrady.com/endpoint.txt
+@@ -0,0 +1 @@
++http://learnjs.benrady.com.s3-website-us-east-1.amazonaws.com
+-- 
+2.5.4 (Apple Git-61)
+
