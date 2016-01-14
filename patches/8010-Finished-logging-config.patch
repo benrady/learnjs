@@ -1,0 +1,43 @@
+From 69b27c1bca149acffa18750ab3dab7c5b11bd523 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Tue, 12 Jan 2016 22:12:33 -0600
+Subject: [PATCH] Finished logging config
+
+---
+ conf/s3/learnjs.benrady.com/logging.json | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
+
+diff --git a/conf/s3/learnjs.benrady.com/logging.json b/conf/s3/learnjs.benrady.com/logging.json
+index 54648e5..e891bed 100644
+--- a/conf/s3/learnjs.benrady.com/logging.json
++++ b/conf/s3/learnjs.benrady.com/logging.json
+@@ -1,22 +1,10 @@
+ {
+-    "Bucket": "",
++    "Bucket": "learnjs.benrady.com",
+     "BucketLoggingStatus": {
+         "LoggingEnabled": {
+-            "TargetBucket": "",
+-            "TargetGrants": [
+-                {
+-                    "Grantee": {
+-                        "DisplayName": "",
+-                        "EmailAddress": "",
+-                        "ID": "",
+-                        "Type": "",
+-                        "URI": ""
+-                    },
+-                    "Permission": ""
+-                }
+-            ],
++            "TargetBucket": "learnjs-logging.benrady.com",
++            "TargetGrants": [],
+             "TargetPrefix": ""
+         }
+-    },
+-    "ContentMD5": ""
++    }
+ }
+-- 
+2.5.4 (Apple Git-61)
+
