@@ -5,7 +5,6 @@
 
   * Now using 'admin' profile instead of default profile
   * Added create_service action to sspa
-  * Changed Lambda functions to pull code from single bundle stored in S3.
   * deploy_bucket can now take a config path
 
 ## MIT License
