@@ -1,0 +1,28 @@
+From 8b23b6c8e2e0406b2f1c0796375b91b84b70fea7 Mon Sep 17 00:00:00 2001
+From: Ben Rady <benrady@gmail.com>
+Date: Thu, 4 Feb 2016 12:27:59 -0600
+Subject: [PATCH] Added section for profileLinkTemplate
+
+---
+ public/index.html | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/public/index.html b/public/index.html
+index 42e2ed8..34b4ea4 100644
+--- a/public/index.html
++++ b/public/index.html
+@@ -93,9 +93,11 @@
+       <div class='view-container container'>
+       </div>
+       <div class='templates'>
++        <!-- START: profileLinkTemplate -->
+         <div class='profile-link navbar-padding-lg'>
+           <a href="#profile"></a>
+         </div>
++        <!-- END: profileLinkTemplate -->
+         <div class='landing-view'>
+         <!-- Markup Continues... -->
+           <div class='row'>
+-- 
+2.5.4 (Apple Git-61)
+
