@@ -272,7 +272,6 @@ action=${1:-"help"}
 cd "$root_dir"
 
 check_python
-check_aws
 
 case "$action" in
   server)
@@ -288,11 +287,13 @@ case "$action" in
     ;;
 
   deploy_bundle)
+    check_aws
     build_bundle
     deploy_bundle
     ;;
 
   create_bucket)
+    check_aws
     if [[ $# -eq 2 ]]; then
       create_s3_bucket ${2}
       webify_bucket ${2}
@@ -303,6 +304,7 @@ case "$action" in
     ;;
 
   deploy_bucket)
+    check_aws
     if [[ $# -eq 2 ]]; then
       deploy_s3_bucket ${2}
     else
@@ -312,6 +314,7 @@ case "$action" in
     ;;
 
   create_pool)
+    check_aws
     if [[ $# -eq 2 ]]; then
       create_identity_pool ${2}
     else
@@ -321,6 +324,7 @@ case "$action" in
     ;;
 
   create_table)
+    check_aws
     if [[ $# -eq 3 ]]; then
       create_table ${2} ${3}
     else
@@ -330,6 +334,7 @@ case "$action" in
     ;;
 
   create_service)
+    check_aws
     if [[ $# -eq 2 ]]; then
       build_bundle
       create_lambda_service ${2}
