@@ -36,6 +36,11 @@ function dev_server() {
   exec python -m SimpleHTTPServer 9292
 }
 
+function livereload_server() {
+  cd public
+  exec livereloadx -s -p 9292 "$PWD"
+}
+
 function create_s3_bucket() {
   local bucket_name=$1
   local bucket_uri="s3://${bucket_name}"
@@ -255,6 +260,7 @@ function help() {
   echo 
   echo "Where <action> is one of:"
   echo "    server"
+  echo "    liveserver"
   echo "    create_bucket <bucket name>"
   echo "    deploy_bucket <bucket name>"
   echo "    create_pool <config dir>"
@@ -274,6 +280,10 @@ cd "$root_dir"
 check_python
 
 case "$action" in
+  liveserver)
+    livereload_server
+    ;;
+
   server)
     dev_server
     ;;
