@@ -200,7 +200,7 @@ function build_bundle() {
 
 function deploy_bundle {
   for fn in `ls conf/lambda/functions`; do
-    aws lambda update-function-code \
+    aws --profile $profile lambda update-function-code \
       --function-name $fn \
       --zip-file "fileb://services/archive.zip" > conf/lambda/functions/$fn/info.json
   done
