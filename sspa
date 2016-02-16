@@ -205,7 +205,7 @@ function build_bundle() {
 
 function deploy_bundle {
   for fn in `ls conf/lambda/functions`; do
-    aws lambda update-function-code \
+    aws --profile $profile lambda update-function-code \
       --function-name $fn \
       --zip-file "fileb://services/archive.zip" > conf/lambda/functions/$fn/info.json
   done
@@ -241,7 +241,7 @@ function create_lambda_service() {
   create_iam_role lambda_exec "file://conf/iam/policies/lambda_trust.json"
   local role_arn=$(support/jsed.py conf/iam/roles/learnjs_lambda_exec/info.json 'Role.Arn')
   if [[ ! -e ${service_dir}/info.json ]]; then
-    aws lambda create-function \
+    aws --profile $profile lambda create-function \
       --function-name ${function_name} \
       --role ${role_arn} \
       --zip-file "fileb://services/archive.zip" \
