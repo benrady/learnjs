@@ -241,7 +241,7 @@ function create_lambda_service() {
   create_iam_role lambda_exec "file://conf/iam/policies/lambda_trust.json"
   echo -n "Waiting for IAM Role to become available..."
   local role_arn=$(support/jsed.py conf/iam/roles/${app_name}_lambda_exec/info.json 'Role.Arn')
-  while ! aws iam get-role --role-name ${app_name}_lambda_exec &> /dev/null; do
+  while ! aws --profile $profile iam get-role --role-name ${app_name}_lambda_exec &> /dev/null; do
     echo -n .
   done
   echo "...done!"
