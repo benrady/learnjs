@@ -1,6 +1,10 @@
 
 ## Change Log
 
+### Beta 3 Changes
+
+  * Compensating for AWSCLI timing issues when creating roles
+  
 ### Beta 2 Changes
 
   * Now using 'admin' profile instead of default profile
