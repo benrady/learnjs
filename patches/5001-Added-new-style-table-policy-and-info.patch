@@ -31,7 +31,7 @@ index 0000000..8daa394
 +        "dynamodb:Query",
 +        "dynamodb:UpdateItem"
 +      ],
-+      "Resource": ["arn:aws:dynamodb:us-east-1:730171000947:table/learnjs}"],
++      "Resource": ["arn:aws:dynamodb:us-east-1:730171000947:table/learnjs"],
 +      "Condition": {
 +        "ForAllValues:StringEquals": {
 +          "dynamodb:LeadingKeys": ["${cognito-identity.amazonaws.com:sub}"]}
