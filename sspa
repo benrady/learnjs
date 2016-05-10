@@ -177,9 +177,17 @@ function create_table() {
       --table-name $table_name \
       --cli-input-json "file://${table_dir}/config.json" \
       > ${table_dir}/table_info.json
+
+    echo -n "Waiting for table creation..."
+    aws --profile admin dynamodb describe-table --table-name "$table_name" > ${table_dir}/table_info.json
+    while [[ "$(support/jsed.py ${table_dir}/table_info.json 'Table.TableStatus')" != "ACTIVE" ]]; do
+      aws --profile admin dynamodb describe-table --table-name "$table_name" > ${table_dir}/table_info.json
+      echo -n .
+    done
+    echo "...done!"
   fi
 
-  local table_arn=$(support/jsed.py ${table_dir}/table_info.json 'TableDescription.TableArn')
+  local table_arn=$(support/jsed.py ${table_dir}/table_info.json 'Table.TableArn')
   generate_table_policy ${table_arn} > ${table_dir}/role_policy.json
   aws --profile $profile iam put-role-policy \
     --policy-document file://${table_dir}/role_policy.json \
