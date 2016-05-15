@@ -196,6 +196,7 @@ function build_bundle() {
   cp -r node_modules dist/
   cp -r lib/* dist/
   cd dist
+  chmod -R a+r *
   zip -r archive.zip *
   mv archive.zip ..
   cd ..
