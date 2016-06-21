@@ -253,6 +253,7 @@ function create_lambda_service() {
   while ! aws --profile $profile iam get-role --role-name ${app_name}_lambda_exec &> /dev/null; do
     echo -n .
   done
+  sleep 5 # See issue #17
   echo "...done!"
   if [[ ! -e ${service_dir}/info.json ]]; then
     aws --profile $profile lambda create-function \
