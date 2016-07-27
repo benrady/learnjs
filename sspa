@@ -179,9 +179,9 @@ function create_table() {
       > ${table_dir}/table_info.json
 
     echo -n "Waiting for table creation..."
-    aws --profile admin dynamodb describe-table --table-name "$table_name" > ${table_dir}/table_info.json
+    aws --profile $profile dynamodb describe-table --table-name "$table_name" > ${table_dir}/table_info.json
     while [[ "$(support/jsed.py ${table_dir}/table_info.json 'Table.TableStatus')" != "ACTIVE" ]]; do
-      aws --profile admin dynamodb describe-table --table-name "$table_name" > ${table_dir}/table_info.json
+      aws --profile $profile dynamodb describe-table --table-name "$table_name" > ${table_dir}/table_info.json
       echo -n .
     done
     echo "...done!"
