@@ -2,3 +2,7 @@
 dist
 working
 master
+*.log
+/target/
+resources/public/js/
+/classes/
