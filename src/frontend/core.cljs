@@ -4,13 +4,13 @@
 
 (enable-console-print!)
 
-(println "This text is printed from src/frontend/core.cljs. Go ahead and edit it and see reloading in action.")
+;(println "This text is printed from src/frontend/core.cljs. Go ahead and edit it and see reloading in action.")
 
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:text "Hello world!"}))
+;(defonce app-state (atom {:text "Hello world!"}))
 
-(om/root
+#_(om/root
   (fn [data owner]
     (reify om/IRender
       (render [_]
