@@ -33,7 +33,12 @@ function check_node_deps() {
 
 function dev_server() {
   cd public
-  exec python -m SimpleHTTPServer 9292
+  ret=`python -c 'import sys; print("%i" % (sys.hexversion<0x03000000))'`
+  if [ $ret -eq 0 ]; then
+    exec python -m http.server 9292
+  else 
+    exec python -m SimpleHTTPServer 9292
+  fi
 }
 
 function livereload_server() {
