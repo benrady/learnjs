@@ -32,7 +32,7 @@ function check_node_deps() {
 }
 
 function dev_server() {
-  cd public
+  cd resources/public
   exec python -m SimpleHTTPServer 9292
 }
 
@@ -70,7 +70,9 @@ function deploy_s3_bucket() {
     bucket_name=$(basename $bucket_name)
   fi
   local bucket_uri="s3://${1}"
-  aws --profile $profile s3 sync public/ $bucket_uri --acl public-read
+  lein clean
+  lein cljsbuild once min
+  aws --profile $profile s3 sync resources/public/ $bucket_uri --acl public-read
 }
 
 function generate_assume_role_policy() {
