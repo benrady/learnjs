@@ -33,7 +33,11 @@ function check_node_deps() {
 
 function dev_server() {
   cd public
-  exec python -m SimpleHTTPServer 9292
+  if which livereloadx > /dev/null ; then
+    exec livereloadx -s -p 9292 "$PWD" 
+  else
+    exec python -m SimpleHTTPServer 9292
+  fi
 }
 
 function create_s3_bucket() {
