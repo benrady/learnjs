@@ -33,7 +33,11 @@ function check_node_deps() {
 
 function dev_server() {
   cd public
-  exec python -m SimpleHTTPServer 9292
+  if ! which c9 > /dev/null; then
+  exec python -m SimpleHTTPServer 9292;
+  elif which c9 > /dev/null; then
+  exec python -m SimpleHTTPServer $PORT;
+  fi
 }
 
 function livereload_server() {
