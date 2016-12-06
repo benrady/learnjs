@@ -44,7 +44,7 @@ function create_s3_bucket() {
   if [[ ! -e ${bucket_path}/endpoint.txt ]]; then
     aws --profile $profile s3 mb $bucket_uri && mkdir -p ${bucket_path}
     local region=$(aws --profile $profile configure get region)
-    local endpoint="http://${1}.s3-website-${region}.amazonaws.com"
+    local endpoint="http://${1}.s3-website.${region}.amazonaws.com"
     echo "$endpoint" > ${bucket_path}/endpoint.txt
     echo "Website endpoint is: $endpoint"
   fi
