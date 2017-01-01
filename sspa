@@ -4,7 +4,8 @@ abspath="$(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")"
 root_dir=`dirname "$abspath"`
 app_name=learnjs
 code_bucket=${app_name}/_code_bundles
-profile=admin
+#profile=admin
+profile=d3nn15
 
 function check_python() {
   if ! which python > /dev/null; then
