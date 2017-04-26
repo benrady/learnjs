@@ -264,6 +264,7 @@ function create_lambda_service() {
     aws --profile $profile lambda create-function \
       --function-name ${function_name} \
       --role ${role_arn} \
+      --runtime nodejs4.3 \
       --zip-file "fileb://services/archive.zip" \
       --handler "index.${function_name}" \
       --cli-input-json "file://${service_dir}/config.json" \
