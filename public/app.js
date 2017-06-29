@@ -24,4 +24,3 @@ learnjs.appOnReady = function() {
   }
   learnjs.showView(window.location.hash);
 }
->>>>>>> 8da2d22e08a61ade3b9cda0b8731aef4609f4fee
