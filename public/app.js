@@ -2,8 +2,29 @@
 
 var learnjs = {};
 
+learnjs.problems = [
+  {
+    description: "What is truth?",
+    code: "function problem() { return __; }"
+  },
+  {
+    description: "Simple Math",
+    code: "function problem() { return 42 === 6 * __; }"
+  }
+];
+
+learnjs.triggerEvent = function(name, args) {
+  $('.view-container>*').trigger(name, args);
+}
+
 learnjs.template = function(name) {
   return $('.templates .' + name).clone();
+}
+
+learnjs.applyObject = function(obj, elem) {
+  for (var key in obj) {
+    elem.find('[data-name="' + key + '"]').text(obj[key]);
+  }
 }
 
 learnjs.flashElement = function(elem, content) {
@@ -11,12 +32,6 @@ learnjs.flashElement = function(elem, content) {
     elem.html(content);
     elem.fadeIn();
   });
-}
-
-learnjs.applyObject = function(obj, elem) {
-  for (var key in obj) {
-    elem.find('[data-name="' + key + '"]').text(obj[key]);
-  }
 }
 
 learnjs.buildCorrectFlash = function(problemNum) {
@@ -31,9 +46,13 @@ learnjs.buildCorrectFlash = function(problemNum) {
   return correctFlash;
 }
 
+learnjs.landingView = function() {
+  return learnjs.template('landing-view');
+}
+
 learnjs.problemView = function(data) {
   var problemNumber = parseInt(data, 10);
-  var view = $('.templates .problem-view').clone();
+  var view = learnjs.template('problem-view');
 
   var problemData = learnjs.problems[problemNumber - 1];
   var resultFlash = view.find('.result');
@@ -56,6 +75,15 @@ learnjs.problemView = function(data) {
     return false;
   }
 
+  if (problemNumber < learnjs.problems.length) {
+    var buttonItem = learnjs.template('skip-btn');
+    buttonItem.find('a').attr('href', '#problem-' + (problemNumber + 1));
+    $('.nav-list').append(buttonItem);
+    view.bind('removingView', function() {
+      buttonItem.remove();
+    });
+  }
+
   view.find('.check-btn').click(checkAnswerClick);
   view.find('.title').text('Problem #' + problemNumber);
   learnjs.applyObject(problemData, view);
@@ -64,11 +92,14 @@ learnjs.problemView = function(data) {
 
 learnjs.showView = function(hash) {
   var routes = {
-    '#problem' : learnjs.problemView
+    '#problem' : learnjs.problemView,
+    '#' : learnjs.landingView,
+    '' : learnjs.landingView
   };
   var hashParts = hash.split('-');
   var viewFn = routes[hashParts[0]];
   if (viewFn) {
+    learnjs.triggerEvent('removingView', []);
     $('.view-container').empty().append(viewFn(hashParts[1]));
   }
 }
@@ -80,13 +111,3 @@ learnjs.appOnReady = function() {
   learnjs.showView(window.location.hash);
 }
 
-learnjs.problems = [
-  {
-    description: "What is truth?",
-    code: "function problem() { return __; }"
-  },
-  {
-    description: "Simple Math",
-    code: "function problem() { return 42 === 6 * __; }"
-  }
-];
