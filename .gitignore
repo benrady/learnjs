@@ -4,7 +4,11 @@ working
 master
 .python-version
 .envrc
+
+/conf/s3/*/endpoint.txt
+
 ### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Global/OSX.gitignore
+
 
 .DS_Store
 .AppleDouble
