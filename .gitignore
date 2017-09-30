@@ -2,3 +2,47 @@
 dist
 working
 master
+.python-version
+.envrc
+
+/conf/s3/*/endpoint.txt
+
+### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Global/OSX.gitignore
+
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+
+### https://raw.github.com/github/gitignore/573fd7e4d914daa07b846cdc4323bd4813c9f204/Global/Vim.gitignore
+
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+
