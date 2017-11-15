@@ -20,19 +20,20 @@ jobs:
       - checkout
 
       # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+      # - restore_cache:
+      #     keys:
+      #     - v1-dependencies-{{ checksum "package.json" }}
+      #     # fallback to using the latest cache if no exact match is found
+      #     - v1-dependencies-
 
-      - run: yarn install
+      # - run: yarn install
 
       # install python and awscli
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       apt-get update && apt-get install -y awscli
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            apt-get install -y awscli
 
       - save_cache:
           paths:
@@ -40,6 +41,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: yarn test
+      # - run: yarn test
 
 
