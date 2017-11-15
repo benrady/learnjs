@@ -33,8 +33,9 @@ jobs:
       # - run: yarn test
 
   deploy:
-    machine:
-        enabled: true
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:7.10
     steps:
       # install python and awscli
       - run:
@@ -60,6 +61,7 @@ workflows:
       - deploy:
           requires:
             - build
+            - test
           # filters:
           #   branches:
           #     only: 
