@@ -33,11 +33,6 @@ jobs:
       # - run: yarn test
 
   deploy:
-    machine:
-        enabled: true
-    working_directory: ~/circleci-demo-workflows
-    environment:
-      - HEROKU_APP: still-shelf-38337
     steps:
       # install python and awscli
       - run:
@@ -57,14 +52,14 @@ workflows:
       - test:
           requires:
             - build
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
       - deploy:
           requires:
             - build
-          filters:
-            branches:
-              only: 
-                - master
-                - feature/circlec
+          # filters:
+          #   branches:
+          #     only: 
+          #       - master
+          #       - feature/circlec
