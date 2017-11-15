@@ -29,10 +29,10 @@ jobs:
       - run: yarn install
 
       # install python and awscli
-      - run:
-          name: Install dependencies
-          command: |
-            apt-get update && apt-get install -y awscli
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apt-get update && apt-get install -y awscli
 
       - save_cache:
           paths:
