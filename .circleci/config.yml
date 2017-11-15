@@ -63,8 +63,7 @@ workflows:
           requires:
             - build
             # - test
-          # filters:
-          #   branches:
-          #     only: 
-          #       - master
-          #       - feature/circlec
+          filters:
+            branches:
+              only: 
+                - master
