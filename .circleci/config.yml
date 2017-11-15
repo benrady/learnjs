@@ -33,6 +33,8 @@ jobs:
       # - run: yarn test
 
   deploy:
+    machine:
+        enabled: true
     steps:
       # install python and awscli
       - run:
