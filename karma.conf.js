@@ -8,7 +8,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: 'public',
 
 
     // frameworks to use
@@ -18,24 +18,34 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      "node_modules/jasmine-jquery/lib/jasmine-jquery.js",
-      "node_modules/karma-jasmine/lib/*.js",
-      "public/tests/lib/**/*.js",
-      "public/app.js",
-      "public/tests/app_spec.js",
-      "public/tests/SpecHelper.js"
+      
+      "app.js",
+      "vendor.js",
+
+      "tests/lib/jquery-2.1.4.js",
+
+      "tests/app_spec.js",
+      "tests/SpecHelper.js",
+
+      {pattern: "*.html", watched: false, included: false, served: true} 
     ],
 
 
     // list of files to exclude
     exclude: [
+      // "tests/*.html",
+      // "*.html"
     ],
+
+    proxies: {
+      '/index.html': '/base/index.html'
+  },
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'public/tests/app_spec.js': ['coverage']
+      'tests/app_spec.js': ['coverage']
     },
 
     coverageReporter: {
