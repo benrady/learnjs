@@ -1,0 +1,29 @@
+{
+  "name": "craftbeer",
+  "version": "1.0.0",
+  "description": "[![CircleCI](https://circleci.com/gh/kwmt/learnjs.svg?style=svg&circle-token=f5494bec80c6a8c521390715a6fb217f253a176f)](https://circleci.com/gh/kwmt/learnjs)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/karma/bin/karma start --single-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kwmt/learnjs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kwmt/learnjs/issues"
+  },
+  "homepage": "https://github.com/kwmt/learnjs#readme",
+  "devDependencies": {
+    "jasmine-core": "^2.8.0",
+    "jasmine-jquery": "^2.1.1",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-phantomjs-launcher": "^1.0.4"
+  }
+}
