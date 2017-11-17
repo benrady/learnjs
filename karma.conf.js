@@ -18,8 +18,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      "public/app.js",
       "public/tests/lib/**/*.js",
+      "node_modules/jasmine-jquery/lib/jasmine-jquery.js",
+      "public/app.js",
       "public/tests/app_spec.js",
       "public/tests/SpecHelper.js"
     ],
