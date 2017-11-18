@@ -12,6 +12,12 @@ learnjs.problems = [
     }
 ];
 
+learnjs.applyObject = function(obj, elem) {
+    for (var key in obj) {
+        elem.find('[data-name="' + key + '"]').text(obj[key]);
+    }
+}
+
 learnjs.problemView = function(problemNumber) {
     var view = $('.templates .problem-view').clone();
     var title = 'Problem #' + problemNumber + ' Coming Soon!';
