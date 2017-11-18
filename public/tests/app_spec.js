@@ -18,6 +18,13 @@ describe('LearnJS', function() {
         expect(learnjs.showView).toHaveBeenCalledWith(window.location.hash);
     });
 
+    it('subscribes to the hash change evnet', function(){
+        learnjs.appOnReady();
+        spyOn(learnjs, 'showView');
+        $(window).trigger('hashchange');
+        expect(learnjs.showView).toHaveBeenCalledWith(window.location.hash);
+    });
+
     describe('problem view', function() {
         it('has a little that includes the problem number', function() {
             var view = learnjs.problemView('1');
