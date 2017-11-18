@@ -44,10 +44,16 @@ describe('LearnJS', function() {
 
 
         describe('answer section', function() {
-            // it('can check a correct answer by hitting a button', function() {
-            //     view.find('.title')
-                
-            // });
+            it('can check a correct answer by hitting a button', function() {
+                view.find('.answer').val('true');
+                view.find('.check-btn').click();
+                expect(view.find('.result').text()).toEqual('Correct!');
+            });
+            it('rejects an incorrect answer', function() {
+                view.find('.answer').val('false');
+                view.find('.check-btn').click();
+                expect(view.find('.result').text()).toEqual('Incorrect!');
+            });
         });
     });
 });

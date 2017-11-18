@@ -19,10 +19,25 @@ learnjs.applyObject = function(obj, elem) {
 }
 
 learnjs.problemView = function(problemNumber) {
+    // templateからコピー
     var view = $('.templates .problem-view').clone();
     var title = 'Problem #' + problemNumber;
+    var resultFlash = view.find('.result');
+    var problemData = learnjs.problems[problemNumber - 1 ];
+
+    function checkAnswer() {
+        var answer = view.find('.answer').val();
+        var test = problemData.code.replace('__',answer) + '; problem();';
+        return eval(test);
+    }
+
+    function checkAnswerClick() 
+    if(checkAnswer()){
+        
+    }
+
     view.find('.title').text(title);
-    learnjs.applyObject(learnjs.problems[problemNumber - 1 ], view)
+    learnjs.applyObject(, view)
     return view;
 }
 
