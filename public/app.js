@@ -31,13 +31,18 @@ learnjs.problemView = function(problemNumber) {
         return eval(test);
     }
 
-    function checkAnswerClick() 
-    if(checkAnswer()){
-        
+    function checkAnswerClick() {
+        if(checkAnswer()){
+            resultFlash.text('Correct!');
+        }else{
+            resultFlash.text('Incorrect!')
+        }
+        return false;
     }
 
+    view.find('.check-btn').click(checkAnswerClick);
     view.find('.title').text(title);
-    learnjs.applyObject(, view)
+    learnjs.applyObject(problemData, view)
     return view;
 }
 
