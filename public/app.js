@@ -1,6 +1,17 @@
 'use strict';
 var learnjs = {};
 
+learnjs.problems = [
+    {
+        description: "What is truth?",
+        code: "function problem() { return __; }"
+    },
+    {
+        description: "Simple Math",
+        code: "function problem() { return 42 === 6 * __; }"
+    }
+];
+
 learnjs.problemView = function(problemNumber) {
     var view = $('.templates .problem-view').clone();
     var title = 'Problem #' + problemNumber + ' Coming Soon!';
