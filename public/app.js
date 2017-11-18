@@ -18,3 +18,7 @@ learnjs.showView = function(hash) {
     
     
 }
+
+learnjs.appOnReady = function() {
+    learnjs.showView(window.location.hash);
+}
