@@ -44,15 +44,30 @@ describe('LearnJS', function() {
 
 
         describe('answer section', function() {
-            it('can check a correct answer by hitting a button', function() {
-                view.find('.answer').val('true');
-                view.find('.check-btn').click();
-                expect(view.find('.result').text()).toEqual('Correct!');
+            var resultFlash;
+            
+            beforeEach(function() {
+                spyOn(learnjs, 'flashElement');
+                resultFlash = view.find('.result');
             });
-            it('rejects an incorrect answer', function() {
-                view.find('.answer').val('false');
-                view.find('.check-btn').click();
-                expect(view.find('.result').text()).toEqual('Incorrect!');
+
+            describe('when the answer is coorect', function(){
+                beforeEach(function() {
+                    view.find('.answer').val('true');
+                    view.find('.check-btn').click()
+                });
+            
+                it('flashes the result', function() {
+                    var flashArgs = learnjs.flashElement.calls.argsFor(0);
+                    expect(flashArgs[0]).toEqual(resultFlash);
+                    expect(flashArgs[1].find('span').text()).toEqual('Correct!');
+                });
+
+                it('rejects an incorrect answer', function() {
+                    view.find('.answer').val('false');
+                    view.find('.check-btn').click();
+                    expect(learnjs.flashElement).toHaveBeenCalledWith(resultFlash, 'Incorrect!');
+                });
             });
         });
     });
