@@ -34,9 +34,9 @@ learnjs.problemView = function(problemNumber) {
     function checkAnswerClick() {
         if(checkAnswer()){
             resultFlash.text('Correct!');
-        }else{
-            resultFlash.text('Incorrect!')
+            return false;
         }
+        resultFlash.text('Incorrect!')
         return false;
     }
 
