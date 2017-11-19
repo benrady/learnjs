@@ -12,16 +12,25 @@ learnjs.problems = [
     }
 ];
 
-learnjs.applyObject = function(obj, elem) {
-    for (var key in obj) {
-        elem.find('[data-name="' + key + '"]').text(obj[key]);
+learnjs.appOnReady = function() {
+    window.onhashchange = function() {
+        learnjs.showView(window.location.hash);
+    };
+    learnjs.showView(window.location.hash);
+}
+
+learnjs.showView = function(hash) {
+    var routes = {
+        '#problem': learnjs.problemView
+    };
+    var hashParts = hash.split('-');
+    var viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
+    if (viewFn) {
+        $('.view-container').empty().append(viewFn(hashParts[1]));
     }
 }
 
-// templateからコピー
-learnjs.template = function(name) {
-    return $('.templates .' + name).clone();
-}
+
 
 learnjs.problemView = function(data) {
 
@@ -54,24 +63,11 @@ learnjs.problemView = function(data) {
     return view;
 }
 
-learnjs.showView = function(hash) {
-    var routes = {
-        '#problem': learnjs.problemView
-    };
-    var hashParts = hash.split('-');
-    var viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
-    if (viewFn) {
-        $('.view-container').empty().append(viewFn(hashParts[1]));
+// bind data
+learnjs.applyObject = function(obj, elem) {
+    for (var key in obj) {
+        elem.find('[data-name="' + key + '"]').text(obj[key]);
     }
-    
-    
-}
-
-learnjs.appOnReady = function() {
-    window.onhashchange = function() {
-        learnjs.showView(window.location.hash);
-    };
-    learnjs.showView(window.location.hash);
 }
 
 learnjs.flashElement = function(elem, content) {
@@ -79,4 +75,9 @@ learnjs.flashElement = function(elem, content) {
         elem.html(content);
         elem.fadeIn();
     })
+}
+
+// templateからコピー
+learnjs.template = function(name) {
+    return $('.templates .' + name).clone();
 }
