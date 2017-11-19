@@ -18,9 +18,13 @@ learnjs.applyObject = function(obj, elem) {
     }
 }
 
+learnjs.template = function(name) {
+    return $('.templates .' + name).clone();
+}
+
 learnjs.problemView = function(problemNumber) {
     // templateからコピー
-    var view = $('.templates .problem-view').clone();
+    var view = learnjs.template('problem-view');
     var title = 'Problem #' + problemNumber;
     var resultFlash = view.find('.result');
     var problemData = learnjs.problems[problemNumber - 1 ];
