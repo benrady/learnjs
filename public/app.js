@@ -12,15 +12,35 @@ learnjs.problems = [
     }
 ];
 
-learnjs.applyObject = function(obj, elem) {
-    for (var key in obj) {
-        elem.find('[data-name="' + key + '"]').text(obj[key]);
+learnjs.appOnReady = function() {
+    window.onhashchange = function() {
+        learnjs.showView(window.location.hash);
+    };
+    learnjs.showView(window.location.hash);
+}
+
+learnjs.showView = function(hash) {
+    var routes = {
+        '#problem': learnjs.problemView,
+        '#': learnjs.landingView,
+        '': learnjs.landingView
+    };
+    var hashParts = hash.split('-');
+    var viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
+    if (viewFn) {
+        learnjs.triggerEvent('removingView',[]);
+        $('.view-container').empty().append(viewFn(hashParts[1]));
     }
 }
 
-learnjs.problemView = function(problemNumber) {
-    // templateからコピー
-    var view = $('.templates .problem-view').clone();
+learnjs.landingView = function() {
+    return learnjs.template('landing-view');
+}
+
+learnjs.problemView = function(data) {
+
+    var problemNumber = parseInt(data, 10)
+    var view = learnjs.template('problem-view');
     var title = 'Problem #' + problemNumber;
     var resultFlash = view.find('.result');
     var problemData = learnjs.problems[problemNumber - 1 ];
@@ -33,11 +53,20 @@ learnjs.problemView = function(problemNumber) {
 
     function checkAnswerClick() {
         if(checkAnswer()){
-            resultFlash.text('Correct!');
-        }else{
-            resultFlash.text('Incorrect!')
+            learnjs.flashElement(resultFlash, learnjs.buildCorrectFlash(problemNumber));
+            return false;
         }
+        learnjs.flashElement(resultFlash, 'Incorrect!');
         return false;
+    }
+
+    if(problemNumber < learnjs.problems.length) {
+        var buttonItem = learnjs.template('skip-btn');
+        buttonItem.find('a').attr('href', '#problem-' + (problemNumber + 1));
+        $('.nav-list').append(buttonItem);
+        view.bind('removingView', function(){
+            buttonItem.remove();
+        });
     }
 
     view.find('.check-btn').click(checkAnswerClick);
@@ -46,22 +75,37 @@ learnjs.problemView = function(problemNumber) {
     return view;
 }
 
-learnjs.showView = function(hash) {
-    var routes = {
-        '#problem': learnjs.problemView
-    };
-    var hashParts = hash.split('-');
-    var viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
-    if (viewFn) {
-        $('.view-container').empty().append(viewFn(hashParts[1]));
+// bind data
+learnjs.applyObject = function(obj, elem) {
+    for (var key in obj) {
+        elem.find('[data-name="' + key + '"]').text(obj[key]);
     }
-    
-    
 }
 
-learnjs.appOnReady = function() {
-    window.onhashchange = function() {
-        learnjs.showView(window.location.hash);
-    };
-    learnjs.showView(window.location.hash);
+learnjs.flashElement = function(elem, content) {
+    elem.fadeOut('fast', function() {
+        elem.html(content);
+        elem.fadeIn();
+    })
+}
+
+// templateからコピー
+learnjs.template = function(name) {
+    return $('.templates .' + name).clone();
+}
+
+learnjs.buildCorrectFlash = function(problemNumber) {
+    var correctFlash = learnjs.template('correct-flash');
+    var link = correctFlash.find('a');
+    if(problemNumber < learnjs.problems.length) {
+        link.attr('href','#problem-' + (problemNumber + 1));
+        return correctFlash;
+    }
+    link.attr('href', '');
+    link.text("You're Finished!");
+    return correctFlash;
+}
+
+learnjs.triggerEvent = function(name, args) {
+    $('.view-container>*').trigger(name, args);
 }
