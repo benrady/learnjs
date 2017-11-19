@@ -18,12 +18,14 @@ learnjs.applyObject = function(obj, elem) {
     }
 }
 
+// templateからコピー
 learnjs.template = function(name) {
     return $('.templates .' + name).clone();
 }
 
-learnjs.problemView = function(problemNumber) {
-    // templateからコピー
+learnjs.problemView = function(data) {
+
+    var problemNumber = parseInt(data, 10)
     var view = learnjs.template('problem-view');
     var title = 'Problem #' + problemNumber;
     var resultFlash = view.find('.result');
@@ -37,7 +39,9 @@ learnjs.problemView = function(problemNumber) {
 
     function checkAnswerClick() {
         if(checkAnswer()){
-            learnjs.flashElement(resultFlash, 'Correct!');
+            var correctFlash = learnjs.template('correct-flash');
+            correctFlash.find('a').attr('href', '#problem-' + (problemNumber + 1));
+            learnjs.flashElement(resultFlash, correctFlash);
             return false;
         }
         learnjs.flashElement(resultFlash, 'Incorrect!');
