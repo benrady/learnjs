@@ -33,10 +33,10 @@ learnjs.problemView = function(problemNumber) {
 
     function checkAnswerClick() {
         if(checkAnswer()){
-            resultFlash.text('Correct!');
+            learnjs.flashElement(resultFlash, 'Correct!');
             return false;
         }
-        resultFlash.text('Incorrect!')
+        learnjs.flashElement(resultFlash, 'Incorrect!');
         return false;
     }
 
@@ -64,4 +64,11 @@ learnjs.appOnReady = function() {
         learnjs.showView(window.location.hash);
     };
     learnjs.showView(window.location.hash);
+}
+
+learnjs.flashElement = function(elem, content) {
+    elem.fadeOut('fast', function() {
+        elem.html(content);
+        elem.fadeIn();
+    })
 }
