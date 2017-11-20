@@ -46,16 +46,15 @@ learnjs.showView = function(hash) {
 }
 
 learnjs.newFeedView = function() {
-    var shopData = learnjs.beerShops[0]
-    var view = learnjs.template('beer-shops-view');
+    var beerShopsView = learnjs.template('beer-shops-view');
 
     $.each(learnjs.beerShops, function(i, beerShopData){
         var shopView = learnjs.template('beer-shop-view');
         learnjs.applyObject(beerShopData, shopView);
-        view.append(shopView);
+        beerShopsView.append(shopView);
     });
     
-    return view
+    return beerShopsView
 
 }
 
