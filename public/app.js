@@ -12,6 +12,17 @@ learnjs.problems = [
     }
 ];
 
+learnjs.beerShops = [
+    {
+        name: "BEER PUB Takumiya",
+        id: "oikekarasuma"
+    },
+    {
+        name: "肉ビアバールFujiyama",
+        id: "nikubeer.fujiyama"
+    }
+];
+
 learnjs.appOnReady = function() {
     window.onhashchange = function() {
         learnjs.showView(window.location.hash);
@@ -23,7 +34,8 @@ learnjs.showView = function(hash) {
     var routes = {
         '#problem': learnjs.problemView,
         '#': learnjs.landingView,
-        '': learnjs.landingView
+        '': learnjs.landingView,
+        '#newfeed': learnjs.newFeedView
     };
     var hashParts = hash.split('-');
     var viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
@@ -31,6 +43,20 @@ learnjs.showView = function(hash) {
         learnjs.triggerEvent('removingView',[]);
         $('.view-container').empty().append(viewFn(hashParts[1]));
     }
+}
+
+learnjs.newFeedView = function() {
+    var shopData = learnjs.beerShops[0]
+    var view = learnjs.template('beer-shops-view');
+
+    $.each(learnjs.beerShops, function(i, beerShopData){
+        var shopView = learnjs.template('beer-shop-view');
+        learnjs.applyObject(beerShopData, shopView);
+        view.append(shopView);
+    });
+    
+    return view
+
 }
 
 learnjs.landingView = function() {
