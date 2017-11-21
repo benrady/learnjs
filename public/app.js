@@ -1,5 +1,7 @@
+
 'use strict';
 var learnjs = {};
+
 
 learnjs.problems = [
     {
@@ -20,14 +22,28 @@ learnjs.beerShops = [
     {
         name: "肉ビアバールFujiyama",
         id: "nikubeer.fujiyama"
+    },
+    {
+        name: "Craft Beer GULP",
+        id: "gulp.pablojikesso"
+    },
+    {
+        name: "B&G Nicholson（ビーエンジーニコルソン）",
+        id: "bgnicho"
+    },
+    {
+        name: "Tap beer club VEND",
+        id: "vendbeer"
     }
 ];
 
 learnjs.appOnReady = function() {
     window.onhashchange = function() {
         learnjs.showView(window.location.hash);
+        learnjs.fbsetup();
     };
     learnjs.showView(window.location.hash);
+    learnjs.fbsetup();
 }
 
 learnjs.showView = function(hash) {
@@ -43,6 +59,113 @@ learnjs.showView = function(hash) {
         learnjs.triggerEvent('removingView',[]);
         $('.view-container').empty().append(viewFn(hashParts[1]));
     }
+
+}
+
+learnjs.fbsetup = function (){
+    $.ajaxSetup({ cache: true });
+    $.getScript('//connect.facebook.net/ja_JP/sdk.js', function(){
+      FB.init({
+        appId: '840268289473249',
+        version: 'v2.11' // or v2.1, v2.2, v2.3, ...
+      });
+
+      var shops = learnjs.beerShops.map(function(obj){
+        return obj.id;
+      }).join(',');
+
+
+      FB.api(
+        '/feed',
+        'GET',
+        {"ids":shops , "fields" : "attachments,message", "access_token": learnjs.config.facebook_access_token},
+        function(response) {
+            var view = learnjs.newFeedViewWrap(response);
+
+            // TODO: 共通化
+            learnjs.triggerEvent('removingView',[]);
+            $('.view-container').empty().append(view);
+    
+        }
+      );     
+    });
+}
+
+Array.prototype.first = function () {
+    return this[0];
+};
+
+learnjs.newFeedViewWrap = function(response) {
+    
+    var shopIds = learnjs.beerShops.map(function(obj) {
+       return obj.id;
+    });
+
+    var feeds = [];
+
+    $.each(learnjs.beerShops, function(i, beerShop){
+        // 各店舗情報取得
+        var responseShop = response[beerShop.id].data.first();
+        console.log(responseShop);
+
+        
+
+        responseShop = {
+            message : responseShop.message,
+            photos : responseShop.attachments.data.filter(function(obj){
+                return obj.hasOwnProperty('media') 
+           }).first()
+        }
+        console.log(responseShop);
+        // // messageキーがあるデータのみにする
+        // shop = shop.data.filter(function(obj){
+        //     return obj.hasOwnProperty('message');
+        // });
+
+        // var first = shop.first();
+        feeds.push(learnjs.feedtoapp(responseShop, beerShop));
+    });
+
+    // 日付新しい順にソート
+    feeds = feeds.sort(function(a, b) {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+    
+    console.log(feeds);
+
+    // render
+    var beerShopsView = learnjs.template('beer-shops-view');
+    $.each(feeds, function(i, feed){
+        var shopView = learnjs.template('beer-shop-view');
+        shopView.find('a').filter('.fbUrl').attr('href', feed.fbUrl);
+        // 写真追加
+        var imageView =  shopView.find('img').find('.image');
+
+        console.log(feed);
+        if(feed.hasOwnProperty('photos')){
+            $.each(feed.photos, function(j, photo) {
+                imageView.attr('src', feed.photo);
+                shopView.append(imageView);
+            });
+        }
+
+        learnjs.applyObject(feed, shopView);
+        beerShopsView.append(shopView);
+    });
+    return beerShopsView;
+}
+
+learnjs.feedtoapp = function(responseShop,shop) {
+    var obj = new Object();
+    obj.name = shop.name;
+    obj.message =  responseShop.message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
+    obj.createdAt = responseShop.created_time;
+    obj.fbUrl = "https://www.facebook.com/" + shop.id;
+    if(responseShop.hasOwnProperty('photos')) {
+        obj.photos = responseShop.photos;
+    }
+    
+    return obj;
 }
 
 learnjs.newFeedView = function() {
@@ -103,7 +226,7 @@ learnjs.problemView = function(data) {
 // bind data
 learnjs.applyObject = function(obj, elem) {
     for (var key in obj) {
-        elem.find('[data-name="' + key + '"]').text(obj[key]);
+        elem.find('[data-name="' + key + '"]').html(obj[key]);
     }
 }
 
