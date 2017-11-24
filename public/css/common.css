@@ -1,0 +1,64 @@
+body { margin-top: 60px; }
+.templates { display: none;}
+.inline-list {
+  margin-bottom: 0px; /* Skeleton rest */
+}
+.inline-list li {
+  display: inline;
+  margin: 0 20px 0 0;
+}
+.fixed-top {
+  position: fixed;
+  top: 0px;
+  z-index: 1024;
+}
+.no-select {
+  /* 意味がわからないので調べる */
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+}
+.hover-links a { 
+  text-decoration: none;
+}
+.hover-links a:hover {
+  text-decoration: underline;
+}
+.nav-container {
+  padding-left: 40px;
+  
+  background: #666;
+}
+.nav-container a { 
+  color: white;
+}
+.text-lg {
+  font-size: 32px;
+}
+
+
+
+@media only screen and (max-width: 979px) {
+    
+   Html{
+       Width:100%;
+   }
+
+} /*デバイスの横幅が979px以下の場合*/
+
+@media only screen and (min-width: 321px) and (max-width: 768px) {
+    
+   Html{
+       Width:100%;
+   }
+
+} /*デバイスの横幅が321以上768以下の場合*/
+
+@media only screen and (max-width: 320px) {
+    
+   header{
+       Width:90%;
+   }
+
+} /* デバイスの横幅が320px以下の場合 */
