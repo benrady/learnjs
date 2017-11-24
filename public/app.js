@@ -84,23 +84,30 @@ learnjs.whatsNewView = function (whatsNews) {
 var itemHeights = [];
 learnjs.readContinue = function(beerShopsView)  {
     learnjs.hideMessage(beerShopsView);
-    learnjs.showMessage(beerShopsView);
+    learnjs.onClickReadContinueButton(beerShopsView);
 }
 learnjs.hideMessage = function(beerShopsView)  {
     beerShopsView.find('.grad-item').each(function() {
-        var thisHeight = $(this).height();
-        itemHeights.push(thisHeight);
+        var originalHeight = $(this).height();
         $(this).addClass('is-hide');
+        var shortHeight = $(this).height();
+        itemHeights.push({original: originalHeight, short:shortHeight});
     });
 }
 
-learnjs.showMessage = function(beerShopsView) {
+learnjs.onClickReadContinueButton = function(beerShopsView) {
     beerShopsView.find('.grad-trigger').on('click', function() {
         var index = $(this).index('.grad-trigger');
-        var addHeight = itemHeights[index];
-        $(this).fadeOut().addClass('is-show').next().animate(
-            {height: addHeight}, 200
-        ).removeClass('is-hide');
+        var height = itemHeights[index];
+        if(!$(this).hasClass('is-show')) {
+            $(this).addClass('is-show').next().animate(
+                {height: height.original}, 200
+            ).removeClass('is-hide');
+            return;
+        }
+        $(this).removeClass('is-show').next().animate(
+            {height:height.short},200
+        ).addClass('is-hide');
     })
 }
 

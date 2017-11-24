@@ -7,8 +7,7 @@
   position: relative;
 }
 .grad-wrap + .grad-wrap {
-  
-  n-top: 40px;
+  margin-top: 40px;
 }
 .grad-trigger {
   z-index: 2;
@@ -27,6 +26,9 @@
   cursor: pointer;
   transition: .2s ease;
   box-shadow: 0 0 3px rgba(0,0,0,.3);
+}
+.grad-trigger::after {
+  content: "続きを読む"
 }
 .grad-trigger:hover {
   background: #fff;
@@ -55,6 +57,15 @@
   height: 40px; /*グラデーションで隠す高さ*/
   background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.9) 50%, #fff 100%);
   background: linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.9) 50%, #fff 100%);
+}
+.grad-trigger.is-show {
+  bottom: -2em;
+}
+.grad-trigger.is-show::after {
+  content: "閉じる"
+}
+.grad-trigger.is-show .fa {
+  transform: rotate(180deg);
 }
 .grad-trigger.is-show + .grad-item::before {
   display: none;
