@@ -52,7 +52,10 @@ learnjs.newFeedView = function() {
         return response.json();
       }).then(function(json) {
           console.log(json);
-          learnjs.render(learnjs.whatsNewView(json.result));
+          var beerShopsView = learnjs.whatsNewView(json.result);
+          learnjs.render(beerShopsView);
+          learnjs.readContinue(beerShopsView);
+          
       });
 }
 
@@ -63,6 +66,7 @@ learnjs.render = function(view) {
 
 learnjs.whatsNewView = function (whatsNews) {
     var beerShopsView = learnjs.template('beer-shops-view');
+
         $.each(whatsNews, function(i, whatsNew){
             var shopView = learnjs.template('beer-shop-view');
             if(whatsNew.message){
@@ -74,6 +78,35 @@ learnjs.whatsNewView = function (whatsNews) {
         return beerShopsView
 }
 
+/**-------------------------
+ * 続きをよむセットアップ
+ -------------------------*/
+var itemHeights = [];
+learnjs.readContinue = function(beerShopsView)  {
+    learnjs.hideMessage(beerShopsView);
+    learnjs.showMessage(beerShopsView);
+}
+learnjs.hideMessage = function(beerShopsView)  {
+    beerShopsView.find('.grad-item').each(function() {
+        var thisHeight = $(this).height();
+        itemHeights.push(thisHeight);
+        $(this).addClass('is-hide');
+    });
+}
+
+learnjs.showMessage = function(beerShopsView) {
+    beerShopsView.find('.grad-trigger').on('click', function() {
+        var index = $(this).index('.grad-trigger');
+        var addHeight = itemHeights[index];
+        $(this).fadeOut().addClass('is-show').next().animate(
+            {height: addHeight}, 200
+        ).removeClass('is-hide');
+    })
+}
+
+/**
+ * ランディングページViewを取得
+ */
 learnjs.landingView = function() {
     return learnjs.template('landing-view');
 }

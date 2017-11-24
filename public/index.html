@@ -10,6 +10,8 @@
     <script src='./vendor.js'></script>
     <script src='./app.js'></script>
     <script src='./config.js'></script>
+
+    <link rel="stylesheet" href="css/read-continue.css">
     <style type="text/css" media="all">
       body { margin-top: 60px; }
       .templates { display: none;}
@@ -100,7 +102,14 @@
                 <h3 data-name='name'></h3>
                 <div>更新日時:<p data-name='createdAt'></p></div>
                 <div><a class='fbUrl' href='' target='_blank'>facebook</a></div>
-                <div><p data-name='message'></p></div>
+                <div>
+                  <div class="grad-wrap">
+                    <span class="grad-trigger"><span class="fa fa-chevron-down"></span>続きを読む</span>
+                    <div class="grad-item">
+                      <p data-name='message'></p>
+                    </div>
+                  </div>
+                </div>
                 <div><img class='image' /></div>
             </div>
         </div>
