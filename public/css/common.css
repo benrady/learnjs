@@ -64,6 +64,10 @@ body {
        Width:100%;
    }
 
+   .main {
+    width: 100% !important;
+}
+
 } /*デバイスの横幅が979px以下の場合*/
 
 @media only screen and (min-width: 321px) and (max-width: 768px) {
@@ -72,8 +76,12 @@ body {
        Width:100%;
    }
 
+   body {
+    font-size: 20px;
+   }
+
    .main {
-        width: 300px !important;
+        width: 100% !important;
     }
 
 } /*デバイスの横幅が321以上768以下の場合*/
@@ -83,5 +91,9 @@ body {
    header{
        Width:90%;
    }
+
+   .main {
+        width: 100% !important;
+    }
 
 } /* デバイスの横幅が320px以下の場合 */
