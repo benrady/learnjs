@@ -51,6 +51,17 @@ body {
   font-size: 32px;
 }
 
+.createdAt {
+    font-size: 12px;
+}
+
+.createdAt::before {
+    content: '更新日時:';
+}
+
+.imageContainer {
+    padding-top: 10px;
+}
 .scaledImage {
     height: auto;
     min-height: initial;

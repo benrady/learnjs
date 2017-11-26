@@ -15,11 +15,11 @@
   right: 0;
   bottom: 0;
   left: 0;
-  width: 148px;
+  /* width: 148px; */
   margin: auto;
   padding: .5em 0;
   border-radius: 2px;
-  background: #009e8f;
+  background: #d85a0a;
   color: #fff;
   font-size: 1.3rem;
   text-align: center;
@@ -32,7 +32,7 @@
 }
 .grad-trigger:hover {
   background: #fff;
-  color: #009e8f;
+  color: #d85a0a;
 }
 .grad-trigger .fa {
   margin-right: .5em;
