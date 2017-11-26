@@ -28,7 +28,8 @@ body { margin-top: 60px; }
 .nav-container {
   padding-left: 40px;
   
-  background: #666;
+  /* background: #666; */
+  background: linear-gradient(to right, rgb(73, 18, 16), rgb(243, 145, 48));
 }
 .nav-container a { 
   color: white;
