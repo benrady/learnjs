@@ -1,4 +1,8 @@
-body { margin-top: 60px; }
+body { 
+    margin-top: 60px; 
+    font-family: Helvetica Neue, Helvetica, Arial, "hiragino kaku gothic pro",meiryo,"ms pgothic",sans-serif;
+    -webkit-font-smoothing: subpixel-antialiased
+}
 .templates { display: none;}
 .inline-list {
   margin-bottom: 0px; /* Skeleton rest */
