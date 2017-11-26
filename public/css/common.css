@@ -72,6 +72,10 @@ body {
        Width:100%;
    }
 
+   .main {
+        width: 300px !important;
+    }
+
 } /*デバイスの横幅が321以上768以下の場合*/
 
 @media only screen and (max-width: 320px) {
