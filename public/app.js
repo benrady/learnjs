@@ -89,7 +89,7 @@ learnjs.toLocaleDateString = function (date) {
 // ChromeとSafariでDateの扱いが異なる
 // https://stackoverflow.com/a/42151174
 learnjs.parseDate = function (date) {
-    const parsed = Date.parse(date);
+    var parsed = Date.parse(date);
     if (!isNaN(parsed)) {
       return parsed;
     }
