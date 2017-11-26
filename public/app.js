@@ -72,6 +72,7 @@ learnjs.whatsNewView = function (whatsNews) {
             if(whatsNew.message){
                 whatsNew.message = whatsNew.message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
             }
+            whatsNew.createdAt = (new Date(whatsNew.createdAt)).toLocaleString();
             shopView.find('a').filter('.fbUrl').attr('href', whatsNew.fbUrl);
             learnjs.applyObject(whatsNew, shopView);
             beerShopsView.append(shopView);
