@@ -1,0 +1,54 @@
+
+.err-page,body,html{
+    width:100%;
+    height:100%
+}
+
+.err-page{color:#666}
+
+.err-page--404{
+    background-position:35% 50%;
+    background-repeat:no-repeat
+}
+.err-page--404{
+    color:#fff;
+    -webkit-background-size:cover;
+    background-size:cover;
+    background-image:url(/images/minoh-beer.png);
+}
+
+.err-page__body{
+    top:0;left:0;bottom:0;right:0;
+    font-size:20px;
+    margin:auto;
+    text-align:center;
+    width:100%;
+    height:100%;
+}
+
+.err-page__btn{
+    border:1px solid #fff;
+    border-radius:5px;
+    color:#fff;
+    display:inline-block;
+    font-size:12px;
+    margin:34px 0 0;
+    padding:5px 28px 3px;
+    -webkit-transition:background .2s ease-out 0s;
+    transition:background .2s ease-out 0s
+}
+    
+.err-page__btn:hover{
+    background:rgba(255,255,255,.2)
+}
+
+.err-page__title{
+    font-size:20px;
+    font-weight:400;
+    padding:200px 0 0 10px;
+    margin:0;
+}
+@media only screen and (max-width:479px){
+    .err-page__title{font-size:16px}
+}
+    
