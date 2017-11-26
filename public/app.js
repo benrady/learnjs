@@ -74,8 +74,12 @@ learnjs.whatsNewView = function (whatsNews) {
             }
 
             whatsNew.createdAt = learnjs.toLocaleDateString(whatsNew.createdAt)
-            console.log(whatsNew.createdAt);
+            console.log(whatsNew);
             shopView.find('a').filter('.fbUrl').attr('href', whatsNew.fbUrl);
+
+            if (whatsNew.photos.length > 0) {
+                shopView.find('.scaledImage').attr('src', whatsNew.photos[0].src);
+            }
             learnjs.applyObject(whatsNew, shopView);
             beerShopsView.append(shopView);
         });

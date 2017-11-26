@@ -42,6 +42,11 @@ body {
   font-size: 32px;
 }
 
+.scaledImage {
+    height: auto;
+    min-height: initial;
+    width: 100%;
+}
 
 
 @media only screen and (max-width: 979px) {
