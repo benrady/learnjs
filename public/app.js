@@ -73,17 +73,27 @@ learnjs.whatsNewView = function (whatsNews) {
                 whatsNew.message = whatsNew.message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
             }
 
-            var date = new Date(whatsNew.createdAt);
-            if(date.toString() === "Invalid Date"){
-                date = whatsNew.createdAt.split("-").join("/");
-            }
-            console.log(date);
-            whatsNew.createdAt = date.toLocaleString();
+            whatsNew.createdAt = learnjs.toLocaleDateString(whatsNew.createdAt)
+            console.log(whatsNew.createdAt);
             shopView.find('a').filter('.fbUrl').attr('href', whatsNew.fbUrl);
             learnjs.applyObject(whatsNew, shopView);
             beerShopsView.append(shopView);
         });
         return beerShopsView
+}
+
+learnjs.toLocaleDateString = function (date) {
+    var ms = learnjs.parseDate(date);
+    return (new Date(ms)).toLocaleString();
+}
+// ChromeとSafariでDateの扱いが異なる
+// https://stackoverflow.com/a/42151174
+learnjs.parseDate = function (date) {
+    const parsed = Date.parse(date);
+    if (!isNaN(parsed)) {
+      return parsed;
+    }
+    return Date.parse(date.replace(/-/g, '/').replace(/[a-z]+/gi, ' '));
 }
 
 /**-------------------------
