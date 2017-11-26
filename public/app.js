@@ -75,7 +75,7 @@ learnjs.whatsNewView = function (whatsNews) {
 
             var date = new Date(whatsNew.createdAt);
             if(date.toString() === "Invalid Date"){
-                date = date.split("-").join("/");
+                date = whatsNew.createdAt.split("-").join("/");
             }
             console.log(date);
             whatsNew.createdAt = date.toLocaleString();
