@@ -46,7 +46,7 @@ jobs:
             sudo apt-get install -y awscli
       - run:
           command: |
-            aws s3 sync public/ s3://www.craftbeer-loves.com --acl public-read
+            aws s3 sync public/ s3://craftbeer-loves.com --acl public-read
 
 workflows:
   version: 2
