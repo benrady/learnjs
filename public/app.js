@@ -51,9 +51,9 @@ learnjs.newFeedView = function() {
         return response.json();
       }).then(function(json) {
           console.log(json);
-          var beerShopsView = learnjs.whatsNewView(json.result);
-          learnjs.render(beerShopsView);
-          learnjs.readContinue(beerShopsView);
+          var whatsNewView = learnjs.whatsNewView(json.result);
+          learnjs.render(whatsNewView);
+          learnjs.readContinue(whatsNewView);
           
       });
 }
