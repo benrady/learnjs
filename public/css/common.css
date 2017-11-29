@@ -1,16 +1,33 @@
 body { 
+    
     margin-top: 60px; 
     font-family: Helvetica Neue, Helvetica, Arial, "hiragino kaku gothic pro",meiryo,"ms pgothic",sans-serif;
     -webkit-font-smoothing: subpixel-antialiased
 }
 
-.main {
-    width: 500px !important;
+.view-container {
+    background-color: #f00;
+    /* margin-right: 200px; */
+    float: left;
 }
 
-/* .left {
-    right: 320px;
-} */
+.main {
+    width: 600px !important;
+    position: relative;
+}
+
+#sidebar-container {
+    width: 300px;
+    left: 600px;
+    position: absolute;
+    /* float: right; */
+    background-color: #0f0;
+}
+
+.sidebar-content {
+    margin: 0 10px 0;
+    background-color: #00f
+}
 
 .templates { display: none;}
 .inline-list {
@@ -71,14 +88,20 @@ body {
 
 @media only screen and (max-width: 979px) {
     
-   Html{
-       Width:100%;
-   }
+    Html{
+        Width:100%;
+    }
 
-   .main {
-    width: 100% !important;
-}
-
+    .main {
+        width: 100% !important;
+    }
+    #sidebar-container {
+        /* width: 200px; */
+        width: 100%;
+        position: static;
+        
+    }
+    
 } /*デバイスの横幅が979px以下の場合*/
 
 @media only screen and (min-width: 321px) and (max-width: 768px) {
