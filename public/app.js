@@ -46,7 +46,7 @@ Array.prototype.first = function () {
 
 
 learnjs.newFeedViewWithProgress = function () {
-    const url = 'https://epfb5um7ae.execute-api.us-east-1.amazonaws.com/staging/whats-new';
+    var url = 'https://epfb5um7ae.execute-api.us-east-1.amazonaws.com/staging/whats-new';
     learnjs.showProgress();
     fetch(url).then(function(response) {
         return response.json();
