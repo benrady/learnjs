@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="./css/read-continue.css">
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/progress.css">
+    <link rel="stylesheet" href="./css/card.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   </head>
   <body>
@@ -43,6 +44,8 @@
             </div>
           </div>
         </div>
+
+
 
         <div class='templates'>
             <div class='landing-view'>
@@ -78,22 +81,31 @@
             <div class='beer-shops-view'>
             </div>
   
-              <div class='beer-shop-view'>
+
+            <div class='beer-shop-view'>
+              <section class="card">
+                <div class='imageContainer'>
+                  <img class='scaledImage card-img' />
+                </div>
+                <div class="card-content">
                   <h3 data-name='name'></h3>
-                  <div><span data-name='createdAt' class='createdAt'></span></div>
-                  <div><a class='fbUrl' href='' target='_blank'>facebook</a></div>
                   <div>
                     <div class="grad-wrap">
-                      <span class="grad-trigger"><span class="fa fa-chevron-down"></span></span>
-                      <div class="grad-item">
-                        <p data-name='message'></p>
-                      </div>
+                        <span class="grad-trigger"><span class="fa fa-chevron-down"></span></span>
+                        <div class="grad-item">
+                          <p class='card-text' data-name='message'></p>
+                        </div>
                     </div>
                   </div>
-                  <div class='imageContainer'>
-                    <img class='scaledImage' />
+                </div>
+                <div class="card-link">
+                  <div class='createdAt'>
+                    <a class='fbUrl' href='' target='_blank'>
+                    <span data-name='createdAt' ></span>
+                    </a>
                   </div>
-              </div>
+                </div>
+              </section>
             </div>
         </div>
     </div>

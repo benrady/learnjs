@@ -130,10 +130,18 @@ learnjs.readContinue = function(beerShopsView)  {
     learnjs.onClickReadContinueButton(beerShopsView);
 }
 learnjs.hideMessage = function(beerShopsView)  {
-    beerShopsView.find('.grad-item').each(function() {
-        var originalHeight = $(this).height();
-        $(this).addClass('is-hide');
-        var shortHeight = $(this).height();
+    beerShopsView.find('.beer-shop-view').each(function() {
+
+        var gradWrapView = $(this).find('.grad-wrap');
+       
+        var originalHeight = gradWrapView.height();
+        if(originalHeight < 250){
+            // 「続きをよむ」は表示しない
+            gradWrapView.find('.grad-trigger').hide();
+        } else {
+            gradWrapView.find('.grad-item').addClass('is-hide');
+        }
+        var shortHeight = gradWrapView.height();
         itemHeights.push({original: originalHeight, short:shortHeight});
     });
 }
