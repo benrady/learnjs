@@ -91,7 +91,8 @@ learnjs.whatsNewView = function (whatsNews) {
         $.each(whatsNews, function(i, whatsNew){
             var shopView = learnjs.template('beer-shop-view');
             if(whatsNew.message){
-                whatsNew.message = whatsNew.message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
+                var messageWithNewlineAndSpace = whatsNew.message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
+                whatsNew.message = learnjs.AutoLink(messageWithNewlineAndSpace);
             }
 
             whatsNew.createdAt = learnjs.toLocaleDateString(whatsNew.createdAt)
@@ -110,15 +111,6 @@ learnjs.whatsNewView = function (whatsNews) {
 learnjs.toLocaleDateString = function (date) {
     var ms = learnjs.parseDate(date);
     return (new Date(ms)).toLocaleString();
-}
-// ChromeとSafariでDateの扱いが異なる
-// https://stackoverflow.com/a/42151174
-learnjs.parseDate = function (date) {
-    var parsed = Date.parse(date);
-    if (!isNaN(parsed)) {
-      return parsed;
-    }
-    return Date.parse(date.replace(/-/g, '/').replace(/[a-z]+/gi, ' '));
 }
 
 /**-------------------------
@@ -240,4 +232,29 @@ learnjs.buildCorrectFlash = function(problemNumber) {
 
 learnjs.triggerEvent = function(name, args) {
     $('.view-container>*').trigger(name, args);
+}
+
+// Utils
+
+// ChromeとSafariでDateの扱いが異なる
+// https://stackoverflow.com/a/42151174
+learnjs.parseDate = function (date) {
+    var parsed = Date.parse(date);
+    if (!isNaN(parsed)) {
+      return parsed;
+    }
+    return Date.parse(date.replace(/-/g, '/').replace(/[a-z]+/gi, ' '));
+}
+
+/**
+ * String内にあるURLにaタグを付けた文字列を返す。
+ * target="_blank"付 // TODO: 引数か何かで切り替えれるといいかも
+ * @param {*} str 
+ */
+learnjs.AutoLink = function(str) {
+    var regexp_url = /((h?)(ttps?:\/\/[a-zA-Z0-9.\-_@:/~?%&;=+#',()*!]+))/g; // ']))/;
+    var regexp_makeLink = function(all, url, h, href) {
+        return '<a target="_blank" href="h' + href + '">' + url + '</a>';
+    }
+    return str.replace(regexp_url, regexp_makeLink);
 }
