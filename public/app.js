@@ -26,8 +26,8 @@ learnjs.appOnReady = function() {
 learnjs.showView = function(hash) {
     var routes = {
         '#problem': learnjs.problemView,
-        '#': learnjs.newFeedView,
-        '': learnjs.newFeedView
+        '#': learnjs.newFeedViewWithProgress,
+        '': learnjs.newFeedViewWithProgress
     };
     var hashParts = hash.split('-');
     var viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
@@ -45,18 +45,40 @@ Array.prototype.first = function () {
 
 
 
-learnjs.newFeedView = function() {
-    var url = 'https://epfb5um7ae.execute-api.us-east-1.amazonaws.com/staging/whats-new';
+learnjs.newFeedViewWithProgress = function () {
+    const url = 'https://epfb5um7ae.execute-api.us-east-1.amazonaws.com/staging/whats-new';
+    learnjs.showProgress();
     fetch(url).then(function(response) {
         return response.json();
       }).then(function(json) {
+        learnjs.hideProgress();
           console.log(json);
           var whatsNewView = learnjs.whatsNewView(json.result);
           learnjs.render(whatsNewView);
           learnjs.readContinue(whatsNewView);
-          
+      }).catch( (error) => {
+        learnjs.hideProgress();
+          console.log(error);
       });
 }
+
+learnjs.showProgress = () => {
+    learnjs.hideSideBar();
+    $('#progress').show();
+}
+
+learnjs.hideProgress = () => {
+    $('#progress').hide();
+    learnjs.showSideBar();
+}
+
+learnjs.showSideBar = () => {
+    $('#sidebar-container').show();
+}
+learnjs.hideSideBar = () => {
+    $('#sidebar-container').hide();
+}
+
 
 learnjs.render = function(view) {
     learnjs.triggerEvent('removingView',[]);

@@ -6,7 +6,6 @@ body {
 }
 
 .view-container {
-    background-color: #f00;
     /* margin-right: 200px; */
     float: left;
 }
@@ -16,17 +15,29 @@ body {
     position: relative;
 }
 
+#progress {
+    width: 65px;
+    height: 65px;
+    top: 100px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    margin: auto;
+}
+
 #sidebar-container {
     width: 300px;
     left: 600px;
     position: absolute;
+    display: none;
     /* float: right; */
-    background-color: #0f0;
+    /* background-color: #0f0; */
 }
 
 .sidebar-content {
     margin: 0 10px 0;
-    background-color: #00f
+    /* background-color: #00f */
 }
 
 .templates { display: none;}
