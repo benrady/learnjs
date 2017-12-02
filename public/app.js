@@ -56,26 +56,26 @@ learnjs.newFeedViewWithProgress = function () {
           var whatsNewView = learnjs.whatsNewView(json.result);
           learnjs.render(whatsNewView);
           learnjs.readContinue(whatsNewView);
-      }).catch( (error) => {
+      }).catch(function(error) {
         learnjs.hideProgress();
           console.log(error);
       });
 }
 
-learnjs.showProgress = () => {
+learnjs.showProgress = function() {
     learnjs.hideSideBar();
     $('#progress').show();
 }
 
-learnjs.hideProgress = () => {
+learnjs.hideProgress = function() {
     $('#progress').hide();
     learnjs.showSideBar();
 }
 
-learnjs.showSideBar = () => {
+learnjs.showSideBar = function() {
     $('#sidebar-container').show();
 }
-learnjs.hideSideBar = () => {
+learnjs.hideSideBar = function() {
     $('#sidebar-container').hide();
 }
 
