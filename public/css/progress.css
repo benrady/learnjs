@@ -1,5 +1,8 @@
 
-
+/* 
+参考
+https://codepen.io/mrrocks/pen/EiplA 
+*/
 .spinner {
   -webkit-animation: rotator 1.4s linear infinite;
           animation: rotator 1.4s linear infinite;
