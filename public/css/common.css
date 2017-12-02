@@ -112,6 +112,13 @@ body {
         position: static;
         
     }
+
+
+    .view-container {
+        /* margin-right: 200px; */
+        float: none;
+    }
+
     
 } /*デバイスの横幅が979px以下の場合*/
 
