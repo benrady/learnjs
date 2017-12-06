@@ -38,6 +38,12 @@ class CommonView {
     triggerEvent(name, args) {
         $('.view-container>*').trigger(name, args);
     }
+
+    render(view) {
+        this.triggerEvent('removingView',[]);
+        $('.view-container').empty().append(view);
+    }
+
     
 }
 export default CommonView;

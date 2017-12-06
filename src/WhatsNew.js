@@ -16,6 +16,12 @@ class WhatsNew {
         this.itemHeights = [];
     }
 
+    create() {
+        this.fetchWhatsNew((view) => {
+            this[commonView].render(view);
+        });  
+    }
+
     // TOOD: APIから取得している部分をModelに移動したい
     async fetchWhatsNew (callback) {
         const url = 'https://epfb5um7ae.execute-api.us-east-1.amazonaws.com/staging/whats-new';
@@ -63,10 +69,14 @@ class WhatsNew {
     -------------------------*/
 
     readContinue(beerShopsView)  {
-        
         this.hideMessage(beerShopsView);
         this.onClickReadContinueButton(beerShopsView);
     }
+
+    /**
+     * メッセージが長すぎたら隠して、続きを読むボタンを配置する
+     * @param {*} beerShopsView 
+     */
     hideMessage(beerShopsView)  {
         var heights = [];
         beerShopsView.find('.beer-shop-view').each(function() {
@@ -86,6 +96,10 @@ class WhatsNew {
         this.itemHeights = heights;
     }
 
+    /**
+     * 続きを読むボタンのクリックイベント処理
+     * @param {*} beerShopsView 
+     */
     onClickReadContinueButton(beerShopsView) {
         var heights = this.itemHeights;
         beerShopsView.find('.grad-trigger').on('click', function() {

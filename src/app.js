@@ -9,7 +9,6 @@ const commonView = Symbol();
 const whatsNewView = Symbol();
 
 
-
 class CraftBeerLoves {
     constructor() {
         this[commonView] = new CommonView();
@@ -26,35 +25,35 @@ class CraftBeerLoves {
     showView(hash) {
         let routes = {
             '#problem': learnjs.problemView,
-            '#googleads': this.whatsNewView(),
-            '#': this.whatsNewView(),
-            '': this.whatsNewView()
+            '#googleads': this[whatsNewView].create(),
+            '#': this[whatsNewView].create(),
+            '': this[whatsNewView].create()
         };
         let hashParts = hash.split('-');
         let viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
         if (viewFn) {
-            this.render(viewFn(hashParts[1]));
+            this[commonView].render(viewFn(hashParts[1]));
         }
     }
-
-    whatsNewView() {
-        this[whatsNewView].fetchWhatsNew((view) => {
-            this.render(view);
-        });  
-    }
-
-    render(view) {
-        this[commonView].triggerEvent('removingView',[]);
-        $('.view-container').empty().append(view);
-    }
-    
 }
 export default CraftBeerLoves;
 
-export var learnjs = {};
 
 window.addEventListener('load', () => new CraftBeerLoves());
 
+Array.prototype.first = function () {
+    return this[0];
+};
+
+
+
+
+
+//////////////////////////////////////
+// 以下は不要
+// 参考になりそうな部分もあるので残している
+//////////////////////////////////////
+export var learnjs = {};
 
 learnjs.problems = [
     {
@@ -66,21 +65,6 @@ learnjs.problems = [
         code: "function problem() { return 42 === 6 * __; }"
     }
 ];
-
-
-
-
-Array.prototype.first = function () {
-    return this[0];
-};
-
-
-
-
-
-
-
-
 
 /**
  * ランディングページViewを取得
