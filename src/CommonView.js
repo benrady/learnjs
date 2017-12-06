@@ -34,5 +34,10 @@ class CommonView {
     hideSideBar() {
         $('#sidebar-container').hide();
     }
+
+    triggerEvent(name, args) {
+        $('.view-container>*').trigger(name, args);
+    }
+    
 }
 export default CommonView;

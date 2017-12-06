@@ -2,38 +2,58 @@
 'use strict';
 
 import WhatsNew from "./WhatsNew.js";
+import CommonView from "./CommonView.js";
+
+// private instance
+const commonView = Symbol();
+const whatsNewView = Symbol();
+
+
 
 class CraftBeerLoves {
-  constructor() {
-      this.appOnReady();
-  }
+    constructor() {
+        this[commonView] = new CommonView();
+        this[whatsNewView] = new WhatsNew();
 
-  appOnReady() {
-    window.addEventListener('hashchange', () => this.showView(window.location.hash));
-    this.showView(window.location.hash);
-  }
-  
-  showView(hash) {
-    let routes = {
-      '#problem': learnjs.problemView,
-      '#googleads': learnjs.newFeedViewWithProgress,
-      '#': learnjs.newFeedViewWithProgress,
-      '': learnjs.newFeedViewWithProgress
-    };
-    let hashParts = hash.split('-');
-    let viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
-    if (viewFn) {
-        learnjs.triggerEvent('removingView',[]);
-        $('.view-container').empty().append(viewFn(hashParts[1]));
+        this.appOnReady();
     }
-}
 
+    appOnReady() {
+        window.addEventListener('hashchange', () => this.showView(window.location.hash));
+        this.showView(window.location.hash);
+    }
+  
+    showView(hash) {
+        let routes = {
+            '#problem': learnjs.problemView,
+            '#googleads': this.whatsNewView(),
+            '#': this.whatsNewView(),
+            '': this.whatsNewView()
+        };
+        let hashParts = hash.split('-');
+        let viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
+        if (viewFn) {
+            this.render(viewFn(hashParts[1]));
+        }
+    }
+
+    whatsNewView() {
+        this[whatsNewView].fetchWhatsNew((view) => {
+            this.render(view);
+        });  
+    }
+
+    render(view) {
+        this[commonView].triggerEvent('removingView',[]);
+        $('.view-container').empty().append(view);
+    }
+    
 }
 export default CraftBeerLoves;
 
 export var learnjs = {};
 
-window.addEventListener('load', () => new CraftBeerLoves("hello"));
+window.addEventListener('load', () => new CraftBeerLoves());
 
 
 learnjs.problems = [
@@ -49,29 +69,6 @@ learnjs.problems = [
 
 
 
-learnjs.appOnReady = function() {
-    window.onhashchange = function() {
-        learnjs.showView(window.location.hash);
-    };
-    learnjs.showView(window.location.hash);
-}
-
-learnjs.showView = function(hash) {
-    var routes = {
-        '#problem': learnjs.problemView,
-        '#googleads': learnjs.newFeedViewWithProgress,
-        '#': learnjs.newFeedViewWithProgress,
-        '': learnjs.newFeedViewWithProgress
-    };
-    var hashParts = hash.split('-');
-    var viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
-    if (viewFn) {
-        learnjs.triggerEvent('removingView',[]);
-        $('.view-container').empty().append(viewFn(hashParts[1]));
-    }
-
-}
-
 
 Array.prototype.first = function () {
     return this[0];
@@ -79,90 +76,11 @@ Array.prototype.first = function () {
 
 
 
-learnjs.newFeedViewWithProgress = function () {
-  let whatsNew = new WhatsNew();
-  whatsNew.fetchWhatsNew((view) => {
-    learnjs.render(view);
-    learnjs.readContinue(view);
-  });  
-}
 
 
 
 
-learnjs.render = function(view) {
-    learnjs.triggerEvent('removingView',[]);
-    $('.view-container').empty().append(view);
-}
 
-learnjs.whatsNewView = function (whatsNews) {
-    var beerShopsView = learnjs.template('beer-shops-view');
-
-        $.each(whatsNews, function(i, whatsNew){
-            var shopView = learnjs.template('beer-shop-view');
-            if(whatsNew.message){
-                var messageWithNewlineAndSpace = whatsNew.message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
-                whatsNew.message = learnjs.AutoLink(messageWithNewlineAndSpace);
-            }
-
-            whatsNew.createdAt = learnjs.toLocaleDateString(whatsNew.createdAt)
-            console.log(whatsNew);
-            shopView.find('a').filter('.fbUrl').attr('href', whatsNew.fbUrl);
-
-            if (whatsNew.photos.length > 0) {
-                shopView.find('.scaledImage').attr('src', whatsNew.photos[0].src);
-            }
-            learnjs.applyObject(whatsNew, shopView);
-            beerShopsView.append(shopView);
-        });
-        return beerShopsView
-}
-
-learnjs.toLocaleDateString = function (date) {
-    var ms = learnjs.parseDate(date);
-    return (new Date(ms)).toLocaleString();
-}
-
-/**-------------------------
- * 続きをよむセットアップ
- -------------------------*/
-var itemHeights = [];
-learnjs.readContinue = function(beerShopsView)  {
-    learnjs.hideMessage(beerShopsView);
-    learnjs.onClickReadContinueButton(beerShopsView);
-}
-learnjs.hideMessage = function(beerShopsView)  {
-    beerShopsView.find('.beer-shop-view').each(function() {
-
-        var gradWrapView = $(this).find('.grad-wrap');
-       
-        var originalHeight = gradWrapView.height();
-        if(originalHeight < 250){
-            // 「続きをよむ」は表示しない
-            gradWrapView.find('.grad-trigger').hide();
-        } else {
-            gradWrapView.find('.grad-item').addClass('is-hide');
-        }
-        var shortHeight = gradWrapView.height();
-        itemHeights.push({original: originalHeight, short:shortHeight});
-    });
-}
-
-learnjs.onClickReadContinueButton = function(beerShopsView) {
-    beerShopsView.find('.grad-trigger').on('click', function() {
-        var index = $(this).index('.grad-trigger');
-        var height = itemHeights[index];
-        if(!$(this).hasClass('is-show')) {
-            $(this).addClass('is-show').next().animate(
-                {height: height.original}, 200
-            ).removeClass('is-hide');
-            return;
-        }
-        $(this).removeClass('is-show').next().animate(
-            {height:height.short},200
-        ).addClass('is-hide');
-    })
-}
 
 /**
  * ランディングページViewを取得
@@ -240,31 +158,4 @@ learnjs.buildCorrectFlash = function(problemNumber) {
     return correctFlash;
 }
 
-learnjs.triggerEvent = function(name, args) {
-    $('.view-container>*').trigger(name, args);
-}
 
-// Utils
-
-// ChromeとSafariでDateの扱いが異なる
-// https://stackoverflow.com/a/42151174
-learnjs.parseDate = function (date) {
-    var parsed = Date.parse(date);
-    if (!isNaN(parsed)) {
-      return parsed;
-    }
-    return Date.parse(date.replace(/-/g, '/').replace(/[a-z]+/gi, ' '));
-}
-
-/**
- * String内にあるURLにaタグを付けた文字列を返す。
- * target="_blank"付 // TODO: 引数か何かで切り替えれるといいかも
- * @param {*} str 
- */
-learnjs.AutoLink = function(str) {
-    var regexp_url = /((h?)(ttps?:\/\/[a-zA-Z0-9.\-_@:/~?%&;=+#',()*!]+))/g; // ']))/;
-    var regexp_makeLink = function(all, url, h, href) {
-        return '<a target="_blank" href="h' + href + '">' + url + '</a>';
-    }
-    return str.replace(regexp_url, regexp_makeLink);
-}

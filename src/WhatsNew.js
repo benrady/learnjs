@@ -8,16 +8,18 @@ import HtmlUtils from "./util/HtmlUtils.js";
 // private instance
 const commonView = Symbol();
 
+
 class WhatsNew {
 
     constructor() {
-        this[commonView] = new CommonView();     
+        this[commonView] = new CommonView();   
+        this.itemHeights = [];
     }
 
+    // TOOD: APIから取得している部分をModelに移動したい
     async fetchWhatsNew (callback) {
         const url = 'https://epfb5um7ae.execute-api.us-east-1.amazonaws.com/staging/whats-new';
         try {
-            
             this[commonView].showProgress()
             const response = await fetch(url);
             // console.log(await response.json());
@@ -26,6 +28,7 @@ class WhatsNew {
 
             let whatsNewView = this.whatsNewView(json.result);
             callback(whatsNewView);
+            this.readContinue(whatsNewView)
         } catch(error) {
             this[commonView].hideProgress();
             console.log(error);
@@ -53,6 +56,51 @@ class WhatsNew {
             beerShopsView.append(shopView);
         });
         return beerShopsView
+    }
+
+    /**-------------------------
+     * 続きをよむセットアップ
+    -------------------------*/
+
+    readContinue(beerShopsView)  {
+        
+        this.hideMessage(beerShopsView);
+        this.onClickReadContinueButton(beerShopsView);
+    }
+    hideMessage(beerShopsView)  {
+        var heights = [];
+        beerShopsView.find('.beer-shop-view').each(function() {
+
+            var gradWrapView = $(this).find('.grad-wrap');
+        
+            var originalHeight = gradWrapView.height();
+            if(originalHeight < 250){
+                // 「続きをよむ」は表示しない
+                gradWrapView.find('.grad-trigger').hide();
+            } else {
+                gradWrapView.find('.grad-item').addClass('is-hide');
+            }
+            var shortHeight = gradWrapView.height();
+            heights.push({original: originalHeight, short:shortHeight});
+        });
+        this.itemHeights = heights;
+    }
+
+    onClickReadContinueButton(beerShopsView) {
+        var heights = this.itemHeights;
+        beerShopsView.find('.grad-trigger').on('click', function() {
+            var index = $(this).index('.grad-trigger');
+            var height = heights[index];
+            if(!$(this).hasClass('is-show')) {
+                $(this).addClass('is-show').next().animate(
+                    {height: height.original}, 200
+                ).removeClass('is-hide');
+                return;
+            }
+            $(this).removeClass('is-show').next().animate(
+                {height:height.short},200
+            ).addClass('is-hide');
+        })
     }
 }
 
