@@ -1,6 +1,39 @@
 
 'use strict';
-var learnjs = {};
+
+import WhatsNew from "./WhatsNew.js";
+
+class CraftBeerLoves {
+  constructor() {
+      this.appOnReady();
+  }
+
+  appOnReady() {
+    window.addEventListener('hashchange', () => this.showView(window.location.hash));
+    this.showView(window.location.hash);
+  }
+  
+  showView(hash) {
+    let routes = {
+      '#problem': learnjs.problemView,
+      '#googleads': learnjs.newFeedViewWithProgress,
+      '#': learnjs.newFeedViewWithProgress,
+      '': learnjs.newFeedViewWithProgress
+    };
+    let hashParts = hash.split('-');
+    let viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
+    if (viewFn) {
+        learnjs.triggerEvent('removingView',[]);
+        $('.view-container').empty().append(viewFn(hashParts[1]));
+    }
+}
+
+}
+export default CraftBeerLoves;
+
+export var learnjs = {};
+
+window.addEventListener('load', () => new CraftBeerLoves("hello"));
 
 
 learnjs.problems = [
@@ -47,38 +80,14 @@ Array.prototype.first = function () {
 
 
 learnjs.newFeedViewWithProgress = function () {
-    var url = 'https://epfb5um7ae.execute-api.us-east-1.amazonaws.com/staging/whats-new';
-    learnjs.showProgress();
-    fetch(url).then(function(response) {
-        return response.json();
-      }).then(function(json) {
-        learnjs.hideProgress();
-          console.log(json);
-          var whatsNewView = learnjs.whatsNewView(json.result);
-          learnjs.render(whatsNewView);
-          learnjs.readContinue(whatsNewView);
-      }).catch(function(error) {
-        learnjs.hideProgress();
-          console.log(error);
-      });
+  let whatsNew = new WhatsNew();
+  whatsNew.fetchWhatsNew((view) => {
+    learnjs.render(view);
+    learnjs.readContinue(view);
+  });  
 }
 
-learnjs.showProgress = function() {
-    learnjs.hideSideBar();
-    $('#progress').show();
-}
 
-learnjs.hideProgress = function() {
-    $('#progress').hide();
-    learnjs.showSideBar();
-}
-
-learnjs.showSideBar = function() {
-    $('#sidebar-container').show();
-}
-learnjs.hideSideBar = function() {
-    $('#sidebar-container').hide();
-}
 
 
 learnjs.render = function(view) {
