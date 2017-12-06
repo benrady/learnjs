@@ -42,7 +42,7 @@ class WhatsNew {
     }
 
     whatsNewView(whatsNews) {
-        let beerShopsView = this[commonView].template('beer-shops-view');
+        let whatsNewView = this[commonView].template('whats-new-view');
     
         $.each(whatsNews, (i, whatsNew) => {
             let shopView = this[commonView].template('beer-shop-view');
@@ -59,9 +59,9 @@ class WhatsNew {
                 shopView.find('.scaledImage').attr('src', whatsNew.photos[0].src);
             }
             this[commonView].applyObject(whatsNew, shopView);
-            beerShopsView.append(shopView);
+            whatsNewView.append(shopView);
         });
-        return beerShopsView
+        return whatsNewView
     }
 
     /**-------------------------
