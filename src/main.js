@@ -4,7 +4,7 @@ import route from 'riot-route'
 // import './tags/md.tag'
 
 import './tags/header.tag'
-import './tags/whats-news.tag'
+import './tags/whatsnew/whats-news.tag'
 import './tags/beer-shops.tag'
 import './tags/subpage.tag'
 

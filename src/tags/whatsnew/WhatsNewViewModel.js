@@ -1,14 +1,7 @@
 'use strict';
 
-import CommonView from "./CommonView.js";
-// import DateUtils from "./util/DateUtils.js";
-// import HtmlUtils from "./util/HtmlUtils.js";
 
-
-// private instance
-
-
-class WhatsNew {
+export default class WhatsNewViewModel {
 
     constructor() {
     }
@@ -31,5 +24,3 @@ class WhatsNew {
         }
     }
 }
-
-export default WhatsNew;

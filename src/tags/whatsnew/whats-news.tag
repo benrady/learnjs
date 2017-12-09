@@ -6,11 +6,12 @@
     </div>
 
     <script>
-    import CommonView from "../CommonView.js";
-    import WhatsNew from "../WhatsNew.js";
-    import DateUtils from "../util/DateUtils.js"
-    import HtmlUtils from "../util/HtmlUtils.js"
-    import BeerShopModel from "./BeerShopModel.js"
+    import CommonView from "../../CommonView.js";
+    import DateUtils from "../../util/DateUtils.js"
+    import HtmlUtils from "../../util/HtmlUtils.js"
+    import BeerShopModel from "../BeerShopModel.js"
+
+    import WhatsNewViewModel from "./WhatsNewViewModel.js";
 
     const commonView = Symbol();
     const whatsNewViewModel = Symbol()
@@ -21,7 +22,7 @@
     this.on('mount', function() {
         var self = this
         this[commonView] = new CommonView();   
-        this[whatsNewViewModel] = new WhatsNew()
+        this[whatsNewViewModel] = new WhatsNewViewModel()
 
         this[commonView].showProgress()
         this[whatsNewViewModel].fetchWhatsNew( (result, error) => {
@@ -142,7 +143,7 @@
     </div>
 
     <script>
-        import './raw.tag'
+        import '../common/raw.tag'
         this.on('mount', function() {
             riot.mount('raw');
         })
