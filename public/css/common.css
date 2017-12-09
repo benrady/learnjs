@@ -24,6 +24,7 @@ body {
     right: 0;
     position: absolute;
     margin: auto;
+    display: none;
 }
 
 #sidebar-container {

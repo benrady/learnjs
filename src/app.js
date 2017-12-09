@@ -3,16 +3,34 @@
 
 import WhatsNew from "./WhatsNew.js";
 import CommonView from "./CommonView.js";
+import BeerShops from "./BeerShops.js";
 
 // private instance
 const commonView = Symbol();
 const whatsNewView = Symbol();
+const beerShopsView = Symbol();
 
 
 class CraftBeerLoves {
     constructor() {
         this[commonView] = new CommonView();
         this[whatsNewView] = new WhatsNew();
+        this[beerShopsView] = new BeerShops();
+
+        //////////////////////
+        //// routingがうまくいかないので、React 化してみる
+        //// https://github.com/ics-creative/170330_webpack/blob/master/tutorial-babel-react/src/main.js
+        ////////////////////////
+
+
+        this.routes = {
+            '#problem': learnjs.problemView,
+            '#beershops': this[beerShopsView].start(),
+           //'#googleads': this[whatsNewView].create(),
+            //'#': this[whatsNewView].create(),
+            '': this[whatsNewView].create()
+        };
+
 
         this.appOnReady();
     }
@@ -23,14 +41,8 @@ class CraftBeerLoves {
     }
   
     showView(hash) {
-        let routes = {
-            '#problem': learnjs.problemView,
-            '#googleads': this[whatsNewView].create(),
-            '#': this[whatsNewView].create(),
-            '': this[whatsNewView].create()
-        };
         let hashParts = hash.split('-');
-        let viewFn = routes[hashParts[0]] // #problem -> learnjs.problemView
+        let viewFn = this.routes[hashParts[0]] // #problem -> learnjs.problemView
         if (viewFn) {
             this[commonView].render(viewFn(hashParts[1]));
         }

@@ -1,8 +1,8 @@
 'use strict';
 
 import CommonView from "./CommonView.js";
-import DateUtils from "./util/DateUtils.js";
-import HtmlUtils from "./util/HtmlUtils.js";
+// import DateUtils from "./util/DateUtils.js";
+// import HtmlUtils from "./util/HtmlUtils.js";
 
 
 // private instance
@@ -16,9 +16,10 @@ class WhatsNew {
         this.itemHeights = [];
     }
 
-    create() {
+    create(callback) {
         this.fetchWhatsNew((view) => {
             this[commonView].render(view);
+            callback()
         });  
     }
 
@@ -32,9 +33,10 @@ class WhatsNew {
             const json = await response.json();
             this[commonView].hideProgress();
 
-            let whatsNewView = this.whatsNewView(json.result);
-            callback(whatsNewView);
-            this.readContinue(whatsNewView)
+//            let whatsNewView = this.whatsNewView(json.result);
+            console.log(json.result)
+            callback(json.result);
+            // this.readContinue(whatsNewView)
         } catch(error) {
             this[commonView].hideProgress();
             console.log(error);

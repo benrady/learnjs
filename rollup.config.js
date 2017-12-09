@@ -1,9 +1,23 @@
 import riot from 'rollup-plugin-riot'
 import nodeResolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
-import buble from 'rollup-plugin-buble'
 import postcss from 'postcss'
 import postcssCssnext from 'postcss-cssnext'
+import babel from 'rollup-plugin-babel'
+
+// import buble from 'rollup-plugin-buble'
+/**
+ 
+ * bubleだと次のようなエラーがでてしまうので、一旦使用中止。
+ * bableよりbubleの方がトランスパイル速度が早いらしいので、bubleで使えるようになったら戻したい
+``` 
+src/main.js → public/js/bundle.js...
+[!] Error: Unexpected token
+src/WhatsNew.js (26:10)
+26:     async fetchWhatsNew (callback) {
+              ^
+```
+*/
 
 export default {
   entry: 'src/main.js',
@@ -17,7 +31,7 @@ export default {
     }),
     nodeResolve({ jsnext: true }),
     commonjs(),
-    buble()
+    babel()
   ],
   format: 'iife'
 }
