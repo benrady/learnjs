@@ -6,22 +6,32 @@
     </div>
 
     <script>
+    import CommonView from "../CommonView.js";
     import WhatsNew from "../WhatsNew.js";
     import DateUtils from "../util/DateUtils.js"
     import HtmlUtils from "../util/HtmlUtils.js"
     import BeerShopModel from "./BeerShopModel.js"
 
+    const commonView = Symbol();
     const whatsNewViewModel = Symbol()
+
 
     let self = this
 
     this.on('mount', function() {
         var self = this
+        this[commonView] = new CommonView();   
         this[whatsNewViewModel] = new WhatsNew()
-        this[whatsNewViewModel].fetchWhatsNew( (json) => {
-            self.beerShops = self.translate(json)
-            console.log(self.beerShops)
-            self.update()
+
+        this[commonView].showProgress()
+        this[whatsNewViewModel].fetchWhatsNew( (result, error) => {
+            if(error == null) {
+                self.beerShops = self.translate(result)
+                self.update()
+                this[commonView].hideProgress();
+                return
+            }
+            this[commonView].hideProgress();
         })
     })
 
@@ -65,7 +75,6 @@
     hideMessage()  {
         let self = this
         $('.whats-new-beer-shops').find('.beer-shop-view').find('.grad-wrap').each((_, view) => {
-            console.log(view)
             let originalHeight = $(view).height();
             if(originalHeight < 250){
                 // 「続きをよむ」は表示しない
