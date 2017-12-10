@@ -20,7 +20,6 @@
     let self = this
 
     this.on('mount', function() {
-        var self = this
         this[commonView] = new CommonView();   
         this[whatsNewViewModel] = new WhatsNewViewModel()
 

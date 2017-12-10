@@ -4,10 +4,11 @@
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Craft Beer Loves</title>
-    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
+    <!-- <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'> -->
+    <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'> -->
+    <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'> -->
 
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
@@ -16,10 +17,15 @@
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/progress.css">
     <link rel="stylesheet" href="./css/card.css">
+
+    <!-- riotのカスタムtagがmaterial design componentを使用するため、最初にJSを呼び出しと初期化を行なっています。 -->
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <script>window.mdc.autoInit();</script>
+
   </head>
-  <body>
+  <body class="mdc-typography">
     <div class='markup'>
-      <header></header>
+      <app-header></app-header>
       <div class='container main'>
         <div class='header'>
             <div class='banner'></div>
@@ -72,11 +78,10 @@
 
         </div>
     </div>
-    <script src="./js/bundle.js"></script>
-    <script src='./vendor.js'></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
-    
+    <script src="./js/bundle.js"></script>
+    <script src='./vendor.js'></script>
     <!-- Adsense -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>

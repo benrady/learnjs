@@ -3,22 +3,21 @@ import route from 'riot-route'
 // import './tags/app.tag'
 // import './tags/md.tag'
 
-import './tags/header.tag'
+import './tags/app-header.tag'
 import './tags/whatsnew/whats-news.tag'
 import './tags/beer-shops.tag'
 import './tags/subpage.tag'
 
 // riot.mount('app')
-route.base('/')
+// route.base('/')
 
-riot.mount('header')
+riot.mount('app-header')
 
 
-
-route('/beershops', () => {
+route('/', () => {
   riot.mount('content', 'whats-news')
 });
-route('/', () => {
+route('/beershops', () => {
   riot.mount('content', 'beer-shops');
 });
 route('/page2/sub', () => {
