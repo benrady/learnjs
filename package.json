@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@material/drawer": "^0.26.0",
+    "@material/list": "^0.26.0",
     "@material/toolbar": "^0.25.0",
     "babel-polyfill": "^6.26.0",
     "jquery": "^3.2.1",
