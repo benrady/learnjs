@@ -42,9 +42,11 @@
     "rollup-plugin-riot": "^1.1.0"
   },
   "dependencies": {
+    "@material/toolbar": "^0.25.0",
     "babel-polyfill": "^6.26.0",
     "jquery": "^3.2.1",
     "marked": "^0.3.7",
+    "material-components-web": "^0.26.0",
     "riot": "^3.7.4"
   }
 }
