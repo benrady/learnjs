@@ -37,23 +37,17 @@
     <nav class="mdc-temporary-drawer__drawer">
     <header class="mdc-temporary-drawer__header menu-header">
         <div class="mdc-temporary-drawer__header-content">
-        Header here
+        メニュー
         </div>
     </header>
     <nav id="icon-with-text-demo" class="mdc-temporary-drawer__content mdc-list">
         <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">home</i>Home
         </a>
         <a class="mdc-list-item" href="#beershops">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>BeerShops
+        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>ビアショップ
         </a>
 
-    
-    <!--  <div class='nav-container no-select fixed-top u-full-width'>
-        <div class="navigaion-menu-icon" ></div>
-        <div class="title" >Craft Beer Loves</div>
-        
-    </div>  -->
 
     </nav>
     </nav>
