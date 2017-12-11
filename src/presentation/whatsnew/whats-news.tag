@@ -31,7 +31,9 @@
                 this[commonView].hideProgress();
                 return
             }
+            console.log(error)
             this[commonView].hideProgress();
+            alert('ごめんなさい、なんか処理に失敗したみたいです。。。時間かかるかもですが、修正しますのでまた来てくださいね。')
         })
     })
 
