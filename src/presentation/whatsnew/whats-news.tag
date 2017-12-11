@@ -6,10 +6,10 @@
     </div>
 
     <script>
-    import CommonView from "../../CommonView.js";
-    import DateUtils from "../../util/DateUtils.js"
-    import HtmlUtils from "../../util/HtmlUtils.js"
-    import BeerShopModel from "../BeerShopModel.js"
+    import CommonView from "../common/CommonView.js";
+    import DateUtils from "../util/DateUtils.js"
+    import HtmlUtils from "../util/HtmlUtils.js"
+    import BeerShopModel from "../../domain/model/BeerShopModel.js"
 
     import WhatsNewViewModel from "./WhatsNewViewModel.js";
 

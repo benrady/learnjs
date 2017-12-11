@@ -1,27 +1,18 @@
 import riot from 'riot'
 import route from 'riot-route'
-// import './tags/app.tag'
-// import './tags/md.tag'
 
-import './tags/app-header.tag'
-import './tags/whatsnew/whats-news.tag'
-import './tags/beer-shops.tag'
-import './tags/subpage.tag'
+import './presentation/header/app-header.tag'
+import './presentation/whatsnew/whats-news.tag'
+import './presentation/beershops/beer-shops.tag'
 
-// riot.mount('app')
-// route.base('/')
 
 riot.mount('app-header')
-
 
 route('/', () => {
   riot.mount('content', 'whats-news')
 });
 route('/beershops', () => {
   riot.mount('content', 'beer-shops');
-});
-route('/page2/sub', () => {
-  riot.mount('content', 'subpage');
 });
 
 
