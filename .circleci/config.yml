@@ -32,6 +32,9 @@ jobs:
       # run tests!
       # - run: npm test
 
+      # run npm run build
+      - run: npm run build
+
   deploy:
     docker:
       # specify the version you desire here
