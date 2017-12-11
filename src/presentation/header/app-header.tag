@@ -76,7 +76,7 @@ this.on('mount', () =>{
             }))
             // クリックした要素だけにselectedクラスを当てる
             element.classList.add('mdc-temporary-drawer--selected')
-            drawer.open = false
+            return drawer.open = false
         });
     })
 
