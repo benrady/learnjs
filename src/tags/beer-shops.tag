@@ -1,6 +1,6 @@
 <beer-shops>
     <div class='beer-shops-view'>
-        aaaaa
+        <p>クラフトビールが飲めるお店を掲載予定です。</p>
     </div>
 
     <script>

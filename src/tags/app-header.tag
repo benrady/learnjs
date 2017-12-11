@@ -26,7 +26,6 @@
         // 初期はelevationなしだが、スクロールしたらelevationがつく
         let toolbar = mdc.toolbar.MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
         toolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
-
     })
     
     </script>
@@ -67,6 +66,20 @@ this.on('mount', () =>{
     // メニューをタップしたらドロワーが開く
     let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
     document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
+
+    // メニューアイテムにクリックイベントを設定する
+    document.querySelectorAll('.mdc-list-item').forEach( (element, index, array) => { 
+        element.addEventListener('click', () => {
+            // 一旦selectedクラスを全削除
+            array.forEach((elem => {
+                elem.classList.remove('mdc-temporary-drawer--selected')
+            }))
+            // クリックした要素だけにselectedクラスを当てる
+            element.classList.add('mdc-temporary-drawer--selected')
+            drawer.open = false
+        });
+    })
+
 })
 </script>
 </navigation-drawer>
