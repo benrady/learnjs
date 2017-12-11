@@ -1,7 +1,7 @@
 body { 
     background: #eee;
     margin-top: 60px; 
-    font-family: Helvetica Neue, Helvetica, Arial, "hiragino kaku gothic pro",meiryo,"ms pgothic",sans-serif;
+    /* font-family: Helvetica Neue, Helvetica, Arial, "hiragino kaku gothic pro",meiryo,"ms pgothic",sans-serif; */
     -webkit-font-smoothing: subpixel-antialiased
 }
 
@@ -24,6 +24,7 @@ body {
     right: 0;
     position: absolute;
     margin: auto;
+    display: none;
 }
 
 #sidebar-container {
@@ -48,18 +49,8 @@ body {
   display: inline;
   margin: 0 20px 0 0;
 }
-.fixed-top {
-  position: fixed;
-  top: 0px;
-  z-index: 1024;
-}
-.no-select {
-  /* 意味がわからないので調べる */
-  user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-}
+
+
 .hover-links a { 
   text-decoration: none;
 }
@@ -96,6 +87,10 @@ body {
     width: 100%;
 }
 
+/* Material Design Component */
+:root {
+  --mdc-theme-primary: #af4805;
+}
 
 @media only screen and (max-width: 979px) {
     
@@ -129,7 +124,7 @@ body {
    }
 
    body {
-    font-size: 20px;
+    /* font-size: 20px; */
    }
 
    .main {

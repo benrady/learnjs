@@ -4,3 +4,4 @@ working
 master
 node_modules/
 coverage/
+public/js
