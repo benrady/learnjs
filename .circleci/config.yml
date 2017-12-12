@@ -10,9 +10,9 @@ jobs:
       - image: circleci/node:7.10
 
     # working_directory: ~/repo
-
+    working_directory: /tmp/my-project
     steps:
-      - checkout
+      # - checkout
 
       # Download and cache dependencies
       - restore_cache:
@@ -39,6 +39,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:7.10
+    working_directory: /tmp/my-project
     steps:
       # install python and awscli
       - run:
