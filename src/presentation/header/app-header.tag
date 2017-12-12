@@ -64,9 +64,15 @@
 <script>
 this.on('mount', () =>{
     // メニューをタップしたらドロワーが開く
-    let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
-    document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
+    let drawerEl = document.querySelector('.mdc-temporary-drawer')
+    let drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
+    document.querySelector('.menu').addEventListener('click', () => drawer.open = true)
 
+    // FIXME: MDCのbug対応
+    // https://github.com/material-components/material-components-web/issues/1700
+    drawerEl.addEventListener('MDCTemporaryDrawer:close', (e)=>{
+        e.target.classList.remove('mdc-temporary-drawer--animating')
+    })
     // メニューアイテムにクリックイベントを設定する
     document.querySelectorAll('.mdc-list-item').forEach( (element, index, array) => { 
         element.addEventListener('click', () => {
@@ -77,7 +83,7 @@ this.on('mount', () =>{
             // クリックした要素だけにselectedクラスを当てる
             element.classList.add('mdc-temporary-drawer--selected')
             // return drawer.open = false
-        });
+        })
     })
 
 })
