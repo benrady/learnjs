@@ -4,4 +4,4 @@ working
 master
 node_modules/
 coverage/
-public/js
+public/js/bundle.js
