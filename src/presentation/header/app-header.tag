@@ -44,7 +44,7 @@
         <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">home</i>Home
         </a>
         <a class="mdc-list-item" href="#beershops">
-        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">store</i>ビアショップ
+        <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">store</i>ビアパブ
         </a>
 
 
