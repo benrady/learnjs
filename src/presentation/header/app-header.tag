@@ -84,9 +84,9 @@ this.on('mount', () =>{
             element.classList.add('mdc-temporary-drawer--selected')
 
             // FIXME: MDCのbug対応なので修正された削除すること
-            drawerEl.classList.remove('mdc-temporary-drawer--animating')
+//            drawerEl.classList.remove('mdc-temporary-drawer--animating')
 
-            return drawer.open = false
+//            return drawer.open = false
         })
     })
 
