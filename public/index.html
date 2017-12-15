@@ -8,6 +8,16 @@
     <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'> -->
     <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'> -->
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111279702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-111279702-1');
+    </script>
+
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -28,7 +38,22 @@
       <app-header></app-header>
       <div class='container main'>
         <div class='header'>
-            <div class='banner'></div>
+            <!--
+              TODO: 共通化したい
+              tag化すると、次のようなエラーがでてしまう
+            -->
+            <div align="center">
+              <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+              <!-- craftbeer-loves レスポンシブ -->
+              <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3131366896030715"
+                    data-ad-slot="1182425280"
+                    data-ad-format="auto"></ins>
+              <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+              </script>
+            </div>
         </div>
           
         <div class='view-container'>
