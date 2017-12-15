@@ -119,6 +119,8 @@
 
     :scope {
         display: block;
+        --read-more-background-color: #d85a0a;
+        --read-more-text-color: #fff;
     }
     /** 続きを読む */
     .grad-wrap {
@@ -137,8 +139,8 @@
         margin: auto;
         padding: .5em 0;
         border-radius: 2px;
-        background: #d85a0a;
-        color: #fff;
+        background: var(--read-more-background-color);
+        color: var(--read-more-text-color);
         /* font-size: 1.3rem; */
         text-align: center;
         cursor: pointer;
@@ -149,8 +151,8 @@
         content: "続きを読む"
     }
     .grad-trigger:hover {
-        background: #fff;
-        color: #d85a0a;
+        background: var(--read-more-text-color);
+        color: var(--read-more-background-color);
     }
     .grad-trigger .fa {
         margin-right: .5em;
