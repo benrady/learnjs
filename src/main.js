@@ -1,13 +1,9 @@
 import riot from 'riot'
 import route from 'riot-route'
 
-import './ads/ad.tag'
-
 import './presentation/header/app-header.tag'
 import './presentation/whatsnew/whats-news.tag'
 import './presentation/beershops/beer-shops.tag'
-
-riot.mount('ad')
 
 riot.mount('app-header')
 
