@@ -53,6 +53,7 @@
 <style>
 :scope {
     display: block;
+     <!--  TODO: アプリ全体として共通化したい  -->
     --craft-main-color: #af4805;
 }
 .mdc-temporary-drawer__drawer > .menu-header {
