@@ -126,9 +126,9 @@
     /** 続きを読む */
     .grad-wrap {
         position: relative;
-    }
-    .grad-wrap + .grad-wrap {
-        margin-top: 40px;
+        & + .grad-wrap {
+            margin-top: 40px;
+        }
     }
     .grad-trigger {
         z-index: 2;
@@ -147,17 +147,31 @@
         cursor: pointer;
         transition: .2s ease;
         box-shadow: 0 0 3px rgba(0,0,0,.3);
+
+        &::after {
+            content: "続きを読む"
+        }
+        &:hover {
+            background: var(--read-more-text-color);
+            color: var(--read-more-background-color);
+        }
+        & .fa {
+            margin-right: .5em;
+        }
+        &.is-show {
+            bottom: -2em;
+        }
+        &.is-show::after {
+            content: "閉じる"
+        }
+        &.is-show .fa {
+            transform: rotate(180deg);
+        }
+        &.is-show + .grad-item::before {
+            display: none;
+        }
     }
-    .grad-trigger::after {
-        content: "続きを読む"
-    }
-    .grad-trigger:hover {
-        background: var(--read-more-text-color);
-        color: var(--read-more-background-color);
-    }
-    .grad-trigger .fa {
-        margin-right: .5em;
-    }
+
     .grad-item {
         position: relative;
         overflow: hidden;
@@ -185,18 +199,6 @@
     .default-item {
         position: relative;
         overflow: hidden;
-    }
-    .grad-trigger.is-show {
-        bottom: -2em;
-    }
-    .grad-trigger.is-show::after {
-        content: "閉じる"
-    }
-    .grad-trigger.is-show .fa {
-        transform: rotate(180deg);
-    }
-    .grad-trigger.is-show + .grad-item::before {
-        display: none;
     }
     </style>
 </whats-news>
