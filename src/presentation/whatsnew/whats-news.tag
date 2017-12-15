@@ -81,6 +81,7 @@
             if(originalHeight < 250){
                 // 「続きをよむ」は表示しない
                 $(view).find('.grad-trigger').hide();
+                $(view).find('div').removeClass('grad-item').addClass('default-item');
             } else {
                 $(view).find('.grad-item').addClass('is-hide');
             }
@@ -160,23 +161,30 @@
     .grad-item {
         position: relative;
         overflow: hidden;
+
+        &.is-hide {
+            height: 160px;
+        } 
+        & p + p {
+            margin-top: 1em;
+        }
+        &::before {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding-top: 4em;
+            content: "";
+            width: 100%;
+            height: 40px; /*グラデーションで隠す高さ*/
+            background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.9) 50%, #fff 100%);
+            background: linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.9) 50%, #fff 100%);
+        }
     }
-    .grad-item.is-hide {
-        height: 160px;
-    }
-    .grad-item p + p {
-        margin-top: 1em;
-    }
-    .grad-item::before {
-        display: block;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        content: "";
-        width: 100%;
-        height: 40px; /*グラデーションで隠す高さ*/
-        background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.9) 50%, #fff 100%);
-        background: linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.9) 50%, #fff 100%);
+
+    .default-item {
+        position: relative;
+        overflow: hidden;
     }
     .grad-trigger.is-show {
         bottom: -2em;
