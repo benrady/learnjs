@@ -1,12 +1,20 @@
 export default class BeerPubModel {
 
     constructor() {
+        this.id = ""
         this.name = ""
         this.message = ""
         this.createdAt = ""
         this.fbUrl = ""
         this.imageUrl = ""
     
+    }
+    setId(value) {
+        this.id = value
+    }
+
+    getId() {
+        return this.id
     }
 
     setName(value) {
@@ -50,8 +58,8 @@ export default class BeerPubModel {
     }
 
     toJSON() {
-        let {name, message, createdAt, fbUrl, imageUrl} = this
-        return {name, message, createdAt, fbUrl, imageUrl}
+        let {id, name, message, createdAt, fbUrl, imageUrl} = this
+        return {id, name, message, createdAt, fbUrl, imageUrl}
     }
 
 

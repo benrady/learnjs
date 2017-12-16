@@ -2,8 +2,9 @@
     <material-progress></material-progress>
     <!-- 最新情報一覧の各ショップのView -->
     <div class='whats-new-beer-pubs'>
-    <beer-pub-view each={ beerPubs } ></beer-pub-view>
+        <beer-pub-view each={ beerPubs } ></beer-pub-view>
     </div>
+
 
     <script>
     import CommonView from "../common/CommonView.js";
@@ -51,6 +52,7 @@
     translate (results) {
         return results.map( (result) => {
             var beerPub = new BeerPubModel()
+            beerPub.setId(result.id)
             beerPub.setName(result.name)
             if(result.message){
                 let messageWithNewlineAndSpace = result.message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
@@ -210,6 +212,7 @@
 
 <beer-pub-view>
     <div class='beer-pub-view'>
+        <a href="#beerpubs/{ id }" class="no-style">
         <section class="card">
         <div class='imageContainer'>
             <img class='scaledImage card-img' src='{ imageUrl }'/>
@@ -233,8 +236,17 @@
             </div>
         </div>
         </section>
+        </a>
     </div>
-
+    <style>
+    :scope {
+        display: block;
+    }
+    a.no-style {
+        text-decoration: none;
+        color: inherit;
+    }
+    </style>
     <script>
         import '../common/raw.tag'
         this.on('mount', function() {
