@@ -1,15 +1,15 @@
 <whats-news>
     <material-progress></material-progress>
     <!-- 最新情報一覧の各ショップのView -->
-    <div class='whats-new-beer-shops'>
-    <beer-pub-view each={ beerShops } ></beer-pub-view>
+    <div class='whats-new-beer-pubs'>
+    <beer-pub-view each={ beerPubs } ></beer-pub-view>
     </div>
 
     <script>
     import CommonView from "../common/CommonView.js";
     import DateUtils from "../util/DateUtils.js"
     import HtmlUtils from "../util/HtmlUtils.js"
-    import BeerShopModel from "../../domain/model/BeerShopModel.js"
+    import BeerPubModel from "../../domain/model/BeerPubModel.js"
 
     import WhatsNewViewModel from "./WhatsNewViewModel.js";
 
@@ -30,7 +30,7 @@
         this[commonView].showProgress()
         this[whatsNewViewModel].fetchWhatsNew( (result, error) => {
             if(error == null) {
-                self.beerShops = self.translate(result)
+                self.beerPubs = self.translate(result)
                 self.update()
                 this[commonView].hideProgress();
                 return
@@ -50,19 +50,19 @@
     // 生のJSON結果をViewModel用のModelに変換
     translate (results) {
         return results.map( (result) => {
-            var beerShop = new BeerShopModel()
-            beerShop.setName(result.name)
+            var beerPub = new BeerPubModel()
+            beerPub.setName(result.name)
             if(result.message){
                 let messageWithNewlineAndSpace = result.message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
-                beerShop.setMessage(HtmlUtils.applyAnchorLink(messageWithNewlineAndSpace))
+                beerPub.setMessage(HtmlUtils.applyAnchorLink(messageWithNewlineAndSpace))
             }
-            beerShop.setCreatedAt(DateUtils.toLocaleDateString(result.createdAt))
-            beerShop.setFbUrl(result.fbUrl)
+            beerPub.setCreatedAt(DateUtils.toLocaleDateString(result.createdAt))
+            beerPub.setFbUrl(result.fbUrl)
 
             if (result.photos.length > 0) {
-                beerShop.setImageUrl(result.photos[0].src)
+                beerPub.setImageUrl(result.photos[0].src)
             }
-            return beerShop.toJSON()
+            return beerPub.toJSON()
         })
     }
 
@@ -76,11 +76,11 @@
 
     /**
      * メッセージが長すぎたら隠して、続きを読むボタンを配置する
-     * @param {*} beerShopsView 
+     * @param {*} beerPubsView 
      */
     hideMessage()  {
         let self = this
-        $('.whats-new-beer-shops').find('.beer-pub-view').find('.grad-wrap').each((_, view) => {
+        $('.whats-new-beer-pubs').find('.beer-pub-view').find('.grad-wrap').each((_, view) => {
             let originalHeight = $(view).height();
             if(originalHeight < 250){
                 // 「続きをよむ」は表示しない
@@ -96,7 +96,7 @@
 
     /**
      * 続きを読むボタンのクリックイベント処理
-     * @param {*} beerShopsView 
+     * @param {*} beerPubsView 
      */
     onClickReadContinueButton(view, originalHeight, shortHeight) {
         view.find('.grad-trigger').on('click', function() {

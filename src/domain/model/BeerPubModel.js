@@ -1,4 +1,4 @@
-export default class BeerShopModel {
+export default class BeerPubModel {
 
     constructor() {
         this.name = ""
