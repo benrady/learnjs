@@ -2,7 +2,7 @@
     <material-progress></material-progress>
     <!-- 最新情報一覧の各ショップのView -->
     <div class='whats-new-beer-shops'>
-    <beer-shop-view each={ beerShops } ></beer-shop-view>
+    <beer-pub-view each={ beerShops } ></beer-pub-view>
     </div>
 
     <script>
@@ -80,7 +80,7 @@
      */
     hideMessage()  {
         let self = this
-        $('.whats-new-beer-shops').find('.beer-shop-view').find('.grad-wrap').each((_, view) => {
+        $('.whats-new-beer-shops').find('.beer-pub-view').find('.grad-wrap').each((_, view) => {
             let originalHeight = $(view).height();
             if(originalHeight < 250){
                 // 「続きをよむ」は表示しない
@@ -208,8 +208,8 @@
 </whats-news>
 
 
-<beer-shop-view>
-    <div class='beer-shop-view'>
+<beer-pub-view>
+    <div class='beer-pub-view'>
         <section class="card">
         <div class='imageContainer'>
             <img class='scaledImage card-img' src='{ imageUrl }'/>
@@ -241,7 +241,7 @@
             riot.mount('raw');
         })
     </script>
-</beer-shop-view>
+</beer-pub-view>
 
 
 
