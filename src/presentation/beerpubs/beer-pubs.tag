@@ -1,5 +1,5 @@
-<beer-shops>
-    <div class='beer-shops-view'>
+<beer-pubs>
+    <div class='beer-pubs-view'>
         <p>クラフトビールが飲めるお店を掲載予定です。</p>
     </div>
 
@@ -34,4 +34,4 @@
         console.info(eventName)
     })
     </script>
-</beer-shops>
+</beer-pubs>

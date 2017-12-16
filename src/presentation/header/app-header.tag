@@ -43,7 +43,7 @@
             <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
             <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">home</i>Home
             </a>
-            <a class="mdc-list-item" href="#beershops">
+            <a class="mdc-list-item" href="#beerpubs">
             <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">store</i>ビアパブ
             </a>
         </nav>
