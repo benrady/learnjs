@@ -212,8 +212,9 @@
 
 <beer-pub-view>
     <div class='beer-pub-view'>
-        <a href="#beerpubs/{ id }" class="no-style">
         <section class="card">
+        <div class='image-content'>
+        <a href="#beerpubs/{ id }" class="link-area"></a>
         <div class='imageContainer'>
             <img class='scaledImage card-img' src='{ imageUrl }'/>
         </div>
@@ -228,6 +229,7 @@
             </div>
             </div>
         </div>
+        </div>
         <div class="card-link">
             <div class='createdAt'>
             <a class='fbUrl' href='{ fbUrl }' target='_blank'>
@@ -236,15 +238,23 @@
             </div>
         </div>
         </section>
-        </a>
     </div>
     <style>
     :scope {
         display: block;
     }
-    a.no-style {
+    .image-content{
+        position:relative;
+    }
+    a.link-area {
         text-decoration: none;
         color: inherit;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
     </style>
     <script>
