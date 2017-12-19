@@ -224,7 +224,7 @@
             <div class="grad-wrap">
                 <span class="grad-trigger"><span class="fa fa-chevron-down"></span></span>
                 <div class="grad-item">
-                    <p class='card-text' data-name='message'><raw content='{ message }' /></p>
+                    <p class='card-text' data-name='message'><raw content='{ message || "" }' /></p>
                 </div>
             </div>
             </div>

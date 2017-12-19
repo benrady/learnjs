@@ -13,5 +13,10 @@ riotでデフォルトエスケープされるため、なにもせず{}とす�
 -->
 <raw>
   <span></span>
-  this.root.innerHTML = opts.content
+
+  <script>
+  if(opts.content &&  opts.content.length > 0) {
+    this.root.innerHTML = opts.content
+  }
+  </script>
 </raw>
