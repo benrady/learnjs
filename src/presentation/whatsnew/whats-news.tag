@@ -54,10 +54,7 @@
             var beerPub = new BeerPubModel()
             beerPub.setId(result.id)
             beerPub.setName(result.name)
-            if(result.message){
-                let messageWithNewlineAndSpace = result.message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
-                beerPub.setMessage(HtmlUtils.applyAnchorLink(messageWithNewlineAndSpace))
-            }
+            beerPub.setMessage(result.message ? this.replaceAndApplyAnchorLink(result.message) : "")
             beerPub.setCreatedAt(DateUtils.toLocaleDateString(result.createdAt))
             beerPub.setFbUrl(result.fbUrl)
 
@@ -66,6 +63,11 @@
             }
             return beerPub.toJSON()
         })
+    }
+
+    replaceAndApplyAnchorLink(message) {
+        let messageWithNewlineAndSpace = message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
+        return HtmlUtils.applyAnchorLink(messageWithNewlineAndSpace)
     }
 
     /**-------------------------
