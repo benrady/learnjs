@@ -1,10 +1,15 @@
 <!--  各ビアパブの詳細情報を表示します。  -->
 
 <beer-pub>
-    <h3>{ opts.beerpubId }</h3>
-    <div class='beer-pub-view'>
-    
-        
+    <h3>{ name }</h3>
+    <div class='beer-pub-detail'>
+        <address map={ map }></address>
+
+        <div class='image-list'>
+            <ul each={value, name  in images}>
+            <li><img src={ value } /></li>
+            </ul>
+        </div>
     </div>
 
     <script>
@@ -18,12 +23,14 @@
         // before the tag is mounted
     })
 
-    this.on('mount', function(opts) {
-        console.log("opt:", opts)
+    let self = this
+    this.on('mount', function() {
+        console.log("opt:", self.opts)
         // TODO: BeerPubViewModelの引数をDIしたい
         this[beerPubViewModel] = new BeerPubViewModel(new GetBeerPubUseCase(new CraftBeerLovesApi()))
-        this[beerPubViewModel].start( this.opts.beerpubId, (result) => {
-            console.log(result)
+        this[beerPubViewModel].start( this.opts.beerpubId, (beerPubModel) => {
+            console.log(beerPubModel)
+            self.update(beerPubModel)
         })
     })
 
@@ -50,3 +57,104 @@
     })
     </script>
 </beer-pub>
+
+<address>
+    <rg-map map={ map }></rg-map>
+    <div class='address'>
+        <p>{ zip }</p>
+        <p>{ country }</p>
+        <p>{ prefecture }</p>
+        <p>{ address }</p>
+    </div>
+
+    <style>
+    :scope {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 200px;
+    }
+    </style>
+
+    <script>
+    let self = this
+    this.on('update', () =>{
+        self.zip = opts.map.zip
+        self.country = opts.map.country
+        self.prefecture = opts.map.prefecture
+        self.address = opts.map.address
+        self.map = {
+                center: { lat: 34.668267, lng: 135.499143 },
+                zoom: 16
+        }
+        <!--  self.update()  -->
+
+    })
+    this.on('mount', () => {
+        <!--  var marker = new google.maps.Marker({
+				position: {
+					lat: 53.806,
+					lng: -1.535
+				},
+				map: map,
+				title: 'Hello RiotGear!'
+			})  -->
+    })
+    </script>
+</address>
+
+
+
+<rg-map>
+
+	<div class="rg-map"></div>
+
+	<script>
+		window.rg = window.rg || {}
+		window.rg.gmap = riot.observable({
+			initialize: () => {
+				window.rg.gmap.trigger('initialize')
+			}
+		})
+
+		this.on('mount', () => {
+			rg.gmap.on('initialize', () => {
+				opts.map.mapObj = new google.maps.Map(this.root.querySelector('.rg-map'), opts.map)
+				this.trigger('loaded', opts.map.mapObj)
+			})
+
+			if (document.getElementById('gmap_script')) {
+                remove('gmap_script');
+            }
+            let script = document.createElement('script')
+            script.setAttribute('id', 'gmap_script')
+            script.type = 'text/javascript'
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA58OZlZEBjHLPYuS4kxsCcZRgVK0Qn9x0&callback=window.rg.gmap.initialize'
+            document.body.appendChild(script)
+		})
+
+        function remove(id) {
+            var elem = document.getElementById(id);
+            return elem.parentNode.removeChild(elem);
+        }
+
+	</script>
+
+	<style scoped>
+		.rg-map {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.rg-map img {
+			max-width: inherit;
+		}
+
+	</style>
+
+</rg-map>
+
+

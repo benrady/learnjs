@@ -1,3 +1,7 @@
+'use strict';
+
+import Map from "./Map.js"
+
 export default class BeerPubModel {
 
     constructor() {
@@ -7,6 +11,9 @@ export default class BeerPubModel {
         this.createdAt = ""
         this.fbUrl = ""
         this.imageUrl = ""
+        this.map = new Map()
+        this.images = []
+
     
     }
     setId(value) {
@@ -57,11 +64,26 @@ export default class BeerPubModel {
         return this.imageUrl
     }
 
+    setMap(value) {
+        this.map = value
+    }
+
+    setImages(values) {
+        this.images = values
+    }
+
     toJSON() {
-        let {id, name, message, createdAt, fbUrl, imageUrl} = this
-        return {id, name, message, createdAt, fbUrl, imageUrl}
+        let {id, name, message, createdAt, fbUrl, imageUrl, map, images} = this
+        return {id, name, message, createdAt, fbUrl, imageUrl, map, images}
     }
 
 
-
+    static parse(json) {
+        var model = new BeerPubModel()
+        model.setId(json.id)
+        model.setName(json.name)
+        model.setMap(Map.parse(json.map))
+        model.setImages(json.images)
+        return model
+    }
 }
