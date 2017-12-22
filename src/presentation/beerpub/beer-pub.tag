@@ -92,14 +92,6 @@
 
     })
     this.on('mount', () => {
-        <!--  var marker = new google.maps.Marker({
-				position: {
-					lat: 53.806,
-					lng: -1.535
-				},
-				map: map,
-				title: 'Hello RiotGear!'
-			})  -->
     })
     </script>
 </address>
@@ -108,23 +100,27 @@
 
 <rg-map>
 
-	<div class="rg-map"></div>
+    <div class="rg-map"></div>
 
-	<script>
-		window.rg = window.rg || {}
-		window.rg.gmap = riot.observable({
-			initialize: () => {
-				window.rg.gmap.trigger('initialize')
-			}
-		})
+    <script>
+        window.rg = window.rg || {}
+        ndow.rg.gmap = riot.observable({
+        initialize: () => {
+                window.rg.gmap.trigger('initialize')
+            }
+        })
 
-		this.on('mount', () => {
-			rg.gmap.on('initialize', () => {
-				opts.map.mapObj = new google.maps.Map(this.root.querySelector('.rg-map'), opts.map)
-				this.trigger('loaded', opts.map.mapObj)
-			})
+        this.on('mount', () => {
+            rg.gmap.on('initialize', () => {
+                opts.map.mapObj = new google.maps.Map(this.root.querySelector('.rg-map'), opts.map)
+                let marker = new google.maps.Marker({
+                        position: opts.map.center,
+                        map: opts.map.mapObj
+                });
+                this.trigger('loaded', opts.map.mapObj)
+            })
 
-			if (document.getElementById('gmap_script')) {
+            if (document.getElementById('gmap_script')) {
                 remove('gmap_script');
             }
             let script = document.createElement('script')
@@ -132,28 +128,28 @@
             script.type = 'text/javascript'
             script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyA58OZlZEBjHLPYuS4kxsCcZRgVK0Qn9x0&callback=window.rg.gmap.initialize'
             document.body.appendChild(script)
-		})
+        })
 
         function remove(id) {
             var elem = document.getElementById(id);
             return elem.parentNode.removeChild(elem);
         }
 
-	</script>
+    </script>
 
-	<style scoped>
-		.rg-map {
-			margin: 0;
-			padding: 0;
-			width: 100%;
-			height: 100%;
-		}
+    <style scoped>
+        .rg-map {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-		.rg-map img {
-			max-width: inherit;
-		}
+        .rg-map img {
+            max-width: inherit;
+        }
 
-	</style>
+    </style>
 
 </rg-map>
 
