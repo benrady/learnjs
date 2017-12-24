@@ -11,6 +11,8 @@ export default class BeerPubViewModel {
     start (beerpubId, callback) {
         this.getBeerPubUseCase.execute(beerpubId,  (result) => {
             console.log(result)
+            if (result == null) {return}
+
             let beerPubModel = BeerPubModel.parse(result)
             callback(beerPubModel)
         })

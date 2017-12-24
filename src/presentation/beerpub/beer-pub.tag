@@ -114,9 +114,10 @@
         self.prefecture = opts.map.prefecture
         self.address = opts.map.address
         self.map = {
-                center: { lat: 34.668267, lng: 135.499143 },
+                center: { lat: opts.map.latLng.lat, lng: opts.map.latLng.lng },
                 zoom: 16
         }
+        console.log(self.map)
         <!--  self.update()  -->
 
     })

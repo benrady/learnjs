@@ -1,11 +1,11 @@
 export default class Map {
-    constructor(zip, count, prefecture, address) {
+    constructor(zip, count, prefecture, address, latLng) {
         this.zip = zip
         this.country = count
         this.prefecture = prefecture
         this.address = address
         this.googleMapUrl = ""
-        //this.latLng
+        this.latLng = latLng
     }
 
     static parse(json) {
@@ -13,7 +13,8 @@ export default class Map {
             json.zip,
             json.country,
             json.prefecture,
-            json.address
+            json.address,
+            json.latlng
         )
     }
 }
