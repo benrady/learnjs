@@ -1,6 +1,7 @@
 'use strict';
 
 import Map from "./Map.js"
+import Sns from "./Sns.js"
 
 export default class BeerPubModel {
 
@@ -12,6 +13,7 @@ export default class BeerPubModel {
         this.fbUrl = ""
         this.imageUrl = ""
         this.map = new Map()
+        this.sns = new Sns()
         this.images = []
 
     
@@ -67,14 +69,17 @@ export default class BeerPubModel {
     setMap(value) {
         this.map = value
     }
+    setSns(value) {
+        this.sns = value
+    }
 
     setImages(values) {
         this.images = values
     }
 
     toJSON() {
-        let {id, name, message, createdAt, fbUrl, imageUrl, map, images} = this
-        return {id, name, message, createdAt, fbUrl, imageUrl, map, images}
+        let {id, name, message, createdAt, fbUrl, imageUrl, map, images, sns} = this
+        return {id, name, message, createdAt, fbUrl, imageUrl, map, images, sns}
     }
 
 
@@ -83,6 +88,7 @@ export default class BeerPubModel {
         model.setId(json.id)
         model.setName(json.name)
         model.setMap(Map.parse(json.map))
+        model.setSns(Sns.parse(json.sns))
         model.setImages(json.images)
         return model
     }
