@@ -3,13 +3,14 @@
 <beer-pub>
     <h3>{ name }</h3>
     <div class='beer-pub-detail'>
-        <address map={ map }></address>
 
         <div class='image-list'>
-            <ul each={value, name  in images}>
-            <li><img src={ value } /></li>
+            <ul>
+            <li each={value, name  in images}> <img src='{ value }' class='cover' /></li>
             </ul>
         </div>
+
+        <address map={ map }></address>
     </div>
 
     <script>
@@ -56,6 +57,34 @@
         console.info(eventName)
     })
     </script>
+
+    <style>
+    @charset "UTF-8";
+
+    :scope {
+        display: block;
+    }
+
+     /*画像リストを横スクロール*/
+    ul {
+        overflow-x: scroll;
+        white-space: nowrap;
+        -webkit-padding-start: 0px;
+    }
+    li {
+        display: inline-block;
+        padding-right: 5px;
+    }
+    .cover {
+        object-fit: cover;
+        width: 200px;
+        height: 200px;
+        background-color: #ccc;
+        border: 1px solid #ccc;
+    }
+
+    </style>
+
 </beer-pub>
 
 <address>
@@ -104,7 +133,7 @@
 
     <script>
         window.rg = window.rg || {}
-        ndow.rg.gmap = riot.observable({
+        window.rg.gmap = riot.observable({
         initialize: () => {
                 window.rg.gmap.trigger('initialize')
             }
