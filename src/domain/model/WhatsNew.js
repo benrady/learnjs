@@ -1,10 +1,6 @@
 'use strict';
 
-import ShopInfo from "./ShopInfo.js"
-import Map from "./Map.js"
-import Sns from "./Sns.js"
-
-export default class BeerPubModel {
+export default class WhatsNew {
 
     constructor() {
         this.id = ""
@@ -13,13 +9,8 @@ export default class BeerPubModel {
         this.createdAt = ""
         this.fbUrl = ""
         this.imageUrl = ""
-        this.shopInfo = new ShopInfo()
-        this.map = new Map()
-        this.sns = new Sns()
-        this.images = []
-
-    
     }
+
     setId(value) {
         this.id = value
     }
@@ -68,34 +59,26 @@ export default class BeerPubModel {
         return this.imageUrl
     }
 
-    setShopInfo(value) {
-        this.shopInfo = value
-    }
-    setMap(value) {
-        this.map = value
-    }
-    setSns(value) {
-        this.sns = value
-    }
-
-    setImages(values) {
-        this.images = values
-    }
 
     toJSON() {
-        let {id, name, message, createdAt, fbUrl, imageUrl, map, images, sns} = this
-        return {id, name, message, createdAt, fbUrl, imageUrl, map, images, sns}
+        let {id, name, message, createdAt, fbUrl, imageUrl} = this
+        return {id, name, message, createdAt, fbUrl, imageUrl}
     }
 
 
     static parse(json) {
-        var model = new BeerPubModel()
+        var model = new WhatsNew()
         model.setId(json.id)
         model.setName(json.name)
-        model.setShopInfo(ShopInfo.parse(json.shop_info))
-        model.setMap(Map.parse(json.map))
-        model.setSns(Sns.parse(json.sns))
-        model.setImages(json.images)
+        model.setMessage(json.message)
+        model.setCreatedAt(json.createdAt)
+        model.setFbUrl(json.fbUrl)
+
+        if (json.photos.length > 0) {
+            model.setImageUrl(json.photos[0].src)
+        }
         return model
     }
+
+    
 }

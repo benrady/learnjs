@@ -13,5 +13,11 @@ class HtmlUtils {
         }
         return str.replace(regexp_url, regexp_makeLink);
     }
+
+    static replaceAndApplyAnchorLink(message) {
+        let messageWithNewlineAndSpace = message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
+        return HtmlUtils.applyAnchorLink(messageWithNewlineAndSpace)
+    }
+
 }
 export default HtmlUtils;

@@ -10,7 +10,7 @@
     import CommonView from "../common/CommonView.js";
     import DateUtils from "../util/DateUtils.js"
     import HtmlUtils from "../util/HtmlUtils.js"
-    import BeerPubModel from "../../domain/model/BeerPubModel.js"
+    import WhatsNew from "../../domain/model/WhatsNew.js"
 
     import WhatsNewViewModel from "./WhatsNewViewModel.js";
 
@@ -51,24 +51,13 @@
     // 生のJSON結果をViewModel用のModelに変換
     translate (results) {
         return results.map( (result) => {
-            var beerPub = new BeerPubModel()
-            beerPub.setId(result.id)
-            beerPub.setName(result.name)
-            beerPub.setMessage(result.message ? this.replaceAndApplyAnchorLink(result.message) : "")
-            beerPub.setCreatedAt(DateUtils.toLocaleDateString(result.createdAt))
-            beerPub.setFbUrl(result.fbUrl)
-
-            if (result.photos.length > 0) {
-                beerPub.setImageUrl(result.photos[0].src)
-            }
-            return beerPub.toJSON()
+            let model = WhatsNew.parse(result)
+            model.setMessage(model.message ? HtmlUtils.replaceAndApplyAnchorLink(model.message) : "")
+            model.setCreatedAt(DateUtils.toLocaleDateString(model.createdAt))
+            return model.toJSON()
         })
     }
 
-    replaceAndApplyAnchorLink(message) {
-        let messageWithNewlineAndSpace = message.replace(/\r?\n/g, "<br>").replace(/\s/g, "&nbsp;");
-        return HtmlUtils.applyAnchorLink(messageWithNewlineAndSpace)
-    }
 
     /**-------------------------
      * 続きをよむセットアップ
