@@ -3,6 +3,13 @@
 <beer-pub>
     <h3>{ name }</h3>
     <div class='beer-pub-detail'>
+        <div class='small'>
+            <ul>
+            <li>{ shopInfo.tapCount }Tap</li>
+            <li>チャージ{ shopInfo.is_need_to_charge ? "あり" : "なし" }</li>
+            <li>{ shopInfo.smoking.is_smoking ? "喫煙可" : "禁煙" }</li>
+            </ul>
+        </div>
 
         <div class='image-list'>
             <ul>
@@ -11,6 +18,11 @@
         </div>
 
         <address map={ map }></address>
+
+        <div class="shop-info">
+        <p>{ shopInfo.commentFromAdmin }</p>
+        </div>
+
     </div>
 
     <script>
@@ -65,15 +77,17 @@
         display: block;
     }
 
-     /*画像リストを横スクロール*/
-    ul {
-        overflow-x: scroll;
-        white-space: nowrap;
-        -webkit-padding-start: 0px;
-    }
-    li {
-        display: inline-block;
-        padding-right: 5px;
+    /*画像リストを横スクロール*/
+    .image-list {
+        & ul {
+            overflow-x: scroll;
+            white-space: nowrap;
+            -webkit-padding-start: 0px;
+        }
+        & li {
+            display: inline-block;
+            padding-right: 5px;
+        }
     }
     .cover {
         object-fit: cover;
@@ -83,32 +97,58 @@
         border: 1px solid #ccc;
     }
 
+
+    .small {
+        font-size: 0.8em;
+        & ul {
+            -webkit-padding-start: 0px;
+        }
+        & li {
+            display: inline-block;
+            padding-right: 5px;
+        }
+    }
+
+    .shop-info {
+        margin-top: 40px;
+    }
+    .small {
+        & > p {
+            font-size: 0.6rem;
+        }
+    }
     </style>
 
 </beer-pub>
 
 <address>
     <rg-map map={ map }></rg-map>
+    <div class='googlemap-link'>
+    <a  href="{ googleMapUrl }" target="_blank">GoogleMap</a>
+    <div>
     <div class='address'>
-        <p>{ zip }</p>
-        <p>{ country }</p>
-        <p>{ prefecture }</p>
-        <p>{ address }</p>
+        <!--  <p>{ zip } { country } { prefecture }{ address }</p>  -->
     </div>
 
     <style>
     :scope {
         display: block;
-        position: absolute;
         left: 0;
         right: 0;
         height: 200px;
+    }
+    .googlemap-link {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        margin-right: 16px;
+        text-align: right;
     }
     </style>
 
     <script>
     let self = this
     this.on('update', () =>{
+        self.googleMapUrl = opts.map.googleMapUrl
         self.zip = opts.map.zip
         self.country = opts.map.country
         self.prefecture = opts.map.prefecture
@@ -167,17 +207,19 @@
 
     </script>
 
-    <style scoped>
-        .rg-map {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
+    <style>
+    :scope {
+    }
+    .rg-map {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
 
-        .rg-map img {
-            max-width: inherit;
-        }
+    .rg-map img {
+        max-width: inherit;
+    }
 
     </style>
 
