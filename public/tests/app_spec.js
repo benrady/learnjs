@@ -68,5 +68,30 @@ describe('LearnJS', function() {
       expect(correctFlash.find('a').attr('href')).toEqual('');
     });
   });
+  describe('application shell', () => {
+    it('landing page link on toolbar', () => {
+      let link = $('.nav-container > ul a:contains("LearnJS")');
+      expect(link.attr('href')).toEqual('#');
+    });
+    it('start link on toolbar', () => {
+      let link = $('.nav-container > ul a:contains("Start")');
+      expect(link.attr('href')).toEqual('#problem-1');
+    });
+    it('not have skip link on toolbar in landing page', () => {
+      learnjs.showView('');
+      let link = $('.nav-container > ul a:contains("Skip This Problem")');
+      expect(link.length).toEqual(0);
+    });
+    it('have skip link on toolbar in problem view', () => {
+      learnjs.problemView('1');
+      let link = $('.nav-container > ul a:contains("Skip This Problem")');
+      expect(link.attr('href')).toEqual('#problem-2');
+    });
+    it('not have skip link on toolbar in final problem view', () => {
+      learnjs.problemView(learnjs.problems.length);
+      let link = $('.nav-container > ul a:contains("Skip This Problem")');
+      expect(link.length).toEqual(0);
+    });
+  });
 });
 

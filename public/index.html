@@ -14,14 +14,64 @@
             margin-top: 30px;
         }
 
+        .text-1g {
+            font-size: x-large;
+        }
+
         .templates {
             display: none;
+        }
+
+        .inline-list {
+            margin-bottom: 0px; /* Skleton reset */
+        }
+
+        .inline-list li {
+            display: inline;
+            margin: 0 20px 0 0;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0px;
+            z-index: 1024;
+        }
+
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+        }
+
+        .hover-links a {
+            text-decoration: none;
+        }
+
+        .hover-links a:hover {
+            text-decoration: underline;
+        }
+
+        .nav-container {
+            padding-left: 40px;
+            background: #666;
+        }
+
+        .nav-container a {
+            color: white;
         }
     </style>
 </head>
 <body>
 <div class='markup'>
-    <div class='view-container container'>
+    <div class='nav-container no-select fixed-top u-full-width'>
+        <ul class='inline-list hover-links nav-list six columns'>
+            <li><a class='text-1g' href='#'>LearnJS</a></li>
+            <li><a href='#problem-1'>Start</a></li>
+        </ul>
+    </div>
+    <div class='view-container container'></div>
+    <div class='templates'>
         <div class='landing-view'>
             <div class='row'>
                 <div class='one-half column'>
@@ -33,8 +83,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class='templates'>
         <div class='problem-view'>
             <h3 class='title'></h3>
             <p data-name='description'></p>
@@ -50,6 +98,9 @@
         <div class='correct-flash'>
             <span>Correct!</span> <a>Next Problem</a>
         </div>
+        <li class='skip-btn'>
+            <a>Skip This Problem</a>
+        </li>
     </div>
 </div>
 <script type='text/javascript'>
