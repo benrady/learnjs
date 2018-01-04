@@ -23,7 +23,6 @@ learnjs.applyObject = function(obj, elem) {
   }
 };
 
-
 learnjs.problemView = (data) => {
   let problemNumber = parseInt(data, 10);
   let view = learnjs.template('problem-view');
@@ -55,6 +54,8 @@ learnjs.problemView = (data) => {
 learnjs.showView = (hash) => {
   let routes = {
     '#problem': learnjs.problemView,
+    '#': learnjs.landingView,
+    '': learnjs.landingView,
   };
   let hashParts = hash.split('-');
   let viewFn = routes[hashParts[0]];
@@ -85,3 +86,8 @@ learnjs.buildCorrectFlash = (problemNumber) => {
   }
   return correctFlash;
 };
+
+learnjs.landingView = function() {
+  return learnjs.template('landing-view');
+};
+
