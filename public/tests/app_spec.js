@@ -47,12 +47,25 @@ describe('LearnJS', function() {
     it('can check a correct answer by hitting a button', () => {
       view.find('.answer').val('true');
       view.find('.check-btn').click();
-      expect(view.find('.result').text()).toEqual('Correct!');
+      expect(view.find('.result').text().trim()).
+          toEqual('Correct! Next Problem');
     });
     it('rejects an incorrect answer', () => {
       view.find('.answer').val('false');
       view.find('.check-btn').click();
-      expect(view.find('.result').text()).toEqual('Incorrect!');
+      expect(view.find('.result').text().trim()).toEqual('Incorrect!');
+    });
+  });
+  describe('navigation', () => {
+    it('have a next problem', () => {
+      let correctFlash = learnjs.buildCorrectFlash(1);
+      expect(correctFlash.text().trim()).toEqual('Correct! Next Problem');
+      expect(correctFlash.find('a').attr('href')).toEqual('#problem-2');
+    });
+    it('finished', () => {
+      let correctFlash = learnjs.buildCorrectFlash(learnjs.problems.length);
+      expect(correctFlash.text().trim()).toEqual('Correct! You\'re Finished!');
+      expect(correctFlash.find('a').attr('href')).toEqual('');
     });
   });
 });
