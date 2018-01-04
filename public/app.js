@@ -9,8 +9,9 @@ learnjs.appOnReady = () => {
 }
 
 learnjs.problemView = (problemNumber) => {
-  let title = 'Problem #' + problemNumber + ' Coming soon!';
-  return $('<div class="problem-view">').text(title);
+  let view = $('.templates .problem-view').clone();
+  view.find('.title').text('Problem #' + problemNumber + ' Coming soon!');
+  return view;
 }
 
 learnjs.showView = (hash) => {
