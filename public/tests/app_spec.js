@@ -3,7 +3,7 @@ describe('LearnJS', function() {
     learnjs.showView('#problem-1');
     expect($('.view-container .problem-view').length).toEqual(1);
   });
-  it('show the landing page view when there is no hash', function() {
+  it('shows the landing page view when there is no hash', function() {
     learnjs.showView('');
     expect($('.view-container .landing-view').length).toEqual(1);
   });
@@ -11,6 +11,12 @@ describe('LearnJS', function() {
     spyOn(learnjs, 'problemView');
     learnjs.showView('#problem-42');
     expect(learnjs.problemView).toHaveBeenCalledWith('42');
+  });
+  describe('problem view', () => {
+    it('has a title that includes the problem number', () => {
+      let view = learnjs.problemView('1');
+      expect(view.text()).toEqual('Problem #1 Coming soon!');
+    });
   });
 });
 

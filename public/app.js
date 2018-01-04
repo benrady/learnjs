@@ -1,8 +1,9 @@
 'use strict'
 let learnjs = {}
 
-learnjs.problemView = () => {
-  return $('<div class="problem-view">').text('Coming soon!');
+learnjs.problemView = (problemNumber) => {
+  let title = 'Problem #' + problemNumber + ' Coming soon!';
+  return $('<div class="problem-view">').text(title);
 }
 
 learnjs.showView = (hash) => {
