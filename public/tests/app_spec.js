@@ -20,12 +20,12 @@ describe('LearnJS', function() {
     it('show the description that binds data', () => {
       let view = learnjs.problemView('1');
       expect(view.find('[data-name="description"]').text().trim()).
-          toEqual('Simple Math');
+          toEqual(learnjs.problems[0].description);
     });
     it('show the problem code that binds data', () => {
       let view = learnjs.problemView('1');
       expect(view.find('[data-name="code"]').text().trim()).
-          toEqual('function problem() { return 42 === 6 * __; }');
+          toEqual(learnjs.problems[0].code);
     });
   });
   it('invokes the router when loaded', () => {
@@ -38,6 +38,22 @@ describe('LearnJS', function() {
     spyOn(learnjs, 'showView');
     $(window).trigger('hashchange');
     expect(learnjs.showView).toHaveBeenCalledWith(window.location.hash);
+  });
+  describe('answer section', () => {
+    let view = undefined;
+    beforeEach(() => {
+      view = learnjs.problemView('1');
+    });
+    it('can check a correct answer by hitting a button', () => {
+      view.find('.answer').val('true');
+      view.find('.check-btn').click();
+      expect(view.find('.result').text()).toEqual('Correct!');
+    });
+    it('rejects an incorrect answer', () => {
+      view.find('.answer').val('false');
+      view.find('.check-btn').click();
+      expect(view.find('.result').text()).toEqual('Incorrect!');
+    });
   });
 });
 
