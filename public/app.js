@@ -1,1 +1,2 @@
 'use strict'
+let learnjs = {}
