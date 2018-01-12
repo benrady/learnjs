@@ -13,7 +13,7 @@
 
         <div class='image-list'>
             <ul>
-            <li each={value, name  in images}> <img src='{ value }' class='cover' /></li>
+            <li each={image, name  in images}> <img src='{ image.url }' class='cover' /></li>
             </ul>
         </div>
 

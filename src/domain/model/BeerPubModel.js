@@ -3,6 +3,7 @@
 import ShopInfo from "./ShopInfo.js"
 import Map from "./Map.js"
 import Sns from "./Sns.js"
+import Image from "./Image.js"
 
 export default class BeerPubModel {
 
@@ -95,7 +96,7 @@ export default class BeerPubModel {
         model.setShopInfo(ShopInfo.parse(json.shop_info))
         model.setMap(Map.parse(json.map))
         model.setSns(Sns.parse(json.sns))
-        model.setImages(json.images)
+        model.setImages(Image.parseArray(json.images))
         return model
     }
 }
