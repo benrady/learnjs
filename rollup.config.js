@@ -20,8 +20,11 @@ src/WhatsNew.js (26:10)
 */
 
 export default {
-  entry: 'src/main.js',
-  dest: 'public/js/bundle.js',
+  input: 'src/main.js',
+  output: {
+    file: 'public/js/bundle.js',
+    format: 'iife'
+  },
   plugins: [
     riot({
       style: 'cssnext',
@@ -32,8 +35,7 @@ export default {
     nodeResolve({ jsnext: true }),
     commonjs(),
     babel()
-  ],
-  format: 'iife'
+  ]
 }
 
 /**

@@ -24,7 +24,7 @@
     "babel-preset-es2015-rollup": "^3.0.0",
     "jasmine-core": "^2.8.0",
     "jasmine-jquery": "^2.1.1",
-    "karma": "^1.7.1",
+    "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
@@ -33,23 +33,23 @@
     "postcss": "^6.0.14",
     "postcss-cssnext": "^3.0.2",
     "riot-route": "^3.1.2",
-    "rollup": "^0.52.1",
+    "rollup": "^0.54.0",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-buble": "^0.18.0",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-riot": "^1.1.0"
+    "rollup-plugin-riot": "^2.0.0"
   },
   "dependencies": {
     "@material/auto-init": "^0.25.0",
-    "@material/drawer": "^0.26.0",
-    "@material/list": "^0.26.0",
-    "@material/toolbar": "^0.25.0",
+    "@material/drawer": "^0.28.0",
+    "@material/list": "^0.28.0",
+    "@material/toolbar": "^0.28.0",
     "babel-polyfill": "^6.26.0",
     "jquery": "^3.2.1",
     "marked": "^0.3.7",
-    "material-components-web": "^0.26.0",
+    "material-components-web": "^0.27.0",
     "riot": "^3.7.4"
   }
 }

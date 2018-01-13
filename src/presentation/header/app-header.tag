@@ -32,10 +32,10 @@
 </app-header>
 
 <navigation-drawer>
-<aside class="mdc-temporary-drawer mdc-typography">
-    <nav class="mdc-temporary-drawer__drawer">
-        <header class="mdc-temporary-drawer__header menu-header">
-            <div class="mdc-temporary-drawer__header-content">
+<aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
+    <nav class="mdc-drawer__drawer">
+        <header class="mdc-drawer__header menu-header">
+            <div class="mdc-drawer__header-content">
             メニュー
             </div>
         </header>
@@ -67,31 +67,30 @@ this.on('mount', () =>{
 
 
     // メニューをタップしたらドロワーが開く
-    let drawerEl = document.querySelector('.mdc-temporary-drawer')
-    let drawer = new mdc.drawer.MDCTemporaryDrawer(drawerEl);
-    document.querySelector('.menu').addEventListener('click', () => drawer.open = true)
+    let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-drawer--temporary'));
+document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
 
     // FIXME: MDCのbug対応
     // https://github.com/material-components/material-components-web/issues/1700
-    drawerEl.addEventListener('MDCTemporaryDrawer:close', (e)=>{
-        e.target.classList.remove('mdc-temporary-drawer--animating')
-    })
+    //drawerEl.addEventListener('MDCTemporaryDrawer:close', (e)=>{
+//        e.target.classList.remove('mdc-temporary-drawer--animating')
+    //})
     // メニューアイテムにクリックイベントを設定する
-    document.querySelectorAll('.mdc-list-item').forEach( (element, index, array) => { 
-        element.addEventListener('click', () => {
+    //document.querySelectorAll('.mdc-list-item').forEach( (element, index, array) => { 
+//        element.addEventListener('click', () => {
             // 一旦selectedクラスを全削除
-            array.forEach((elem => {
-                elem.classList.remove('mdc-temporary-drawer--selected')
-            }))
+//            array.forEach((elem => {
+                //elem.classList.remove('mdc-temporary-drawer--selected')
+            //}))
             // クリックした要素だけにselectedクラスを当てる
-            element.classList.add('mdc-temporary-drawer--selected')
+            //element.classList.add('mdc-temporary-drawer--selected')
 
             // FIXME: MDCのbug対応なので修正された削除すること
 //            drawerEl.classList.remove('mdc-temporary-drawer--animating')
 
 //            return drawer.open = false
-        })
-    })
+        //})
+    //})
 
 })
 </script>
