@@ -2,3 +2,5 @@
 dist
 working
 master
+/node_modules
+/kasumi

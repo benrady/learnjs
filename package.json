@@ -1,0 +1,25 @@
+{
+  "name": "learnjs",
+  "version": "1.0.0",
+  "description": "### Beta 3 Changes",
+  "main": "index.js",
+  "dependencies": {
+    "create-react-app": "^1.5.2",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SerizawaNazuna/learnjs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SerizawaNazuna/learnjs/issues"
+  },
+  "homepage": "https://github.com/SerizawaNazuna/learnjs#readme"
+}
