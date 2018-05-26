@@ -1,15 +1,10 @@
-'use strict';
-var learnjs = {};
-learnjs.showView = function(hash) {
-  var routes = {
-    '#problem-1' : learnjs.problemView
-  };
-  var viewFn = routes[hash];
-  if(viewFn){
-    $('.view-container').empty().append(viewFn())
-  }
-}
+import React from 'react';
+import ReactDOM from 'react-dom';
+import LandingPage from './js/landing';
+import { BrowserRouter } from 'react-router-dom';
+import LandingRouter from './js/LandingRouter';
 
-learnjs.problemView = function(){
-  return $('<div class="problem-view">').text('Coming soon!');
-}
+ReactDOM.render(
+  <LandingRouter />,
+  document.querySelector('.markup')
+)
