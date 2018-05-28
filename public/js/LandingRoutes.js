@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
-import LandingPage from './landing';
+import { Route, Switch } from 'react-router-dom';
+import LandingPage from './Components/landing';
+import GameList from './Components/GameList';
 
-const LandingRoutes = () => {
+const LandingRoutes = (path = '/') => {
     return (
         <Switch>
             <Route exact path='/' component={LandingPage} />
-            {/*<Route path='/about' component={About} />
-            <Route path='/friends' component={Friends} />*/}
+            <Route path='/games' component={GameList} />
         </Switch>
     )
 }
