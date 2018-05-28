@@ -28,8 +28,8 @@ class GameList extends React.Component {
     }
 
     componentDidMount() {
-        //const genreId = GameGenreIds.GENRE_ID_ALL;
-        //GameListActions.getGameList(genreId);
+        const genreId = GameGenreIds.GENRE_ID_ALL;
+        GameListActions.getGameList(genreId);
     }
 
     render() {
@@ -39,7 +39,6 @@ class GameList extends React.Component {
                 <GameDetail game={value} key={"game_" + index} />
             )
         })
-        console.log(gameDetailComponent);
 
         return (
             <div>
