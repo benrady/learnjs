@@ -16,12 +16,40 @@ module.exports = function (config) {
       devtool: 'inline-source-map', //just do inline source maps instead of the default
       module: {
         rules: [
-          { test: /\.js$/, loader: 'babel-loader' }
+          { 
+            test: /\.js$/,
+            exclude: '/node_modules/',
+            loader: 'babel-loader',
+            query:{
+              compact: false
+            }
+          }
         ]
-      }
+      },
+      stats: {
+        colors: true,
+        hash: false,
+        version: false,
+        timings: false,
+        assets: false,
+        chunks: false,
+        modules: false,
+        reasons: false,
+        children: false,
+        source: false,
+        errors: false,
+        errorDetails: false,
+        warnings: false,
+        publicPath: false
+      },
+      mode: 'development'
     },
     webpackServer: {
-      noInfo: true //please don't spam the console when running in karma!
+      noInfo: true,
+      progress: false,
+      stats: false,
+      debug: false,
+      quiet: true //please don't spam the console when running in karma!
     }
   });
 };
