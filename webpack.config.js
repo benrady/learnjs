@@ -13,5 +13,12 @@ module.exports = {
 			}
 		]
 	},
-	mode: 'production'
+	mode: 'production',
+	devtool: 'inline-source-map',
+	devServer: {
+		inline: true,
+		hot: true,
+		contentBase: 'public/',
+		port: 3355
+	}
 }

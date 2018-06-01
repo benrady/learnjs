@@ -1,17 +1,26 @@
 //import AppDispatcher from '../DisPatcher/AppDispatcher';
 import GameActionTypes from './GameActionTypes';
+import APIPath from '../Consts/APIPath';
 import axios from 'axios';
 
 const GameLitActions = {
-    async getGameList(genreId) {
-        const pathToAPI = 'https://path-to-api.jp';
-        const response = await axios.get(pathToAPI + '/games?genreId=' + genreId);
-        if(response.status === 200){
-            return response.games;
+    async getGameList(searchConditions) {
+        const pathToAPI = APIPath.SEARCH;
+
+        let response = {
+            games: []
         }
-        else{
-            return;
+
+        try{
+            console.log(pathToAPI + '?id=' + searchConditions.id + '?name=' + searchConditions.name + '?minPlayNum=' + searchConditions.minPlayNum + '?maxPlayNum=' + searchConditions.maxPlayNum);
+            response = await axios.get(pathToAPI + '?id=' + searchConditions.id + '?name=' + searchConditions.name + '?minPlayNum=' + searchConditions.minPlayNum + '?maxPlayNum=' + searchConditions.maxPlayNum);
+            console.log(response);
         }
+        catch(e){
+            console.log('failed');
+        }
+
+        return response;
     }
 }
 

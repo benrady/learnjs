@@ -30,7 +30,8 @@
     "testdouble": "^3.8.1",
     "testdouble-jasmine": "^0.2.1",
     "webpack": "^4.8.3",
-    "webpack-cli": "^2.1.4"
+    "webpack-cli": "^2.1.4",
+    "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
     "build": "webpack",
@@ -40,7 +41,8 @@
     "karma": "karma start --single-run",
     "karma watch": "karma start --single-run --auto-watch",
     "deleteCoverage": "rm -rf coverage/",
-    "clean": "rm -rf node_modules/ && npm cache clean"
+    "clean": "rm -rf node_modules/ && npm cache clean",
+    "server": "webpack-dev-server -d"
   },
   "repository": {
     "type": "git",

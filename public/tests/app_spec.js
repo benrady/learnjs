@@ -12,6 +12,7 @@ import GameList from '../js/Components/GameList';
 import GameDetail from '../js/Components/GameDetail';
 import GameListActions from '../js/Actions/GameListActions';
 import GameActionTypes from '../js/Actions/GameActionTypes';
+import APIPath from '../js/Consts/APIPath';
 
 describe('Routing', () => {
     //トップページ
@@ -47,42 +48,16 @@ describe('GameList', () => {
 
 describe('Get All Games', ()=>{
     //ゲームリストを取得する
-    const pathToApi = 'https://path-to-api.jp';
-    it('can call get-games api with its genre id given by argument', ()=>{
+    const pathToApi = APIPath.SEARCH;
+    it('can call get-games api with its conditions given by argument', ()=>{
         spyOn(axios, 'get');
-        const genreId = 1;
-        GameListActions.getGameList(genreId);
-        expect(axios.get).toHaveBeenCalledWith(pathToApi + '/games?genreId=' + genreId);
+        const searchCondition = {
+            id: '',
+            name: 'test',
+            minPlayNum: 1,
+            maxPlayNum: 2
+        }
+        GameListActions.getGameList(searchCondition);
+        expect(axios.get).toHaveBeenCalledWith(pathToApi + '?id=' + searchCondition.id + '?name=' + searchCondition.name + '?minPlayNum=' + searchCondition.minPlayNum + '?maxPlayNum=' + searchCondition.maxPlayNum);
     });
-
-    //status 200のレスポンスが返却された場合、games配列をDispatchする
-    it('can dispatch 200 response to the store', async ()=>{
-        const returnValue = {
-            status: 200,
-            games:
-            [
-                {
-                    id: 1,
-                    name: 'テストゲーム',
-                    description: '表示テスト',
-                    url: 'test!'
-                },
-                {
-                    id: 2,
-                    name: 'テスト2',
-                    description: 'あああ',
-                    url: 'tetete'
-                }
-            ]
-        };
-        spyOn(axios, 'get').and.returnValue(returnValue);
-        spyOn(AppDispatcher, 'dispatch');
-        const genreId = 1;
-        GameListActions.getGameList(genreId);
-        /*expect(AppDispatcher.dispatch).toHaveBeenCalledWith({
-            type: GameActionTypes.GET_LIST,
-            payload: returnValue.games
-        });*/
-        expect(AppDispatcher.dispatch).toHaveBeenCalled();
-    })
 });

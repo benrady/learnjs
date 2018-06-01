@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import Form from 'react-jsonschema-form';
 
 import GameListActions from '../Actions/GameListActions';
 import GameGenreIds from '../Actions/GameGenreIds';
 import GameDetail from './GameDetail';
+import FormSchema from '../Consts/SearchGameFormSchema';
+import uiSchema from '../Consts/SearchGameUISchema';
 
 //所持ゲームを一覧化するためのコンテナ
 class GameList extends React.Component {
@@ -16,11 +19,17 @@ class GameList extends React.Component {
     }
 
     componentDidMount() {
-        const genreId = GameGenreIds.GENRE_ID_ALL;
-        const gamesResult = GameListActions.getGameList(genreId);
-        this.setState({
+        const searchConditions = {
+            id: '',
+            name: '',
+            minPlayNum: '',
+            maxPlayNum: ''
+        }
+        const gamesResult = GameListActions.getGameList(searchConditions);
+        console.log(gamesResult);
+        /*this.setState({
             games: gamesResult
-        })
+        })*/
     }
 
     render() {
@@ -33,7 +42,12 @@ class GameList extends React.Component {
         return (
             <div>
                 <header>
-                    
+                    <div>
+                        <Form
+                            schema={FormSchema}
+                            uiSchema={uiSchema}
+                        />
+                    </div>
                 </header>
                 <table className='u-full-width'>
                     <tbody>
