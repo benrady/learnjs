@@ -1,28 +1,35 @@
+# What's this?
+A workspace for my "Board Game Club Integration".
 
-## Change Log
+# Getting Started
 
-### Beta 3 Changes
+```
+git clone {repository url}
+```
 
-  * Compensating for AWSCLI timing issues when creating roles
-  
-### Beta 2 Changes
+install python(v2.7 or above)
 
-  * Now using 'admin' profile instead of default profile
-  * Added create_service action to sspa
-  * deploy_bucket can now take a config path
+install node.js(npm is required)
 
-## MIT License
+```
+cd learnjs
+```
 
-Note: The license below applies only to the contents of this git repository, not the Pragmatic Bookshelf title "Serverless Single Page Apps", or any other related content.
+```
+npm install
+```
 
-Copyright (c) 2015 Ben Rady <benrady@gmail.com>
+```
+npm run build
+```
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+```
+./sspa server 
+(local server will stand up)
+```
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-## Creative Commons Attributions
-
-  * HeroImage.jpg is licensed from popularwoodworking.com under the Creative Commons Attribution License (CC BY 3.0 US).
+# Features for Future
+* List games we have.
+* Records of this club's activity.
+* slack <-> board game club
+AND MORE!!!!
