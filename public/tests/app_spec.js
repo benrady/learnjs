@@ -1,5 +1,5 @@
 describe('LearnJS', function() {
-  it('can show a prolem view', function() {
+  it('can show a problem view', function() {
     learnjs.showView('#problem-1')
     expect($('.view-container .problem-view').length).toEqual(1)
   })
@@ -29,9 +29,41 @@ describe('LearnJS', function() {
   })
 
   describe('problem view', function() {
+    var view
+    beforeEach(function() {
+      view = learnjs.problemView('1')
+    })
     it('has a title that includes the problem to the view function', function() {
-      var view = learnjs.problemView('1')
-      expect(view.text()).toEqual('Problem #1 Coming soon!')
+      expect(view.find('.title').text()).toEqual('Problem #1')
+    })
+    it('has the description', function() {
+      expect(view.find('[data-name="description"]').text()).toEqual(
+        'What is truth?'
+      )
+    })
+    it('has the code', function() {
+      expect(view.find('[data-name="code"]').text()).toEqual(
+        'function problem() {return __;}'
+      )
+    })
+
+    describe('snswer section', function() {
+      var view
+      beforeEach(function() {
+        view = learnjs.problemView('1')
+      })
+
+      it('can check a correct answer by hitting a button', function() {
+        view.find('.answer').val('true')
+        view.find('.check-btn').click()
+        expect(view.find('.result span').text()).toEqual('Correct!')
+      })
+
+      it('rejects an incorrect answer', function() {
+        view.find('.answer').val('false')
+        view.find('.check-btn').click()
+        expect(view.find('.result').text()).toEqual('Incorrect!')
+      })
     })
   })
 })
