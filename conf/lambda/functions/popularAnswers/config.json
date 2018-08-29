@@ -1,0 +1,6 @@
+{
+  "Runtime": "nodejs",
+  "Timeout": 5,
+  "MemorySize": 512,
+  "Publish": true
+}

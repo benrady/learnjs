@@ -1,0 +1,10 @@
+{
+  "Bucket": "learnjs.pinocchiorz.com",
+  "BucketLoggingStatus": {
+    "LoggingEnabled": {
+      "TargetBucket": "learnjs-logging.pinocchiorz.com",
+      "TargetGrants": [],
+      "TargetPrefix": ""
+    }
+  }
+}

@@ -1,0 +1,1 @@
+371ac791cfde6ac48007220777831627f7a10f9d4570cb59434eb4ea4afab9d9 learnjs.pinocchiorz.com [26/Aug/2018:10:37:03 +0000] 27.94.207.170 arn:aws:iam::316011155569:user/learnjs CDC9A5346BD2E1BC REST.PUT.LOGGING_STATUS - "PUT /learnjs.pinocchiorz.com?logging HTTP/1.1" 200 - - - 102 - "-" "aws-cli/1.15.83 Python/3.6.5 Darwin/16.7.0 botocore/1.10.82" -
