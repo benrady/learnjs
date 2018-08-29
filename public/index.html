@@ -2,24 +2,130 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Learn JS!</title>
-    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
-    <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
-    <script src='/vendor.js'></script>
-    <script src='/app.js'></script>
-    <style type="text/css" media="all">
-      body { margin-top: 30px; }
-    </style>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Craft Beer Loves</title>
+
+    <meta name="description" content="クラフトビールが飲めるお店の最新情報を集めたサイトです。
+    また、各お店の住所などの基本情報だけでなく、例えば、禁煙か喫煙かや、チャージの有無なども知りたいと思い、そのような細かい情報もまとめます。">
+
+    <meta property="og:title" content="Craft Beer Loves｜ビアバーの最新情報サイト">
+    <meta property="og:description" content="クラフトビールが飲めるお店の最新情報を集めたサイトです。また、各お店の住所などの基本情報だけでなく、例えば、禁煙か喫煙かや、チャージの有無なども知りたいと思い、そのような細かい情報もまとめます。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://craftbeer-loves.com/">
+    <!-- TODO: ogp用の画像設定 -->
+    <!-- <meta property="og:image" content=""> --> 
+    <meta property="og:site_name" content="Craft Beer Loves">
+
+    <!-- <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'> -->
+    <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'> -->
+    <!-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'> -->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111279702-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-111279702-1');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">  
+    
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/card.css">
+
+    <!-- riotのカスタムtagがmaterial design componentを使用するため、最初にJSを呼び出しと初期化を行なっています。 -->
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <script>window.mdc.autoInit();</script>
+
   </head>
-  <body>
-    <div class='container'>
-      <h1>It works!</h1>
-      <div>
-        <span>You're ready to start!</span>
-        <span>Skeleton 2, jQuery 2, and AWS Libraries are included.</span>
+  <body class="mdc-typography">
+    <div class='markup'>
+      <app-header></app-header>
+      <div class='container main'>
+        <div class='header'>
+            <!--
+              TODO: 共通化したい
+              tag化すると、次のようなエラーがでてしまう
+            -->
+            <div align="center">
+              <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+              <!-- craftbeer-loves レスポンシブ -->
+              <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-3131366896030715"
+                    data-ad-slot="1182425280"
+                    data-ad-format="auto"></ins>
+              <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+              </script>
+            </div>
+        </div>
+          
+        <div class='view-container'>
+            <content></content>
+        </div>
+        <div id='sidebar-container'>
+          <div class='sidebar-content'>
+            <span>(作業中)</span>
+          </div>
+        </div>
       </div>
+
+
+
+        <div class='templates'>
+            <div class='landing-view'>
+              <div class='row'>
+                <div class="one-half column">
+                  <h3>Learn JavaScript, one puzzle at a time.</h3>
+                  <a href='#problem-1' class='button button-primary'>Start Now!</a>
+                </div>
+                <div class="one-half column">
+                  <img src="./images/HeroImage.jpg"/>
+                </div>
+              </div>
+            </div>
+            <div class='problem-view'>
+              <h3 class='title'></h3>
+              <p data-name='description'></p>
+              <pre><code data-name='code'></code></pre>
+              <form>
+                <textarea class='u-full-width answer'></textarea>
+                <div>
+                  <button class='button primary check-btn'>Check Answer</button>
+                  <p class='result'></p>
+                </div>
+              </form>
+            </div>
+            <div class='correct-flash'>
+              <span>Correct!</span> <a>Next Problem</a>
+            </div>
+            <div class='skip-btn'>
+              <a>Skip This Problem</a>
+            </div>
+
+     
+
+        </div>
     </div>
-  </body>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+    <script src="./js/bundle.js"></script>
+    <script src='./vendor.js'></script>
+    
+    <!-- Adsense -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3131366896030715",
+        enable_page_level_ads: true
+      });
+    </script>
+    </body>
 </html>
