@@ -1,25 +1,136 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <title>Learn JS!</title>
-    <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
-    <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
-    <script src='/vendor.js'></script>
-    <script src='/app.js'></script>
-    <style type="text/css" media="all">
-      body { margin-top: 30px; }
-    </style>
-  </head>
-  <body>
-    <div class='container'>
-      <h1>It works!</h1>
-      <div>
-        <span>You're ready to start!</span>
-        <span>Skeleton 2, jQuery 2, and AWS Libraries are included.</span>
+
+<head>
+  <meta charset='utf-8'>
+  <meta name="google-signin-client_id" content="400210467512-1vqkfg53qmt4gmsmkl5i3k70p94konuo.apps.googleusercontent.com">
+  <title>Learn JS!</title>
+  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
+  <style type="text/css" media="all">
+    body {
+      margin-top: 60px;
+    }
+
+    .templates {
+      display: none
+    }
+
+    .inline-list {
+      margin-bottom: 0px;
+    }
+
+    .inline-list li {
+      display: inline;
+      margin: 0 20px 0 0;
+    }
+
+    .fixed-top {
+      position: fixed;
+      top: 0px;
+      z-index: 1024;
+    }
+
+    .no-select {
+      user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      -moz-user-select: none;
+    }
+
+    .hover-links a {
+      text-decoration: none
+    }
+
+    .hover-links a:hover {
+      text-decoration: underline
+    }
+
+    .nav-container {
+      padding-left: 40px;
+      background: #666
+    }
+
+    .nav-container a {
+      color: white
+    }
+
+    .text-lg {
+      font-size: 2em;
+    }
+
+    .navbar-padding {
+      padding-top: 7px;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="markup">
+    <div class="nav-container no-select fixed-top u-full-width">
+      <ul class="inline-list hover-links nav-list six columns">
+        <li><a href="#" class="text-lg">LearnJS</a></li>
+        <li><a href="#problem-1">Start</a></li>
+      </ul>
+      <div class="four columns signin-bar">
+        <span class="navbar-padding u-pull-right">
+          <span class="g-signin2" data-onsuccess="googleSignIn"></span>
+        </span>
       </div>
     </div>
-  </body>
+    <div class="view-container container">
+    </div>
+    <div class="templates">
+      <span class="profile-link navbar-padding-lg">
+        <a href="#profile"></a>
+      </span>
+      <li class="skip-btn"><a>Skip This Problem</a></li>
+      <div class="profile-view">
+        <h3>Your Profile</h3>
+        <div class="email"></div>
+      </div>
+      <div class="landing-view">
+        <div class="row">
+          <div class="one-half column">
+            <h2>Learn JavaScript, one puzzle at a time.</h2>
+            <a href="#problem-1" class="button button-primary">Start now!</a>
+          </div>
+          <div class="one-half column">
+            <img src="/images/HeroImage.jpg" alt="HeroImage">
+          </div>
+        </div>
+      </div>
+      <div class="problem-view">
+        <h3 class="title"></h3>
+        <p>answered by <span class="answer-count"></span></p>
+        <p data-name="description"></p>
+        <pre><code data-name="code"></code></pre>
+        <form>
+          <textarea class="u-full-width answer"></textarea>
+          <div>
+            <button class="button-primary check-btn">Check Answer</button>
+            <p class="result"></p>
+          </div>
+        </form>
+      </div>
+      <div class="popular-view">
+        <p>top 5 answers <span class="answers"></span></p>
+      </div>
+      <div class="correct-flash">
+        <span>Correct!</span><a>Next Problem</a>
+      </div>
+    </div>
+  </div>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src='/vendor.js'></script>
+  <script src='/app.js'></script>
+  <script type="text/javascript">
+    $(window).ready(learnjs.appOnReady)
+  </script>
+</body>
+
 </html>

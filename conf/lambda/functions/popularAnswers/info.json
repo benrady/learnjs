@@ -1,0 +1,18 @@
+{
+    "FunctionName": "popularAnswers",
+    "FunctionArn": "arn:aws:lambda:us-east-1:316011155569:function:popularAnswers",
+    "Runtime": "nodejs4.3",
+    "Role": "arn:aws:iam::316011155569:role/learnjs_lambda_exec",
+    "Handler": "index.popularAnswers",
+    "CodeSize": 787013,
+    "Description": "",
+    "Timeout": 5,
+    "MemorySize": 512,
+    "LastModified": "2018-08-25T10:16:55.098+0000",
+    "CodeSha256": "EFgTEMpCAItPfRwqgkL8GQ332af1pDhHnJWU8UPPhCg=",
+    "Version": "$LATEST",
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "RevisionId": "7ec93595-c7c7-4a44-9b40-81e6a3c7d348"
+}

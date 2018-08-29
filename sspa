@@ -157,6 +157,8 @@ function create_identity_pool() {
 
   local identity_pool_name=$(basename $identity_pool_dir)
   if [[ ! -s ${identity_pool_dir}/pool_info.json ]]; then
+  
+  
     echo "Creating identity pool: $identity_pool_name"
     aws --profile $profile cognito-identity create-identity-pool \
       --identity-pool-name $identity_pool_name \
