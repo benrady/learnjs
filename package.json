@@ -4,6 +4,7 @@
   "description": "[![CircleCI](https://circleci.com/gh/kwmt/learnjs.svg?style=svg&circle-token=f5494bec80c6a8c521390715a6fb217f253a176f)](https://circleci.com/gh/kwmt/learnjs)",
   "main": "index.js",
   "scripts": {
+    "prestart": "nodebrew use v8.11.4",
     "test": "node_modules/karma/bin/karma start --single-run",
     "build": "rollup -c"
   },
