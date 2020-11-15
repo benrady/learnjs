@@ -31,9 +31,11 @@ describe('problem view', function() {
     expect(view.find('.title').text()).toEqual('Problem #1');
   });
   it('shows the description', function() {
+    var view = learnjs.problemView('1');
     expect(view.find('[data-name="description"]').text()).toEqual('What is truth?');
   })
   it('shows the problem code', function() {
+    var view = learnjs.problemView('1');
     expect(view.find('[data-name="code"]').text()).toEqual('function problem() { return __; }');
   })
 });
