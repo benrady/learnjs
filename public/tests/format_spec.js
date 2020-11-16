@@ -1,1 +1,1 @@
-return learnjs.problems.map(problem.formatCode);
+return learnjs.problems.map(problem.formatCode).sort(byName);
