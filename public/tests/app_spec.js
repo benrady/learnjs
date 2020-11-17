@@ -52,7 +52,7 @@ describe('answer section', function() {
     expect(view.find('.result').text()).toEqual('Correct!');
   });
   it('rejects an incorrect answer', function() {
-    view.find('.answer').val('true');
+    view.find('.answer').val('false');
     view.find('.check-btn').click();
     expect(view.find('.result').text()).toEqual('Incorrect!');
   });
