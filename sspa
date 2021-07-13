@@ -138,7 +138,7 @@ function create_cognito_auth_role() {
   generate_assume_role_policy ${pool_id} > ${identity_pool_dir}/assume_role_policy.json
   if [[ ! -s ${identity_pool_dir}/role_info.json ]]; then
     local role_name="${pool_name}_cognito_authenticated"
-    echo "Creaing role: $role_name"
+    echo "Creating role: $role_name"
     # Might be able to use the create_iam_role function for this
     aws --profile $profile iam create-role \
       --role-name "$role_name" \
